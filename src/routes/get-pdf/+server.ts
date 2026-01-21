@@ -7,10 +7,12 @@ import { render } from 'svelte/server';
 import Template from './Template.svelte';
 
 export const POST = async ({ request }) => {
-  const estimateID = await request.text();
+  const estimatesIds = (await request.json()) as string[];
+  const estimates = await Promise.all(
+    estimatesIds.map(async (est) => (await loadEstimate(est)).estimate),
+  );
 
-  const { estimate } = await loadEstimate(estimateID);
-  const { body, head } = render(Template, { props: estimate });
+  const { body, head } = render(Template, { props: { estimates } });
   const html = body + head;
 
   return new Response(

@@ -25,7 +25,7 @@
 
   const subTotal = expenses?.reduce(
     (prev, curr) => prev + (curr?.qty ?? 1) * (curr?.unitCost ?? 0),
-    0
+    0,
   );
 
   const grandTotal =
@@ -40,7 +40,7 @@
       {#each expenses as exp, i}
         {@const amount = format(
           (exp?.qty ?? 1) * (exp?.unitCost ?? 0),
-          currency
+          currency,
         )}
 
         <tr>
@@ -81,16 +81,5 @@
 <style>
   .bold {
     font-weight: bold;
-  }
-
-  @media print {
-    table,
-    tr,
-    th,
-    td {
-      border: 1px solid black;
-      background-color: transparent !important;
-      color: black;
-    }
   }
 </style>

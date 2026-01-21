@@ -3,6 +3,7 @@
   import type { Estimate } from '$lib/utilities/types';
   import Table from './Table.svelte';
   import { m } from '$lib/paraglide/messages';
+  import DownloadBtn from '../../routes/(app)/open/DownloadBtn.svelte';
 
   const { estimate, multiple }: { estimate: Estimate; multiple?: boolean } =
     $props();
@@ -14,33 +15,7 @@
 
 {#if !multiple}
   <fieldset class="secondary">
-    <button
-      aria-label="Download PDF"
-      aria-busy={downloading}
-      onclick={async () => {
-        downloading = true;
-
-        const res = await fetch('/get-pdf', {
-          method: 'post',
-          body: _id,
-        });
-
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = title ? `${title}.pdf` : 'estimate.pdf';
-        document.body.appendChild(a);
-        a.click();
-
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        downloading = false;
-      }}
-    >
-      <i class="fa-solid fa-print"></i>
-    </button>
+    <DownloadBtn title={title || 'estimate'} ids={[_id]}></DownloadBtn>
     <button
       aria-label="Edit"
       class="outline secondary"
@@ -79,20 +54,5 @@
 
   u {
     text-underline-offset: 0.25rem;
-  }
-
-  @media print {
-    fieldset {
-      display: none;
-    }
-
-    .overflow-auto {
-      overflow: visible;
-    }
-
-    h1,
-    h2 {
-      color: black;
-    }
   }
 </style>

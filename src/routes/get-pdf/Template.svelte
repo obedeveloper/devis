@@ -5,26 +5,25 @@
   import { m } from '$lib/paraglide/messages';
   import type { Estimate } from '$lib/utilities/types';
 
-  const {
-    expenses,
-    title,
-    currency,
-    extraExpenses,
-    note,
-    scopeOfWork,
-  }: Estimate = $props();
+  const { estimates }: { estimates: Estimate[] } = $props();
 </script>
 
-<h1>{title}</h1>
-<p>{scopeOfWork}</p>
+<main>
+  {#each estimates as { expenses, title, currency, extraExpenses, note, scopeOfWork }}
+    <section>
+      <h1>{title}</h1>
+      <p>{scopeOfWork}</p>
 
-<Table {expenses} {extraExpenses} {currency}></Table>
+      <Table {expenses} {extraExpenses} {currency}></Table>
 
-{#if note?.length}
-  <p>
-    {m.note()}: {note}
-  </p>
-{/if}
+      {#if note?.length}
+        <p>
+          {m.note()}: {note}
+        </p>
+      {/if}
+    </section>
+  {/each}
+</main>
 
 <style>
   :global {
@@ -50,5 +49,11 @@
     .bold {
       font-weight: bold;
     }
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 </style>

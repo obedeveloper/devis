@@ -16,12 +16,3 @@
 <Footer></Footer>
 
 <ScrollToTop></ScrollToTop>
-
-<style>
-  @media print {
-    main {
-      padding: 0;
-      margin: 0;
-    }
-  }
-</style>

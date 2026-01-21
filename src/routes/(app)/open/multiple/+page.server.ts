@@ -14,10 +14,13 @@ export const load = async ({ locals, url }) => {
     .toArray();
 
   const estimates = allEstimates.filter((value) =>
-    estimatesIDs?.includes(String(value._id))
+    estimatesIDs?.includes(String(value._id)),
   );
 
   if (!estimates.length) error(404, 'Not Found');
 
-  return { estimates: JSON.parse(JSON.stringify(estimates)) };
+  return {
+    estimates: JSON.parse(JSON.stringify(estimates)),
+    ids: estimates.map((est) => est._id.toString()),
+  };
 };

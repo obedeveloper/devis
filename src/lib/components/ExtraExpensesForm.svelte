@@ -13,7 +13,7 @@
 </script>
 
 <div class="form grid">
-  {#each globalEstimate.data?.extraExpenses ?? [] as extraExpense, i}
+  {#each globalEstimate.data?.extraExpenses ?? [] as extraExpense, i (extraExpense)}
     <fieldset transition:fade>
       <input
         type="text"

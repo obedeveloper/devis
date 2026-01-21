@@ -13,7 +13,7 @@
 </script>
 
 <div class="form flex">
-  {#each globalEstimate.data.expenses ?? [] as expense, i}
+  {#each globalEstimate.data.expenses ?? [] as expense, i (expense)}
     <fieldset transition:fade>
       <input
         type="text"

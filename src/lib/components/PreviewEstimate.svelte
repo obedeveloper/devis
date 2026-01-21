@@ -8,11 +8,37 @@
     $props();
   const { _id, title, scopeOfWork, expenses, extraExpenses, currency, note } =
     estimate;
+
+  let downloading = $state(false);
 </script>
 
 {#if !multiple}
   <fieldset class="secondary">
-    <button aria-label="Print" onclick={() => print()}>
+    <button
+      aria-label="Download PDF"
+      aria-busy={downloading}
+      onclick={async () => {
+        downloading = true;
+
+        const res = await fetch('/get-pdf', {
+          method: 'post',
+          body: _id,
+        });
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = title ? `${title}.pdf` : 'estimate.pdf';
+        document.body.appendChild(a);
+        a.click();
+
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        downloading = false;
+      }}
+    >
       <i class="fa-solid fa-print"></i>
     </button>
     <button

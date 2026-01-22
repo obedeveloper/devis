@@ -1,5 +1,7 @@
 <script lang="ts">
 	import '../styles.css';
+	import '@fontsource-variable/inter';
+	import '@fontsource/irish-grover';
 </script>
 
 <h1>Welcome to SvelteKit</h1>

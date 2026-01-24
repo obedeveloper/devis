@@ -1,7 +1,7 @@
 <script lang="ts">
-	import '../styles.css';
 	import '@fontsource-variable/inter';
 	import '@fontsource/irish-grover';
+	import '../styles.css';
 
 	import { setPageContext } from './page-context.ts';
 
@@ -14,6 +14,17 @@
 	// svelte-ignore state_referenced_locally
 	setPageContext(data);
 </script>
+
+<svelte:head>
+	<title>Devis - Effortless Estimating App for Quick and Professional Quotes</title>
+	<meta
+		name="description"
+		content="Streamline your estimating process with Devis! 
+		Our user-friendly app allows you to generate accurate quotes in minutes, 
+		eliminating the need for spreadsheets and manual calculations. 
+		Create polished PDF estimates effortlessly and focus on growing your business."
+	/>
+</svelte:head>
 
 <Header></Header>
 

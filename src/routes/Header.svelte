@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+
+	const { showSignInButton }: { showSignInButton?: boolean } = $props();
 </script>
 
 <header class="wrapper">
 	<div>
 		<a href={resolve('/')}>DEVIS</a>
-		<button>Sign In</button>
+		{#if showSignInButton}
+			<a class="btn" href={resolve('/auth')}>Sign In</a>
+		{/if}
 	</div>
 </header>
 
@@ -28,11 +32,14 @@
 	a {
 		text-decoration: none;
 		font-size: calc(36rem / 16);
-		font-family: 'Irish Grover', system-ui;
 		color: var(--color-neutral-dark);
 	}
 
-	button {
+	a:not(.btn) {
+		font-family: 'Irish Grover', system-ui;
+	}
+
+	.btn {
 		background-color: var(--color-accent);
 		border: none;
 		color: var(--color-neutral-light);
@@ -42,7 +49,8 @@
 		height: fit-content;
 		transition: all 0.35s ease-in-out;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background-color: hsl(from var(--color-accent) h s calc(l * 1.45));
 		}
 	}

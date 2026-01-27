@@ -1,11 +1,6 @@
 <script lang="ts">
-	import '@fontsource-variable/inter';
-	import '@fontsource/irish-grover';
-	import '../styles.css';
-
 	import { setPageContext } from './page-context.ts';
 
-	import Header from './Header.svelte';
 	import SocialProof from './SocialProof.svelte';
 	import Features from './Features.svelte';
 	import CTA from './CTA.svelte';
@@ -26,8 +21,6 @@
 	/>
 </svelte:head>
 
-<Header></Header>
-
 <main class="wrapper">
 	<h1>Transform Your Estimating Process with Devis</h1>
 	<p>Generate Professional Quotes in Minutes — No More Spreadsheets or Cluttered Paperwork!</p>
@@ -41,13 +34,13 @@
 	main {
 		margin-block: 30px;
 
+		& > *:not(:last-child) {
+			margin-bottom: 20px;
+		}
+
 		@media (width > calc(640rem / 16)) {
 			margin-block: 50px;
 		}
-	}
-
-	:global(main > *:not(:last-child)) {
-		margin-bottom: 20px;
 	}
 
 	h1,
@@ -58,6 +51,7 @@
 	h1 {
 		font-size: calc(38rem / 16);
 		line-height: 1.1;
+		font-family: 'Irish Grover', system-ui;
 
 		@media (width > calc(640rem / 16)) {
 			font-size: calc(48rem / 16);

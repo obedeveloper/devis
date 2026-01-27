@@ -10,6 +10,7 @@
 		flex-wrap: wrap;
 		justify-content: center;
 		padding-block: 20px;
+		margin-block: 20px;
 	}
 
 	button {

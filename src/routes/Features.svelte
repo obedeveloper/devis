@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { getPageContext } from './page-context';
-
-	const { features } = getPageContext();
+	import features from './features';
 </script>
 
 <ul>

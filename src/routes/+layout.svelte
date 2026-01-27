@@ -4,8 +4,8 @@
 	import '../styles.css';
 	import Header from './Header.svelte';
 
-	const { children, data } = $props();
+	const { children } = $props();
 </script>
 
-<Header showSignInButton={!data.isAuthPage} userLoggedIn={!!data.user}></Header>
+<Header></Header>
 {@render children()}

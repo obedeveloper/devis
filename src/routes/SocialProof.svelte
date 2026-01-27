@@ -1,16 +1,32 @@
 <script lang="ts">
-	import { getPageContext } from './page-context';
+	import { getUsersStats } from './stats.remote';
 
-	const { images, numberOfUsers } = getPageContext();
+	let { totalUsers, sampleImages } = await getUsersStats();
+	const numberOfSampleImages = sampleImages.length;
+
+	if (numberOfSampleImages < 3) {
+		for (let i = 0; i < 3 - numberOfSampleImages; i++) {
+			sampleImages.push({ url: `/images/profile-${i + numberOfSampleImages + 1}.jpeg` });
+		}
+	}
 </script>
 
 <section>
 	<div>
-		{#each images as src (src)}
-			<img {src} alt="sample user profile" />
+		{#each sampleImages as { url } (url)}
+			<img
+				src={url || '/images/profile-1.jpeg'}
+				alt=""
+				onerror={(e) => {
+					const img = e.target as HTMLImageElement;
+					img.setAttribute('src', '/images/profile-1.jpeg');
+				}}
+			/>
 		{/each}
 	</div>
-	<span>+{numberOfUsers - images.length} more.</span>
+	{#if totalUsers > 3}
+		<span>+{totalUsers - numberOfSampleImages} more.</span>
+	{/if}
 </section>
 
 <style>

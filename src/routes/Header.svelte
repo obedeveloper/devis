@@ -1,33 +1,23 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client';
-
-	interface Props {
-		showSignInButton?: boolean;
-		userLoggedIn?: boolean;
-	}
-
-	let { showSignInButton, userLoggedIn }: Props = $props();
-
-	// svelte-ignore state_referenced_locally
-	if (userLoggedIn) {
-		showSignInButton = false;
-	}
+	import { getUser } from '$lib/auth/user.remote';
 </script>
 
 <header class="wrapper">
 	<div>
 		<a href={resolve('/')}>DEVIS</a>
-		{#if userLoggedIn}
+		{#if (await getUser()).user}
 			<button
 				onclick={async () => {
 					await authClient.signOut();
-					window.location.reload();
+					await getUser().refresh();
 				}}
 			>
 				Sign Out
 			</button>
-		{:else if showSignInButton}
+		{:else if page.url.pathname !== '/auth'}
 			<a class="btn" href={resolve('/auth')}>Sign In</a>
 		{/if}
 	</div>

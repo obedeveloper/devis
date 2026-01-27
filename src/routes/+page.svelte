@@ -1,13 +1,7 @@
 <script lang="ts">
-	import { setPageContext } from './page-context.ts';
-
 	import SocialProof from './SocialProof.svelte';
 	import Features from './Features.svelte';
 	import CTA from './CTA.svelte';
-
-	const { data } = $props();
-	// svelte-ignore state_referenced_locally
-	setPageContext(data);
 </script>
 
 <svelte:head>

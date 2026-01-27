@@ -2,17 +2,20 @@
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { authClient } from '$lib/auth/client';
-	import { getUser } from '$lib/auth/user.remote';
+	import { getAuthenticatedUser, getUser } from '$lib/auth/user.remote';
+
+	const { user } = $derived(await getUser());
 </script>
 
 <header class="wrapper">
 	<div>
 		<a href={resolve('/')}>DEVIS</a>
-		{#if (await getUser()).user}
+		{#if user}
 			<button
 				onclick={async () => {
 					await authClient.signOut();
 					await getUser().refresh();
+					await getAuthenticatedUser().refresh();
 				}}
 			>
 				Sign Out

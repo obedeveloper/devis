@@ -17,7 +17,13 @@
 	<section style:--accent-color={data.accentColor}>
 		<h1>Sign In</h1>
 		<p>Just click the button below to sign in with your Google account.</p>
-		<button onclick={() => authClient.signIn.social({ provider: 'google' })}>
+		<button
+			onclick={() =>
+				authClient.signIn.social({
+					provider: 'google',
+					callbackURL: '/profile'
+				})}
+		>
 			<img src={googleIcon} alt="Google icon" />
 			Sign in with Google
 		</button>

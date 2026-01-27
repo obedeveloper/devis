@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { authClient } from '$lib/auth/client';
 	import googleIcon from './google-icon.svg';
 
 	const { data } = $props();
@@ -16,7 +17,7 @@
 	<section style:--accent-color={data.accentColor}>
 		<h1>Sign In</h1>
 		<p>Just click the button below to sign in with your Google account.</p>
-		<button>
+		<button onclick={() => authClient.signIn.social({ provider: 'google' })}>
 			<img src={googleIcon} alt="Google icon" />
 			Sign in with Google
 		</button>

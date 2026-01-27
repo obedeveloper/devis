@@ -25,6 +25,7 @@
 	--color-neutral-light: #f9fafb;
 	--color-neutral-dark: #374151;
 	--color-white: #ffffff;
+	--color-danger: hsl(5, 92%, 42%);
 }
 
 html {

@@ -1,13 +1,33 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { authClient } from '$lib/auth/client';
 
-	const { showSignInButton }: { showSignInButton?: boolean } = $props();
+	interface Props {
+		showSignInButton?: boolean;
+		userLoggedIn?: boolean;
+	}
+
+	let { showSignInButton, userLoggedIn }: Props = $props();
+
+	// svelte-ignore state_referenced_locally
+	if (userLoggedIn) {
+		showSignInButton = false;
+	}
 </script>
 
 <header class="wrapper">
 	<div>
 		<a href={resolve('/')}>DEVIS</a>
-		{#if showSignInButton}
+		{#if userLoggedIn}
+			<button
+				onclick={async () => {
+					await authClient.signOut();
+					window.location.reload();
+				}}
+			>
+				Sign Out
+			</button>
+		{:else if showSignInButton}
 			<a class="btn" href={resolve('/auth')}>Sign In</a>
 		{/if}
 	</div>
@@ -52,6 +72,18 @@
 		&:hover,
 		&:focus {
 			background-color: hsl(from var(--color-accent) h s calc(l * 1.45));
+		}
+	}
+
+	button {
+		border: none;
+		background: var(--color-danger);
+		color: var(--color-white);
+		border-radius: 4px;
+		transition: background-color 0.35s ease-in-out;
+
+		&:hover {
+			background-color: hsl(from var(--color-danger) h s calc(l * 1.3));
 		}
 	}
 </style>

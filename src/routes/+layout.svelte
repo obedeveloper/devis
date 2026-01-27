@@ -7,5 +7,5 @@
 	const { children, data } = $props();
 </script>
 
-<Header showSignInButton={!data.isAuthPage}></Header>
+<Header showSignInButton={!data.isAuthPage} userLoggedIn={!!data.user}></Header>
 {@render children()}

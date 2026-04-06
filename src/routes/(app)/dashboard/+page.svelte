@@ -2,7 +2,6 @@
   import Card from '$lib/components/Card.svelte';
   import NotFound from '$lib/components/NotFound.svelte';
   import { deleteMany } from '$lib/db.remote.js';
-  import { m } from '$lib/paraglide/messages';
   import { selectedEstimates } from '$lib/utilities/states.svelte';
   import type { Estimate } from '$lib/utilities/types';
   import { slide } from 'svelte/transition';
@@ -11,6 +10,7 @@
   const { data } = $props();
   const { estimates } = data;
   let busy = $state(false);
+  let confirmDeleteOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -19,16 +19,17 @@
 
 {#if !estimates || estimates.length === 0}
   <NotFound>
-    <p>
-      {m['empty-db']()}
-      <a href="/new">{m['add-a-new-project']()}</a>
+    <p class="text-lg text-[var(--app-text-soft)]">
+      No estimates yet.
+      <a class="ml-2 font-semibold text-[var(--app-primary-strong)] underline-offset-4 hover:underline" href="/new">Add a new project</a>
     </p>
   </NotFound>
 {:else}
   {#if ids.length}
-    <div transition:slide class="bunner">
-      <label>
+    <div transition:slide class="app-panel mb-4 flex flex-wrap items-center gap-3 p-4">
+      <label class="flex items-center gap-2">
         <input
+          class="size-4"
           type="checkbox"
           bind:checked={
             () => ids.length === estimates.length,
@@ -39,29 +40,56 @@
             }
           }
         />
-        {m['select-all']()}
+        Select all
       </label>
 
       <a
         href="/open/multiple?estimates={selectedEstimates.ids}"
-        role="button"
+        class="button-secondary no-underline"
         aria-label="Open All"
-        ><i class="fa-solid fa-external-link"></i> {m.open()}</a
+        ><i class="fa-solid fa-external-link"></i> Open</a
       >
 
       <button
-        class="delete"
+        class="button-danger"
         aria-busy={busy}
-        onclick={async () => {
-          busy = true;
-          await deleteMany(selectedEstimates.ids);
-          document.location = '/dashboard';
-        }}><i class="fa-solid fa-trash"></i> {m.delete()}</button
+        disabled={busy}
+        onclick={() => (confirmDeleteOpen = true)}><i class="fa-solid fa-trash"></i> Delete</button
       >
     </div>
   {/if}
-  <div class="grid">
+  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
     {@render Estimates([...estimates].reverse())}
+  </div>
+{/if}
+
+{#if confirmDeleteOpen}
+  <div class="fixed inset-0 z-50 grid place-items-center bg-black/45 px-4">
+    <article class="app-panel surface-strong w-full max-w-md space-y-5 p-6">
+      <div class="space-y-2">
+        <h3 class="text-2xl font-semibold tracking-tight">Delete selected estimates?</h3>
+        <p class="text-sm leading-6 text-[var(--app-text-soft)]">
+          This action will permanently remove {ids.length} selected {ids.length === 1
+            ? 'estimate'
+            : 'estimates'}.
+        </p>
+      </div>
+
+      <footer class="flex flex-wrap justify-end gap-3">
+        <button class="button-secondary" onclick={() => (confirmDeleteOpen = false)}>Cancel</button>
+        <button
+          class="button-danger"
+          aria-busy={busy}
+          disabled={busy}
+          onclick={async () => {
+            busy = true;
+            await deleteMany(selectedEstimates.ids);
+            confirmDeleteOpen = false;
+            document.location = '/dashboard';
+          }}>Confirm</button
+        >
+      </footer>
+    </article>
   </div>
 {/if}
 
@@ -70,49 +98,3 @@
     <Card {title} {scopeOfWork} {_id} {createdAt}></Card>
   {/each}
 {/snippet}
-
-<style lang="scss">
-  @use '@picocss/pico/scss/colors' as *;
-
-  div.grid {
-    display: grid;
-    --min: 250px;
-    grid-template-columns: repeat(auto-fill, minmax(var(--min), 1fr));
-    gap: 1rem;
-
-    @media (width >= 700px) {
-      --min: 300px;
-    }
-
-    @media (width >= 1000px) {
-      --min: 350px;
-    }
-  }
-
-  p {
-    text-align: center;
-  }
-
-  label {
-    padding: 0.5rem;
-  }
-
-  .bunner {
-    padding-block-end: 1rem;
-    display: flex;
-    gap: 0.5rem 1rem;
-    align-items: center;
-    flex-wrap: wrap;
-
-    label {
-      margin: 0;
-      padding: 0;
-    }
-  }
-
-  .delete {
-    background-color: $red-500;
-    border-color: $red-500;
-    color: white;
-  }
-</style>

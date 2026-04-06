@@ -1,14 +1,10 @@
-<script lang="ts">
-  import { m } from '$lib/paraglide/messages';
-</script>
-
-<thead>
+<thead class="bg-black/[0.03] dark:bg-white/[0.03]">
   <tr>
     <th scope="col">#</th>
-    <th scope="col">{m['expense.desc']()}</th>
-    <th scope="col">{m['expense.unit']()}</th>
-    <th scope="col">{m['expense.qty']()}</th>
-    <th scope="col">{m['expense.unit-cost']()}</th>
-    <th scope="col">{m.amount()}</th>
+    <th scope="col">Description</th>
+    <th scope="col">Unit</th>
+    <th scope="col">Qty</th>
+    <th scope="col">Unit cost</th>
+    <th scope="col">Amount</th>
   </tr>
 </thead>

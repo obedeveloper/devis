@@ -10,18 +10,10 @@
 
 <img
   src={userImage}
+  class="size-10 rounded-full border border-[var(--app-border)] object-cover shadow-sm"
   alt=""
   onerror={(e) => {
     const el = e.target as HTMLImageElement;
     el.src = generic;
   }}
 />
-
-<style>
-  img {
-    width: 2.5rem;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    margin-right: 0.35rem;
-  }
-</style>

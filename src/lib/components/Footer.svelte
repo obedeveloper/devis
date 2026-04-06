@@ -1,15 +1,4 @@
-<script>
-  import { m } from '$lib/paraglide/messages';
-</script>
-
-<footer class="container-fluid">
-  {m.copyright({ name: 'NIYOMUGISHA Obed', year: 2025 })}
-  <br />
-  {m['all-rights-reserved']()}
+<footer class="page-shell pb-6 pt-8 text-center text-sm text-[var(--app-text-soft)]">
+  <p>Copyright 2025 NIYOMUGISHA Obed.</p>
+  <p>All rights reserved.</p>
 </footer>
-
-<style>
-  footer {
-    text-align: center;
-  }
-</style>

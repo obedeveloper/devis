@@ -1,11 +1,10 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { signIn } from '$lib/auth-client';
-  import { m } from '$lib/paraglide/messages';
   import google from '$lib/assets/icons8-google.svg';
-  import LangS from '$lib/components/LangS.svelte';
 
   const message = page.error?.message;
+  let authBusy = $state(false);
 </script>
 
 <svelte:head>
@@ -13,79 +12,53 @@
 </svelte:head>
 
 {#if message === 'Un Authorized'}
-  <div class="sign-in">
-    <div>
-      <nav>
-        <LangS></LangS>
-      </nav>
-
-      <form>
-        <h1>{m['auth.sign-in']()}</h1>
-
-        <hr />
+  <div class="page-shell grid min-h-dvh place-items-center py-10">
+    <div class="w-full max-w-md space-y-4">
+      <section class="app-panel surface-strong space-y-6 p-6 sm:p-8">
+        <div class="space-y-2 text-center">
+          <p class="section-heading">Sign in</p>
+          <h1 class="text-3xl font-semibold tracking-tight">Welcome back</h1>
+          <p class="text-sm text-[var(--app-text-soft)]">
+            Sign in to create and manage your estimates.
+          </p>
+        </div>
 
         <button
-          onclick={() => signIn(page.url.pathname)}
-          class="secondary outline"
+          class="button-secondary flex w-full items-center justify-center gap-3"
+          disabled={authBusy}
+          aria-busy={authBusy}
+          onclick={async () => {
+            authBusy = true;
+            await signIn(page.url.pathname);
+          }}
         >
-          <img src={google} alt="" />
-          <span>{m['auth.continue-with']()} Google</span>
+          <img src={google} alt="" class="size-8" />
+          <span>Continue with Google</span>
         </button>
-      </form>
+      </section>
     </div>
   </div>
 {:else if message === 'Not Found'}
-  <div class="not-found">
-    <h1>404</h1>
-    <p>{page.url}</p>
-    <p>Page Not found. Go back <a data-sveltekit-reload href="/">home</a></p>
+  <div class="page-shell grid min-h-[70vh] place-items-center py-10">
+    <section class="app-panel surface-strong max-w-lg space-y-4 p-8 text-center">
+      <p class="section-heading">404</p>
+      <h1 class="text-4xl font-semibold tracking-tight">Page not found</h1>
+      <p class="text-sm text-[var(--app-text-soft)]">{page.url}</p>
+      <p class="text-base text-[var(--app-text-soft)]">
+        Go back to the
+        <a
+          data-sveltekit-reload
+          href="/"
+          class="font-semibold text-[var(--app-primary-strong)] underline-offset-4 hover:underline"
+          >home page</a
+        >.
+      </p>
+    </section>
   </div>
 {:else}
-  <div class="else">
-    <h1>{message}</h1>
+  <div class="page-shell grid min-h-[70vh] place-items-center py-10">
+    <section class="app-panel surface-strong max-w-lg p-8 text-center">
+      <h1 class="text-3xl font-semibold tracking-tight">{message}</h1>
+    </section>
   </div>
 {/if}
-
-<style>
-  .not-found {
-    padding: 1rem;
-
-    & * {
-      text-align: center;
-    }
-  }
-
-  .sign-in,
-  .else {
-    min-height: 100dvh;
-    display: grid;
-    place-items: center;
-  }
-
-  form {
-    margin-inline: auto;
-    width: fit-content;
-    border: 1px solid var(--pico-color);
-    padding: 1rem;
-    border-radius: 1rem;
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-  }
-
-  img {
-    width: 2.5rem;
-    margin-right: 0.75rem;
-  }
-
-  div:has(nav) {
-    display: grid;
-  }
-
-  nav {
-    margin-bottom: 1rem;
-    justify-self: end;
-  }
-</style>

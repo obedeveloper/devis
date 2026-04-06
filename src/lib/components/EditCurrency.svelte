@@ -27,32 +27,31 @@
   );
 </script>
 
-<input type="search" bind:value={globalEstimate.data.currency} />
+<div class="relative space-y-2">
+  <label for="currency-search">Currency</label>
+  <input
+    id="currency-search"
+    class="peer"
+    type="search"
+    bind:value={globalEstimate.data.currency}
+    placeholder="Search currency or code"
+  />
 
-<div>
-  {#each searchResults as { currency, code }}
-    <label>
-      <input
-        type="radio"
-        name="currency"
-        value={code}
-        bind:group={globalEstimate.data.currency}
-      />
-      {currency} - {code}
-    </label>
-  {/each}
+  <div class="app-panel surface-strong hidden max-h-80 overflow-auto p-2 peer-focus:block hover:block">
+    <div class="space-y-1">
+      {#each searchResults as { currency, code }}
+        <label
+          class="flex cursor-pointer items-center gap-3 rounded-2xl px-3 py-2 text-sm text-[var(--app-text)] hover:bg-black/5 dark:hover:bg-white/5"
+        >
+          <input
+            type="radio"
+            name="currency"
+            value={code}
+            bind:group={globalEstimate.data.currency}
+          />
+          <span>{currency} - {code}</span>
+        </label>
+      {/each}
+    </div>
+  </div>
 </div>
-
-<style>
-  div {
-    max-height: 50vh;
-    overflow: auto;
-    margin-block: 0.5rem;
-    display: none;
-  }
-
-  input:focus + div,
-  div:hover {
-    display: block;
-  }
-</style>

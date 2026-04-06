@@ -1,6 +1,5 @@
 <script lang="ts">
   import { deleteEstimate } from '$lib/db.remote';
-  import { m } from '$lib/paraglide/messages';
   import { selectedEstimates } from '$lib/utilities/states.svelte';
 
   interface CardProps {
@@ -25,9 +24,10 @@
 </script>
 
 {#if !deleted}
-  <article>
-    <header>
+  <article class="app-panel surface-strong space-y-4 p-5">
+    <header class="grid grid-cols-[auto_1fr_auto] items-start gap-3">
       <input
+        class="mt-1 size-4"
         type="checkbox"
         bind:checked={
           () => selectedEstimates.ids.includes(_id),
@@ -36,62 +36,59 @@
           }
         }
       />
-      <h4>
-        <a href="/open/{_id}">{title}</a>
-      </h4>
-      <button aria-label="Delete" onclick={() => (open = true)}
-        ><i class="fa-solid fa-trash"></i></button
+
+      <div class="space-y-2">
+        <h2 class="text-xl font-semibold leading-tight tracking-tight">
+          <a class="no-underline hover:text-[var(--app-primary-strong)]" href="/open/{_id}">
+            {title}
+          </a>
+        </h2>
+        {#if scopeOfWork}
+          <p class="line-clamp-3 text-sm leading-6 text-[var(--app-text-soft)]">
+            {scopeOfWork}
+          </p>
+        {/if}
+      </div>
+
+      <button
+        aria-label="Delete"
+        class="icon-button border-red-200 text-[var(--app-danger)] hover:border-red-300"
+        onclick={() => (open = true)}
       >
+        <i class="fa-solid fa-trash"></i>
+      </button>
     </header>
 
-    <p>{scopeOfWork}</p>
-    <time datetime={createdAt.toString()}>{readableDate}</time>
+    <time class="block text-xs font-medium uppercase tracking-[0.22em] text-[var(--app-muted)]" datetime={createdAt.toString()}>
+      {readableDate}
+    </time>
   </article>
 {/if}
 
-<dialog {open}>
-  <article>
-    <p>{m['delete-confirmation-message']()}</p>
-    <footer>
-      <button class="secondary" onclick={() => (open = false)}
-        >{m.cancel()}</button
-      >
+{#if open}
+  <div class="fixed inset-0 z-50 grid place-items-center bg-black/45 px-4">
+    <article class="app-panel surface-strong w-full max-w-md space-y-5 p-6">
+      <div class="space-y-2">
+        <h3 class="text-2xl font-semibold tracking-tight">Delete estimate?</h3>
+        <p class="text-sm leading-6 text-[var(--app-text-soft)]">
+          This action will permanently remove this estimate.
+        </p>
+      </div>
+
+      <footer class="flex flex-wrap justify-end gap-3">
+        <button class="button-secondary" onclick={() => (open = false)}>Cancel</button>
       <button
+        class="button-danger"
         aria-busy={loading}
+        disabled={loading}
         onclick={async () => {
           loading = true;
           await deleteEstimate(String(_id));
-          open = false;
-          deleted = true;
-        }}>{m.confirm()}</button
-      >
-    </footer>
-  </article>
-</dialog>
-
-<style lang="scss">
-  @use '@picocss/pico/scss/colors' as *;
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  header {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 0.5rem;
-  }
-
-  button:has(i) {
-    all: unset;
-    display: flex;
-    height: fit-content;
-    color: $red-500;
-    cursor: pointer;
-  }
-
-  h4 {
-    line-height: 1;
-  }
-</style>
+            open = false;
+            deleted = true;
+          }}>Confirm</button
+        >
+      </footer>
+    </article>
+  </div>
+{/if}

@@ -11,12 +11,18 @@
   <ul>
     <li>
       <h1>
-        <a href="/" translate="no" class="logo">Devis</a>
+        <a href="/dashboard" translate="no" class="logo">Devis</a>
       </h1>
     </li>
   </ul>
 
-  <ul>
+  <ul class="nav-actions">
+    <li>
+      <a href="/" class="home-link">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+    </li>
     <li>
       <a href="/new" role="button">
         <i class="fa-solid fa-plus-circle"></i>
@@ -49,13 +55,14 @@
   nav {
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
   }
 
-  ul:nth-child(2) {
+  .nav-actions {
     display: flex;
-    align-items: start;
+    align-items: center;
     gap: 0.5rem;
-    padding-top: 1rem;
+    padding-top: 0.75rem;
 
     & * {
       margin: 0;
@@ -63,13 +70,43 @@
     }
   }
 
+  .home-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--pico-color);
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 999px;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .home-link:hover,
+  .home-link:focus-visible {
+    color: var(--pico-color);
+    background: color-mix(in srgb, var(--pico-primary) 12%, transparent);
+  }
+
+  .home-link:focus-visible {
+    outline: 2px solid var(--pico-primary);
+    outline-offset: 2px;
+  }
+
   a[role='button'] {
     padding: 0.5rem 0.25rem;
   }
 
   @media (width < 33.75rem) {
-    span {
+    .home-link span,
+    a[role='button'] span {
       display: none;
+    }
+
+    .home-link {
+      padding: 0.7rem;
     }
 
     a[role='button'] {

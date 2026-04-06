@@ -55,7 +55,7 @@
         onclick={async () => {
           busy = true;
           await deleteMany(selectedEstimates.ids);
-          document.location = '/';
+          document.location = '/dashboard';
         }}><i class="fa-solid fa-trash"></i> {m.delete()}</button
       >
     </div>

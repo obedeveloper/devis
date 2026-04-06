@@ -33,7 +33,7 @@
 </script>
 
 {#if subTotal}
-  <div class="overflow-hidden rounded-[1.5rem] border border-[var(--app-border)] bg-[var(--app-surface-strong)]">
+  <div class="overflow-auto rounded-[1.5rem] border border-[var(--app-border)] bg-[var(--app-surface-strong)]">
     <table>
       <TableHead></TableHead>
       <tbody>

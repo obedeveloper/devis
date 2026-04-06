@@ -10,6 +10,7 @@
   const { data } = $props();
   const { estimates } = data;
   let busy = $state(false);
+  let confirmDeleteOpen = $state(false);
 </script>
 
 <svelte:head>
@@ -53,16 +54,42 @@
         class="button-danger"
         aria-busy={busy}
         disabled={busy}
-        onclick={async () => {
-          busy = true;
-          await deleteMany(selectedEstimates.ids);
-          document.location = '/dashboard';
-        }}><i class="fa-solid fa-trash"></i> Delete</button
+        onclick={() => (confirmDeleteOpen = true)}><i class="fa-solid fa-trash"></i> Delete</button
       >
     </div>
   {/if}
   <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
     {@render Estimates([...estimates].reverse())}
+  </div>
+{/if}
+
+{#if confirmDeleteOpen}
+  <div class="fixed inset-0 z-50 grid place-items-center bg-black/45 px-4">
+    <article class="app-panel surface-strong w-full max-w-md space-y-5 p-6">
+      <div class="space-y-2">
+        <h3 class="text-2xl font-semibold tracking-tight">Delete selected estimates?</h3>
+        <p class="text-sm leading-6 text-[var(--app-text-soft)]">
+          This action will permanently remove {ids.length} selected {ids.length === 1
+            ? 'estimate'
+            : 'estimates'}.
+        </p>
+      </div>
+
+      <footer class="flex flex-wrap justify-end gap-3">
+        <button class="button-secondary" onclick={() => (confirmDeleteOpen = false)}>Cancel</button>
+        <button
+          class="button-danger"
+          aria-busy={busy}
+          disabled={busy}
+          onclick={async () => {
+            busy = true;
+            await deleteMany(selectedEstimates.ids);
+            confirmDeleteOpen = false;
+            document.location = '/dashboard';
+          }}>Confirm</button
+        >
+      </footer>
+    </article>
   </div>
 {/if}
 

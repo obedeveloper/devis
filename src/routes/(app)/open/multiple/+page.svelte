@@ -11,16 +11,12 @@
   <title>{estimates[0].title}</title>
 </svelte:head>
 
-<div>
-  <DownloadBtn title={estimates[0].title} ids={data.ids}></DownloadBtn>
-</div>
+<section class="space-y-4">
+  <div>
+    <DownloadBtn title={estimates[0].title} ids={data.ids}></DownloadBtn>
+  </div>
 
-{#each estimates as estimate}
-  <PreviewEstimate {estimate} multiple></PreviewEstimate>
-{/each}
-
-<style>
-  div {
-    margin-bottom: 1rem;
-  }
-</style>
+  {#each estimates as estimate}
+    <PreviewEstimate {estimate} multiple></PreviewEstimate>
+  {/each}
+</section>

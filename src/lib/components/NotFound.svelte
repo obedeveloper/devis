@@ -2,37 +2,7 @@
   const { children }: { children?: any } = $props();
 </script>
 
-<section class="center">
-  <span class="big shrug-emoji">🤷‍♂️</span>
+<section class="flex min-h-[50vh] flex-col items-center justify-center gap-4 text-center">
+  <span class="inline-block text-7xl animate-[shrug_1.5s_ease-in-out_infinite]">🤷‍♂️</span>
   {@render children?.()}
 </section>
-
-<style>
-  .shrug-emoji {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-
-    animation: shrug 1.5s ease-in-out infinite;
-    font-size: 5rem;
-  }
-
-  @keyframes shrug {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    20% {
-      transform: translateY(-10px);
-    }
-    40% {
-      transform: translateY(5px);
-    }
-    60% {
-      transform: translateY(-5px);
-    }
-    80% {
-      transform: translateY(2px);
-    }
-  }
-</style>

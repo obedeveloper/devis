@@ -6,8 +6,9 @@
   const { locale, text }: Language = $props();
 </script>
 
-<li class={getLocale() === locale ? 'active' : ''}>
+<li>
   <a
+    class={`block rounded-2xl px-3 py-2 text-left text-sm font-medium transition hover:bg-black/5 dark:hover:bg-white/5 ${getLocale() === locale ? 'text-[var(--app-primary-strong)]' : 'text-[var(--app-text)]'}`}
     href={page.url.toString()}
     onclick={(e) => {
       e.preventDefault();
@@ -15,13 +16,3 @@
     }}>{text}</a
   >
 </li>
-
-<style>
-  .active a {
-    color: var(--pico-primary);
-  }
-
-  a {
-    text-align: left;
-  }
-</style>

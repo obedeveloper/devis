@@ -9,7 +9,7 @@
 
 <Nav {userImage}></Nav>
 
-<main class="container">
+<main class="page-shell py-6">
   {@render children()}
 </main>
 

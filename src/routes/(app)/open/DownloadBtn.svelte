@@ -7,6 +7,7 @@
 
 <button
   aria-label="Download PDF"
+  class="icon-button"
   aria-busy={downloading}
   onclick={async () => {
     downloading = true;

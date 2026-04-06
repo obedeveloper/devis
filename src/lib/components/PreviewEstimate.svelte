@@ -9,50 +9,38 @@
     $props();
   const { _id, title, scopeOfWork, expenses, extraExpenses, currency, note } =
     estimate;
-
-  let downloading = $state(false);
 </script>
 
-{#if !multiple}
-  <fieldset class="secondary">
-    <DownloadBtn title={title || 'estimate'} ids={[_id]}></DownloadBtn>
-    <button
-      aria-label="Edit"
-      class="outline secondary"
-      onclick={() => goto(`/edit/${_id}`)}
-    >
-      <i class="fa-solid fa-pen"></i>
-    </button>
-  </fieldset>
-{/if}
+<section class={`app-panel ${multiple ? 'surface-strong' : ''} space-y-5 p-6 sm:p-8`}>
+  {#if !multiple}
+    <div class="flex flex-wrap gap-3">
+      <DownloadBtn title={title || 'estimate'} ids={[_id]}></DownloadBtn>
+      <button
+        aria-label="Edit"
+        class="button-secondary"
+        onclick={() => goto(`/edit/${_id}`)}
+      >
+        <i class="fa-solid fa-pen"></i>
+        <span>Edit</span>
+      </button>
+    </div>
+  {/if}
 
-<h1>{title}</h1>
-<h2>{scopeOfWork}</h2>
-
-<div class="overflow-auto">
-  <Table {expenses} {extraExpenses} {currency}></Table>
-</div>
-
-{#if note?.length}
-  <div class="note">
-    <u>⚠️ {m.note()}</u>
-    <p>{note}</p>
+  <div class="space-y-2">
+    <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+    <h2 class="text-lg text-[var(--app-text-soft)]">{scopeOfWork}</h2>
   </div>
-{/if}
 
-<style>
-  .note {
-    margin-block: 1rem;
-    border: 1px solid var(--pico-primary);
-    border-left-width: 4px;
-    padding-inline: 0.5rem;
-    padding-top: 0.5rem;
-    border-radius: 0.5rem;
-    min-width: 50%;
-    width: fit-content;
-  }
+  <div class="overflow-x-auto">
+    <Table {expenses} {extraExpenses} {currency}></Table>
+  </div>
 
-  u {
-    text-underline-offset: 0.25rem;
-  }
-</style>
+  {#if note?.length}
+    <div class="rounded-3xl border border-[var(--app-border)] bg-[var(--app-surface-strong)] p-4">
+      <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--app-text-soft)]">
+        {m.note()}
+      </p>
+      <p class="mt-2 text-sm leading-7 text-[var(--app-text-soft)]">{note}</p>
+    </div>
+  {/if}
+</section>

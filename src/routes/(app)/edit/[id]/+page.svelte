@@ -21,26 +21,23 @@
   <title>{globalEstimate.data?.title}</title>
 </svelte:head>
 
-<button
-  aria-busy={busy}
-  onclick={async () => {
-    busy = true;
+<section class="space-y-4">
+  <div class="flex justify-start">
+    <button
+      aria-busy={busy}
+      onclick={async () => {
+        busy = true;
 
-    await updateEstimate({ ...globalEstimate.data });
+        await updateEstimate({ ...globalEstimate.data });
 
-    goto('/open/' + globalEstimate.data._id);
-  }}
->
-  <i class="fa-solid fa-save"></i>
-  <span>{m.save()}</span>
-</button>
+        goto('/open/' + globalEstimate.data._id);
+      }}
+    >
+      <i class="fa-solid fa-save"></i>
+      <span>{m.save()}</span>
+    </button>
+  </div>
 
-<EditRequired {globalEstimate}></EditRequired>
-<hr />
-<EditAdditional {globalEstimate}></EditAdditional>
-
-<style>
-  button {
-    margin-bottom: 1rem;
-  }
-</style>
+  <EditRequired {globalEstimate}></EditRequired>
+  <EditAdditional {globalEstimate}></EditAdditional>
+</section>

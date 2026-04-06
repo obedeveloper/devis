@@ -14,7 +14,7 @@
   "devDependencies": {
     "@fontsource-variable/inter": "^5.2.6",
     "@fortawesome/fontawesome-free": "^6.7.2",
-    "@sveltejs/adapter-auto": "^6.0.0",
+    "@sveltejs/adapter-auto": "^6.1.1",
     "@sveltejs/kit": "^2.16.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "@tailwindcss/vite": "^4.2.2",
@@ -32,6 +32,8 @@
   },
   "dependencies": {
     "@sparticuz/chromium": "^143.0.4",
+    "@sveltejs/adapter-vercel": "^6.3.3",
+    "dotenv": "^17.4.1",
     "puppeteer": "^24.35.0",
     "puppeteer-core": "^24.35.0"
   }

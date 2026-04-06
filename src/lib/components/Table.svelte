@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { m } from '$lib/paraglide/messages';
   import type { Expense, ExtraExpense } from '$lib/utilities/types';
   import TableHead from './TableHead.svelte';
   import { codes } from 'currency-codes';
@@ -57,7 +56,7 @@
         {#if extraExpenses?.length && subTotal}
           <tr class="bg-black/[0.02] dark:bg-white/[0.02]">
             <th scope="row"></th>
-            <td colspan="4" class="font-semibold">{m['table.sub-total']()}</td>
+            <td colspan="4" class="font-semibold">Sub-total</td>
             <td class="font-semibold">{format(subTotal, currency)}</td>
           </tr>
         {/if}
@@ -72,7 +71,7 @@
 
         <tr class="bg-black/[0.03] dark:bg-white/[0.03]">
           <th scope="row"></th>
-          <td colspan="4" class="font-bold">{m['table.grand-total']()}</td>
+          <td colspan="4" class="font-bold">Grand total</td>
           <td class="font-bold">{format(grandTotal, currency)}</td>
         </tr>
       </tbody>

@@ -1,10 +1,3 @@
-import type { Locale } from '$lib/paraglide/runtime';
-
-export interface Language {
-  locale: Locale;
-  text: string;
-}
-
 export interface Expense {
   desc: string;
   unit?: string;

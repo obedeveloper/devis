@@ -3,7 +3,6 @@
   import EditAdditional from '$lib/components/EditAdditional.svelte';
   import EditRequired from '$lib/components/EditRequired.svelte';
   import { updateEstimate } from '$lib/db.remote';
-  import { m } from '$lib/paraglide/messages';
   import { GlobalEstimate } from '$lib/utilities/states.svelte.js';
 
   const { data } = $props();
@@ -25,6 +24,7 @@
   <div class="flex justify-start">
     <button
       aria-busy={busy}
+      disabled={busy}
       onclick={async () => {
         busy = true;
 
@@ -34,7 +34,7 @@
       }}
     >
       <i class="fa-solid fa-save"></i>
-      <span>{m.save()}</span>
+      <span>Save</span>
     </button>
   </div>
 

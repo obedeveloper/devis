@@ -1,7 +1,6 @@
 <svelte:options css="injected" />
 
 <script lang="ts">
-  import { m } from '$lib/paraglide/messages';
   import type { Estimate, Expense, ExtraExpense } from '$lib/utilities/types';
   import { codes } from 'currency-codes';
 
@@ -45,11 +44,11 @@
         <thead>
           <tr>
             <th style="border:1px solid black;padding:0.35rem 0.75rem;">#</th>
-            <th style="border:1px solid black;padding:0.35rem 0.75rem;">{m['expense.desc']()}</th>
-            <th style="border:1px solid black;padding:0.35rem 0.75rem;">{m['expense.unit']()}</th>
-            <th style="border:1px solid black;padding:0.35rem 0.75rem;">{m['expense.qty']()}</th>
-            <th style="border:1px solid black;padding:0.35rem 0.75rem;">{m['expense.unit-cost']()}</th>
-            <th style="border:1px solid black;padding:0.35rem 0.75rem;">{m.amount()}</th>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Description</th>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Unit</th>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Qty</th>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Unit cost</th>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Amount</th>
           </tr>
         </thead>
         <tbody>
@@ -71,7 +70,7 @@
             <tr>
               <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>
               <td colspan="4" style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">
-                {m['table.sub-total']()}
+                Sub-total
               </td>
               <td style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">
                 {format(getSubTotal(expenses), currency)}
@@ -90,7 +89,7 @@
           <tr>
             <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>
             <td colspan="4" style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">
-              {m['table.grand-total']()}
+              Grand total
             </td>
             <td style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">
               {format(getGrandTotal(expenses, extraExpenses), currency)}
@@ -101,7 +100,7 @@
 
       {#if note?.length}
         <p>
-          {m.note()}: {note}
+          Note: {note}
         </p>
       {/if}
     </section>

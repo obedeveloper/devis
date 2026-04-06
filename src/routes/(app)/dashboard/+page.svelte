@@ -2,7 +2,6 @@
   import Card from '$lib/components/Card.svelte';
   import NotFound from '$lib/components/NotFound.svelte';
   import { deleteMany } from '$lib/db.remote.js';
-  import { m } from '$lib/paraglide/messages';
   import { selectedEstimates } from '$lib/utilities/states.svelte';
   import type { Estimate } from '$lib/utilities/types';
   import { slide } from 'svelte/transition';
@@ -20,8 +19,8 @@
 {#if !estimates || estimates.length === 0}
   <NotFound>
     <p class="text-lg text-[var(--app-text-soft)]">
-      {m['empty-db']()}
-      <a class="ml-2 font-semibold text-[var(--app-primary-strong)] underline-offset-4 hover:underline" href="/new">{m['add-a-new-project']()}</a>
+      No estimates yet.
+      <a class="ml-2 font-semibold text-[var(--app-primary-strong)] underline-offset-4 hover:underline" href="/new">Add a new project</a>
     </p>
   </NotFound>
 {:else}
@@ -40,24 +39,25 @@
             }
           }
         />
-        {m['select-all']()}
+        Select all
       </label>
 
       <a
         href="/open/multiple?estimates={selectedEstimates.ids}"
         class="button-secondary no-underline"
         aria-label="Open All"
-        ><i class="fa-solid fa-external-link"></i> {m.open()}</a
+        ><i class="fa-solid fa-external-link"></i> Open</a
       >
 
       <button
         class="button-danger"
         aria-busy={busy}
+        disabled={busy}
         onclick={async () => {
           busy = true;
           await deleteMany(selectedEstimates.ids);
           document.location = '/dashboard';
-        }}><i class="fa-solid fa-trash"></i> {m.delete()}</button
+        }}><i class="fa-solid fa-trash"></i> Delete</button
       >
     </div>
   {/if}

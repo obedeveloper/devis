@@ -1,7 +1,6 @@
 <script lang="ts">
   import generic from '$lib/assets/OIP-3084535858.jpeg';
   import { signOut, signOutAllDevices } from '$lib/auth-client';
-  import { m } from '$lib/paraglide/messages.js';
   const { data } = $props();
 
   let image = $state(data.userImage);
@@ -41,21 +40,23 @@
     <div class="flex flex-wrap gap-3">
       <button
         aria-busy={busy1}
+        disabled={busy1}
         class="button-secondary"
         onclick={async () => {
           busy1 = true;
           await signOut();
           document.location = '/';
-        }}><i class="fa-solid fa-sign-out"></i> {m['auth.sign-out']()}</button
+        }}><i class="fa-solid fa-sign-out"></i> Sign out</button
       >
       <button
         class="button-danger"
         aria-busy={busy2}
+        disabled={busy2}
         onclick={async () => {
           busy2 = true;
           await signOutAllDevices();
           document.location = '/';
-        }}>{m['auth.sign-out-from-all-devices']()}</button
+        }}>Sign out from all devices</button
       >
     </div>
   </div>

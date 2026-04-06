@@ -4,6 +4,7 @@
 
   const { data } = $props();
   const user = data.user;
+  let authBusy = $state(false);
 
   const highlights = [
     {
@@ -59,7 +60,16 @@
           href="/dashboard">Open dashboard</a
         >
       {:else}
-        <button class="button-secondary" type="button" onclick={() => signIn('/dashboard')}>
+        <button
+          class="button-secondary"
+          type="button"
+          disabled={authBusy}
+          aria-busy={authBusy}
+          onclick={async () => {
+            authBusy = true;
+            await signIn('/dashboard');
+          }}
+        >
           Sign in
         </button>
       {/if}
@@ -83,7 +93,17 @@
             <a class="button-primary" href="/dashboard">Go to dashboard</a>
             <a class="button-secondary no-underline" href="/new">Create new estimate</a>
           {:else}
-            <button type="button" onclick={() => signIn('/dashboard')}>Start with Google</button>
+            <button
+              type="button"
+              disabled={authBusy}
+              aria-busy={authBusy}
+              onclick={async () => {
+                authBusy = true;
+                await signIn('/dashboard');
+              }}
+            >
+              Start with Google
+            </button>
             <a class="button-secondary no-underline" href="#how-it-works">See how it works</a>
           {/if}
         </div>
@@ -183,7 +203,16 @@
       {#if user}
         <a class="button-primary w-fit" href="/dashboard">Return to your estimates</a>
       {:else}
-        <button class="w-fit" type="button" onclick={() => signIn('/dashboard')}>
+        <button
+          class="w-fit"
+          type="button"
+          disabled={authBusy}
+          aria-busy={authBusy}
+          onclick={async () => {
+            authBusy = true;
+            await signIn('/dashboard');
+          }}
+        >
           Create your first estimate
         </button>
       {/if}

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { m } from '$lib/paraglide/messages';
   import type { Estimate } from '$lib/utilities/types';
   import EditCurrency from './EditCurrency.svelte';
   import ExtraExpensesForm from './ExtraExpensesForm.svelte';
@@ -22,7 +21,7 @@
 
 <details class="app-panel surface-strong overflow-hidden" name="edit-estimate">
   <summary class="flex items-center justify-between px-5 py-4 text-lg font-semibold tracking-tight">
-    <span>{m.secondary()}</span>
+    <span>Additional details</span>
     <i class="fa-solid fa-chevron-down text-sm text-[var(--app-text-soft)]"></i>
   </summary>
 
@@ -36,11 +35,11 @@
     </button>
 
     <div class="space-y-2">
-      <label for="note">{m.note()}</label>
+      <label for="note">Note</label>
       <textarea
         id="note"
         bind:value={globalEstimate.data.note}
-        placeholder={'Note: ' + m.note()}></textarea>
+        placeholder="Note"></textarea>
     </div>
   </section>
 </details>

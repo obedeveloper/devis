@@ -1,6 +1,4 @@
 <script lang="ts">
-  import LanguageSwitcher from './LangS.svelte';
-  import { m } from '$lib/paraglide/messages';
   import Avatar from './Avatar.svelte';
   import type { AvatarProps } from './Avatar.svelte';
 
@@ -28,9 +26,8 @@
       </a>
       <a href="/new" class="button-primary px-3 sm:px-4">
         <i class="fa-solid fa-plus-circle"></i>
-        <span class="hidden sm:inline">{m.new()}</span>
+        <span class="hidden sm:inline">New</span>
       </a>
-      <LanguageSwitcher></LanguageSwitcher>
       <a
         href="/account"
         class="inline-flex rounded-full focus-visible:outline-none"

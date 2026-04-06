@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { m } from '$lib/paraglide/messages';
   import type { Estimate } from '$lib/utilities/types';
   import { fade } from 'svelte/transition';
 
@@ -18,22 +17,22 @@
       <input
         type="text"
         bind:value={expense.desc}
-        placeholder={m['expense.desc']()}
+        placeholder="Description"
       />
       <input
         type="text"
         bind:value={expense.unit}
-        placeholder={m['expense.unit']()}
+        placeholder="Unit"
       />
       <input
         type="number"
         bind:value={expense.qty}
-        placeholder={m['expense.qty']()}
+        placeholder="Qty"
       />
       <input
         type="number"
         bind:value={expense.unitCost}
-        placeholder={m['expense.unit-cost']()}
+        placeholder="Unit cost"
       />
       <button
         aria-label="Delete"

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { m } from '$lib/paraglide/messages';
   import type { Estimate } from '$lib/utilities/types';
   import ExpensesForm from './ExpensesForm.svelte';
 
@@ -23,7 +22,7 @@
 
 <details class="app-panel surface-strong overflow-hidden" name="edit-estimate" open>
   <summary class="flex items-center justify-between px-5 py-4 text-lg font-semibold tracking-tight">
-    <span>{m.primary()}</span>
+    <span>Project details</span>
     <i class="fa-solid fa-chevron-down text-sm text-[var(--app-text-soft)]"></i>
   </summary>
 

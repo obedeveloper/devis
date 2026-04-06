@@ -1,11 +1,10 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { signIn } from '$lib/auth-client';
-  import { m } from '$lib/paraglide/messages';
   import google from '$lib/assets/icons8-google.svg';
-  import LangS from '$lib/components/LangS.svelte';
 
   const message = page.error?.message;
+  let authBusy = $state(false);
 </script>
 
 <svelte:head>
@@ -15,13 +14,9 @@
 {#if message === 'Un Authorized'}
   <div class="page-shell grid min-h-dvh place-items-center py-10">
     <div class="w-full max-w-md space-y-4">
-      <div class="flex justify-end">
-        <LangS></LangS>
-      </div>
-
       <section class="app-panel surface-strong space-y-6 p-6 sm:p-8">
         <div class="space-y-2 text-center">
-          <p class="section-heading">{m['auth.sign-in']()}</p>
+          <p class="section-heading">Sign in</p>
           <h1 class="text-3xl font-semibold tracking-tight">Welcome back</h1>
           <p class="text-sm text-[var(--app-text-soft)]">
             Sign in to create and manage your estimates.
@@ -30,10 +25,15 @@
 
         <button
           class="button-secondary flex w-full items-center justify-center gap-3"
-          onclick={() => signIn(page.url.pathname)}
+          disabled={authBusy}
+          aria-busy={authBusy}
+          onclick={async () => {
+            authBusy = true;
+            await signIn(page.url.pathname);
+          }}
         >
           <img src={google} alt="" class="size-8" />
-          <span>{m['auth.continue-with']()} Google</span>
+          <span>Continue with Google</span>
         </button>
       </section>
     </div>

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { deleteEstimate } from '$lib/db.remote';
-  import { m } from '$lib/paraglide/messages';
   import { selectedEstimates } from '$lib/utilities/states.svelte';
 
   interface CardProps {
@@ -72,21 +71,22 @@
       <div class="space-y-2">
         <h3 class="text-2xl font-semibold tracking-tight">Delete estimate?</h3>
         <p class="text-sm leading-6 text-[var(--app-text-soft)]">
-          {m['delete-confirmation-message']()}
+          This action will permanently remove this estimate.
         </p>
       </div>
 
       <footer class="flex flex-wrap justify-end gap-3">
-        <button class="button-secondary" onclick={() => (open = false)}>{m.cancel()}</button>
-        <button
-          class="button-danger"
-          aria-busy={loading}
-          onclick={async () => {
-            loading = true;
-            await deleteEstimate(String(_id));
+        <button class="button-secondary" onclick={() => (open = false)}>Cancel</button>
+      <button
+        class="button-danger"
+        aria-busy={loading}
+        disabled={loading}
+        onclick={async () => {
+          loading = true;
+          await deleteEstimate(String(_id));
             open = false;
             deleted = true;
-          }}>{m.confirm()}</button
+          }}>Confirm</button
         >
       </footer>
     </article>

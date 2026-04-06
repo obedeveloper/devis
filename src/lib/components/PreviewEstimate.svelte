@@ -2,7 +2,6 @@
   import { goto } from '$app/navigation';
   import type { Estimate } from '$lib/utilities/types';
   import Table from './Table.svelte';
-  import { m } from '$lib/paraglide/messages';
   import DownloadBtn from '../../routes/(app)/open/DownloadBtn.svelte';
 
   const { estimate, multiple }: { estimate: Estimate; multiple?: boolean } =
@@ -38,7 +37,7 @@
   {#if note?.length}
     <div class="rounded-3xl border border-[var(--app-border)] bg-[var(--app-surface-strong)] p-4">
       <p class="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--app-text-soft)]">
-        {m.note()}
+        Note
       </p>
       <p class="mt-2 text-sm leading-7 text-[var(--app-text-soft)]">{note}</p>
     </div>

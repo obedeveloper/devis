@@ -1,1 +1,163 @@
-<svelte:options css="injected" />\n\n<script lang="ts">\n  import type { Estimate, Expense, ExtraExpense } from '$lib/utilities/types';\n  import { codes } from 'currency-codes';\n\n  const { estimates }: { estimates: Estimate[] } = $props();\n\n  function format(n: number, currency?: string) {\n    if (!codes().includes(currency ?? '')) {\n      currency = 'RWF';\n    }\n\n    return n.toLocaleString(undefined, {\n      style: 'currency',\n      currency: currency || 'RWF',\n    });\n  }\n\n  function getSubTotal(expenses: Expense[]) {\n    return expenses?.reduce(\n      (prev, curr) => prev + (curr?.qty ?? 1) * (curr?.unitCost ?? 0),\n      0,\n    );\n  }\n\n  function getGrandTotal(expenses: Expense[], extraExpenses?: ExtraExpense[]) {\n    return (\n      getSubTotal(expenses) +\n      (extraExpenses?.reduce((prev, curr) => prev + (curr?.amount ?? 0), 0) ?? 0)\n    );\n  }\n\n  const currency = estimates[0]?.currency;\n  const totalGrandTotal = estimates.reduce((sum, estimate) => {\n    return sum + getGrandTotal(estimate.expenses, estimate.extraExpenses);\n  }, 0);\n</script>\n\n<main\n  style="display:flex;flex-direction:column;gap:1rem;font-family:Arial,Helvetica,sans-serif;margin:1rem 2.5rem;"\n>\n  {#each estimates as { expenses, title, currency, extraExpenses, note, scopeOfWork }}\n    <section>\n      <h1 style="margin-top:0;">{title}</h1>\n      <p>{scopeOfWork}</p>\n\n      <table style="width:100%;border-collapse:collapse;">\n        <thead>\n          <tr>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;">#</th>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Description</th>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Unit</th>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Qty</th>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Unit cost</th>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Amount</th>\n          </tr>\n        </thead>\n        <tbody>\n          {#each expenses as exp, i}             {@const amount = format((exp?.qty ?? 1) * (exp?.unitCost ?? 0), currency)}            <tr>\n              <th style="border:1px solid black;padding:0.35rem 0.75rem;">{i + 1}</th>\n              <td style="border:1px solid black;padding:0.35rem 0.75rem;">{exp.desc}</td>\n              <td style="border:1px solid black;padding:0.35rem 0.75rem;">{exp.unit}</td>\n              <td style="border:1px solid black;padding:0.35rem 0.75rem;">{exp.qty?.toLocaleString()}</td>\n              <td style="border:1px solid black;padding:0.35rem 0.75rem;">\n                {exp.qty ? format(exp?.unitCost ?? 0, currency) : ''}             </td>\n              <td style="border:1px solid black;padding:0.35rem 0.75rem;">{amount}</td>\n            </tr>\n          {/each}\n\n          {#if extraExpenses?.length}            <tr>\n              <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>\n              <td colspan="4" style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">\n                Sub-total\n              </td>\n              <td style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">\n                {format(getSubTotal(expenses), currency)}\n              </td>\n            </tr>\n          {/if}\n\n          {#each extraExpenses ?? [] as { desc, amount }, i}            <tr>\n              <th style="border:1px solid black;padding:0.35rem 0.75rem;">{expenses.length + i + 1}</th>\n              <td colspan="4" style="border:1px solid black;padding:0.35rem 0.75rem;">{desc}</td>\n              <td style="border:1px solid black;padding:0.35rem 0.75rem;">{format(amount ?? 0, currency)}</td>\n            </tr>\n          {/each}\n\n          <tr>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>\n            <td colspan="4" style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">\n              Grand total\n            </td>\n            <td style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;">\n              {format(getGrandTotal(expenses, extraExpenses), currency)}\n            </td>\n          </tr>\n        </tbody>\n      </table>\n\n      {#if note?.length}        <p>\n          Note: {note}\n        </p>\n      {/if}\n    </section>\n  {/each}\n\n  {#if estimates.length > 1}    <section style="margin-top:2rem;border-top:3px solid black;padding-top:1rem;">\n      <table style="width:100%;border-collapse:collapse;">\n        <tbody>\n          <tr>\n            <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>\n            <td colspan="4" style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;font-size:1.1rem;">\n              Total Grand Total\n            </td>\n            <td style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;font-size:1.1rem;">\n              {format(totalGrandTotal, currency)}\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </section>\n  {/if}\n</main>
+<svelte:options css="injected" />
+
+<script lang="ts">
+  import type { Estimate, Expense, ExtraExpense } from '$lib/utilities/types';
+  import { codes } from 'currency-codes';
+  const { estimates }: { estimates: Estimate[] } = $props();
+  function format(n: number, currency?: string) {
+    if (!codes().includes(currency ?? '')) {
+      currency = 'RWF';
+    }
+    return n.toLocaleString(undefined, {
+      style: 'currency',
+      currency: currency || 'RWF',
+    });
+  }
+  function getSubTotal(expenses: Expense[]) {
+    return expenses?.reduce(
+      (prev, curr) => prev + (curr?.qty ?? 1) * (curr?.unitCost ?? 0),
+      0,
+    );
+  }
+  function getGrandTotal(expenses: Expense[], extraExpenses?: ExtraExpense[]) {
+    return (
+      getSubTotal(expenses) +
+      (extraExpenses?.reduce((prev, curr) => prev + (curr?.amount ?? 0), 0) ??
+        0)
+    );
+  }
+  const currency = estimates[0]?.currency;
+  const totalGrandTotal = estimates.reduce((sum, estimate) => {
+    return sum + getGrandTotal(estimate.expenses, estimate.extraExpenses);
+  }, 0);
+</script>
+
+<main
+  style="display:flex;flex-direction:column;gap:1rem;font-family:Arial,Helvetica,sans-serif;margin:1rem 2.5rem;"
+>
+  {#each estimates as { expenses, title, currency, extraExpenses, note, scopeOfWork }}
+    <section>
+      <h1 style="margin-top:0;">{title}</h1>
+      <p>{scopeOfWork}</p>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">#</th>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;"
+              >Description</th
+            >
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Unit</th
+            >
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;">Qty</th>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;"
+              >Unit cost</th
+            >
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;"
+              >Amount</th
+            >
+          </tr>
+        </thead>
+        <tbody>
+          {#each expenses as exp, i}
+            {@const amount = format(
+              (exp?.qty ?? 1) * (exp?.unitCost ?? 0),
+              currency,
+            )}
+            <tr>
+              <th style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{i + 1}</th
+              >
+              <td style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{exp.desc}</td
+              >
+              <td style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{exp.unit}</td
+              >
+              <td style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{exp.qty?.toLocaleString()}</td
+              >
+              <td style="border:1px solid black;padding:0.35rem 0.75rem;">
+                {exp.qty ? format(exp?.unitCost ?? 0, currency) : ''}
+              </td>
+              <td style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{amount}</td
+              >
+            </tr>
+          {/each}
+          {#if extraExpenses?.length}
+            <tr>
+              <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>
+              <td
+                colspan="4"
+                style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;"
+              >
+                Sub-total
+              </td>
+              <td
+                style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;"
+              >
+                {format(getSubTotal(expenses), currency)}
+              </td>
+            </tr>
+          {/if}
+          {#each extraExpenses ?? [] as { desc, amount }, i}
+            <tr>
+              <th style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{expenses.length + i + 1}</th
+              >
+              <td
+                colspan="4"
+                style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{desc}</td
+              >
+              <td style="border:1px solid black;padding:0.35rem 0.75rem;"
+                >{format(amount ?? 0, currency)}</td
+              >
+            </tr>
+          {/each}
+          <tr>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>
+            <td
+              colspan="4"
+              style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;"
+            >
+              Grand total
+            </td>
+            <td
+              style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;"
+            >
+              {format(getGrandTotal(expenses, extraExpenses), currency)}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {#if note?.length}
+        <p>Note: {note}</p>
+      {/if}
+    </section>
+  {/each}
+  {#if estimates.length > 1}
+    <section
+      style="margin-top:2rem;border-top:3px solid black;padding-top:1rem;"
+    >
+      <table style="width:100%;border-collapse:collapse;">
+        <tbody>
+          <tr>
+            <th style="border:1px solid black;padding:0.35rem 0.75rem;"></th>
+            <td
+              colspan="4"
+              style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;font-size:1.1rem;"
+            >
+              Total Grand Total
+            </td>
+            <td
+              style="border:1px solid black;padding:0.35rem 0.75rem;font-weight:700;font-size:1.1rem;"
+            >
+              {format(totalGrandTotal, currency)}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  {/if}
+</main>

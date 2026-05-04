@@ -13,9 +13,10 @@ export const load = async ({ locals, url }) => {
     .find({ userID })
     .toArray();
 
-  const estimates = allEstimates.filter((value) =>
-    estimatesIDs?.includes(String(value._id)),
-  );
+  // Map estimatesIDs to maintain order, filtering out any that don't exist
+  const estimates = estimatesIDs
+    ?.map((id) => allEstimates.find((est) => String(est._id) === id))
+    .filter((est) => est !== undefined) ?? [];
 
   if (!estimates.length) error(404, 'Not Found');
 

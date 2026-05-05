@@ -8,11 +8,11 @@ import { and, desc, eq } from 'drizzle-orm';
 import * as v from 'valibot';
 import { LineItem, Quote } from './schema';
 
-export const createQuote = form(Quote, async ({ title, desc }) => {
+export const createQuote = form(Quote, async ({ title, desc, currency }) => {
 	const userId = (await getAuthUser()).id;
 	const [{ id }] = await db
 		.insert(quote)
-		.values({ title, desc, userId })
+		.values({ title, desc, currency, userId })
 		.returning({ id: quote.id });
 
 	redirect(303, resolve('/open-[quoteId]', { quoteId: id }));

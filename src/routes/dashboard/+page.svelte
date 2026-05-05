@@ -1,7 +1,26 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { getAuthUser } from '$lib/auth/index.remote';
-
-	const user = await getAuthUser();
+	import { getQuotes } from '$lib/quote/index.remote';
+	import { formatDate } from '$lib/quote/utils';
 </script>
 
-<h1>Welcome back {user.name}!</h1>
+<svelte:head>
+	<title>Dashboard - {(await getAuthUser()).name}</title>
+</svelte:head>
+
+<a href={resolve('/new-quote')}>create new quote</a>
+<a href={resolve('/')}>Home</a>
+
+{#each await getQuotes() as quote (quote.id)}
+	{@const { title, desc, createdAt } = quote}
+	{@const formattedDate = formatDate.format(quote.createdAt)}
+
+	<article>
+		<h3><a href={resolve('/open-[quoteId]', { quoteId: quote.id })}>{title}</a></h3>
+		<p>{desc}</p>
+		<time datetime={createdAt.toString()}>{formattedDate}</time>
+	</article>
+{:else}
+	<i>You have no quote, <a href={resolve('/new-quote')}>create</a> new one.</i>
+{/each}

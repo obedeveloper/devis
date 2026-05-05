@@ -4,7 +4,7 @@ import { getAuthUser } from '$lib/auth/index.remote';
 import { db } from '$lib/server/db';
 import { lineItem, quote } from '$lib/server/db/schema/quote';
 import { redirect } from '@sveltejs/kit';
-import { and, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import * as v from 'valibot';
 import { LineItem, Quote } from './schema';
 
@@ -48,12 +48,14 @@ export const getMetaData = query(v.string(), async (quoteId) => {
 
 export const getQuotes = query(async () => {
 	const userId = (await getAuthUser()).id;
-	const quotes = await db.select().from(quote).where(eq(quote.userId, userId));
+	const quotes = await db
+		.select()
+		.from(quote)
+		.where(eq(quote.userId, userId))
+		.orderBy(desc(quote.createdAt));
 
-	return quotes
-		.map((quote) => ({
-			...quote,
-			createdAt: new Date(quote.createdAt)
-		}))
-		.reverse();
+	return quotes.map((quote) => ({
+		...quote,
+		createdAt: new Date(quote.createdAt)
+	}));
 });

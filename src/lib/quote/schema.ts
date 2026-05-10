@@ -6,14 +6,6 @@ export const Quote = v.object({
 	currency: v.pipe(v.string(), v.custom(checkCurrency, 'Invalid currency'))
 });
 
-export const LineItem = v.object({
-	desc: v.pipe(v.string(), v.trim(), v.nonEmpty()),
-	quantity: v.optional(v.number()),
-	unit: v.optional(v.pipe(v.string(), v.trim())),
-	unitPrice: v.number(),
-	quoteId: v.string()
-});
-
 function checkCurrency(currency: unknown) {
 	if (!currency) return true;
 

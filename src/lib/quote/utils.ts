@@ -6,9 +6,10 @@ export const formatDate = new Intl.DateTimeFormat(undefined, {
 	minute: '2-digit'
 });
 
-export const formatPrice = (currency: string) =>
-	new Intl.NumberFormat(undefined, {
+export const formatPrice = (currency: string) => {
+	return new Intl.NumberFormat(undefined, {
 		style: 'currency',
 		currency,
 		maximumFractionDigits: 2
 	});
+};

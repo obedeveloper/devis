@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { addLineItem, getLineItems, getMetaData } from '$lib/quote/index.remote';
+	import { getMetaData } from '$lib/quote/index.remote';
+	import { getLineItems, addLineItem } from '$lib/quote/line-item/index.remote';
 	import { safeParse } from 'valibot';
 	import Table from './Table.svelte';
-	import { LineItem } from '$lib/quote/schema';
+	import { LineItem } from '$lib/quote/line-item/schema';
 
 	const { quoteId } = page.params;
 	const meta = await getMetaData(quoteId!);

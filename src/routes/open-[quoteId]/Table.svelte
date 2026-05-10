@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getLineItems } from '$lib/quote/index.remote';
+	import { getLineItems } from '$lib/quote/line-item/index.remote';
 	import { formatPrice } from '$lib/quote/utils';
 	import { fade } from 'svelte/transition';
 

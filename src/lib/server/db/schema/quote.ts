@@ -9,7 +9,7 @@ export const quote = sqliteTable(
 			.$default(() => crypto.randomUUID()),
 		title: text('title').notNull(),
 		desc: text('desc'),
-		currency: text('currency').notNull().default('RWF'),
+		currency: text('currency').notNull(),
 		userId: text('user_id')
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),

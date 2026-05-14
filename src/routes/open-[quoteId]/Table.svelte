@@ -11,6 +11,11 @@
 	const { lineItems, currency }: Props = $props();
 	// svelte-ignore state_referenced_locally
 	const priceFormatter = formatPrice(currency);
+	const total = $derived(
+		lineItems.reduce((total, { quantity, unitPriceCents }) => {
+			return quantity * unitPriceCents + total;
+		}, 0)
+	);
 </script>
 
 <table>
@@ -39,5 +44,9 @@
 				<td>{amount}</td>
 			</tr>
 		{/each}
+		<tr>
+			<th>Total</th>
+			<th align="right" colspan="5">{priceFormatter.format(total / 100)}</th>
+		</tr>
 	</tbody>
 </table>

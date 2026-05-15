@@ -1,15 +1,33 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { getExtraItems } from '$lib/quote/extra-item/index.remote';
 	import { getMetaData } from '$lib/quote/index.remote';
-	import { getLineItems, addLineItem } from '$lib/quote/line-item/index.remote';
+	import { getLineItems } from '$lib/quote/line-item/index.remote';
+	import { addItem } from './add-item.remote';
 	import Table from './Table.svelte';
 
 	const { quoteId } = page.params;
 	const meta = await getMetaData(quoteId!);
 	const lineItems = $derived(await getLineItems(meta.id));
+	const extraItems = $derived(await getExtraItems(meta.id));
 
 	let descEl: HTMLInputElement;
-	let quoteIdEl: HTMLInputElement;
+	let isExtraItem = $state(false);
+
+	function onsubmit(form: HTMLFormElement) {
+		const inputEls = form.querySelectorAll('input');
+		const els = inputEls.values().toArray();
+
+		inputEls.forEach((el) => {
+			const isFirstEl = els.at(0) == el;
+			const isLastEl = els.at(-1) == el;
+
+			if (isFirstEl || isLastEl) return;
+			el.value = el.defaultValue;
+		});
+
+		descEl.focus();
+	}
 </script>
 
 <svelte:head>
@@ -20,23 +38,30 @@
 <p>{meta.desc}</p>
 
 <form
-	{...addLineItem.enhance(async ({ form, submit }) => {
+	{...addItem.enhance(async ({ form, submit }) => {
 		if (!(await submit())) return;
-
-		form.reset();
-		quoteIdEl.value = quoteId!;
-		descEl.focus();
+		onsubmit(form);
 	})}
 >
-	<input {...addLineItem.fields.desc.as('text')} placeholder="Description" bind:this={descEl} />
-	<input {...addLineItem.fields.quantity.as('number')} placeholder="Quantity" />
-	<input {...addLineItem.fields.unit.as('text')} placeholder="Unit" />
-	<input {...addLineItem.fields.unitPrice.as('number')} placeholder="Unit Price" />
-	<input {...addLineItem.fields.quoteId.as('text')} bind:this={quoteIdEl} value={quoteId} hidden />
+	<label>
+		<input {...addItem.fields.isExtra.as('checkbox')} type="checkbox" bind:checked={isExtraItem} />
+		Is extra item
+	</label>
+	<input {...addItem.fields.desc.as('text')} placeholder="Description" bind:this={descEl} />
+	{#if !isExtraItem}
+		<input {...addItem.fields.quantity.as('number')} placeholder="Quantity" step="any" />
+		<input {...addItem.fields.unit.as('text')} placeholder="Unit" />
+	{/if}
+	<input
+		{...addItem.fields.unitPrice.as('number')}
+		placeholder={isExtraItem ? 'Amount' : 'Unit Price'}
+		step="any"
+	/>
+	<input {...addItem.fields.quoteId.as('text')} value={quoteId} hidden />
 
 	<button hidden>Add item</button>
 </form>
 
 {#if lineItems.length}
-	<Table {lineItems} currency={meta.currency}></Table>
+	<Table {lineItems} {extraItems} currency={meta.currency}></Table>
 {/if}

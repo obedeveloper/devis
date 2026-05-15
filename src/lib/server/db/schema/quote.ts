@@ -30,10 +30,24 @@ export const lineItem = sqliteTable(
 		quantity: real('quantity').notNull().default(1),
 		unit: text('unit'),
 		unitPriceCents: integer('unit_price_cents').notNull(),
-		sortOrder: integer('sort_order').notNull().default(1),
 		quoteId: text('quote_id')
 			.notNull()
 			.references(() => quote.id, { onDelete: 'cascade' })
 	},
 	(table) => [index('lineItem_quoteId_idx').on(table.quoteId)]
+);
+
+export const extraItem = sqliteTable(
+	'extra_item',
+	{
+		id: text('id')
+			.primaryKey()
+			.$default(() => crypto.randomUUID()),
+		desc: text('desc').notNull(),
+		amountCents: integer('amount_cents').notNull(),
+		quoteId: text('quote_id')
+			.notNull()
+			.references(() => quote.id, { onDelete: 'cascade' })
+	},
+	(table) => [index('extraItem_quoteId_idx').on(table.quoteId)]
 );

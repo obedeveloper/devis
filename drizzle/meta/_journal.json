@@ -36,6 +36,13 @@
       "when": 1778771988513,
       "tag": "0004_cynical_flatman",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1778777353479,
+      "tag": "0005_chemical_thunderbolts",
+      "breakpoints": true
     }
   ]
 }

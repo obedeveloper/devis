@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { signIn } from '$lib/auth/auth-client';
 	import { getUser } from '$lib/auth/index.remote';
@@ -14,10 +15,21 @@
 
 <h1>Hello!</h1>
 
-{#if user == null}
-	<button disabled>Loading...</button>
-{:else if user}
-	<a href={resolve('/dashboard')}>Dashboard</a>
-{:else}
-	<button onclick={() => signIn(resolve('/dashboard'))}>Sign In</button>
-{/if}
+<button
+	disabled={user === null}
+	onclick={() => {
+		if (!user) {
+			return signIn(resolve('/dashboard'));
+		}
+
+		goto(resolve('/dashboard'));
+	}}
+>
+	{#if user === null}
+		Loading...
+	{:else if user === undefined}
+		Sign In
+	{:else}
+		Dashboard
+	{/if}
+</button>

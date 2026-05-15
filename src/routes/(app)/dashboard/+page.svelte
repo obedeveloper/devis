@@ -9,15 +9,12 @@
 	<title>Dashboard - {(await getAuthUser()).name}</title>
 </svelte:head>
 
-<a href={resolve('/new-quote')}>create new quote</a>
-<a href={resolve('/')}>Home</a>
-
 {#each await getQuotes() as quote (quote.id)}
 	{@const { title, desc, createdAt } = quote}
 	{@const formattedDate = formatDate.format(quote.createdAt)}
 
 	<article>
-		<h3><a href={resolve('/open-[quoteId]', { quoteId: quote.id })}>{title}</a></h3>
+		<h3><a href={resolve('/(app)/open-[quoteId]', { quoteId: quote.id })}>{title}</a></h3>
 		<p>{desc}</p>
 		<time datetime={createdAt.toString()}>{formattedDate}</time>
 	</article>

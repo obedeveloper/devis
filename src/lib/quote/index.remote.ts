@@ -15,7 +15,7 @@ export const createQuote = form(Quote, async ({ title, desc, currency }) => {
 		.values({ title, desc, currency, userId })
 		.returning({ id: quote.id });
 
-	redirect(303, resolve('/open-[quoteId]', { quoteId: id }));
+	redirect(303, resolve('/(app)/open-[quoteId]', { quoteId: id }));
 });
 
 export const getMetaData = query(v.string(), async (quoteId) => {

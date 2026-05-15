@@ -2,10 +2,16 @@
 	import { resolve } from '$app/paths';
 
 	const { children } = $props();
+	const links = ['/', '/dashboard', '/new-quote'] as const;
 </script>
 
-<a href={resolve('/new-quote')}>create new quote</a>
-<a href={resolve('/dashboard')}>Dashboard</a>
-<a href={resolve('/')}>Home</a>
+<nav>
+	<ul>
+		{#each links as link (link)}
+			{@const text = link.replace('/', '').replace('-', ' ')}
+			<li><a href={resolve(link)}>{text || 'home'}</a></li>
+		{/each}
+	</ul>
+</nav>
 
 {@render children()}

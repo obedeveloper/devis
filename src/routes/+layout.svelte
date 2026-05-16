@@ -1,11 +1,12 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
-
+	import './layout.css';
 	let { children } = $props();
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="https://fav.farm/📄" />
 </svelte:head>
 
-{@render children()}
+<main class="min-h-svh bg-white text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50">
+	{@render children()}
+</main>

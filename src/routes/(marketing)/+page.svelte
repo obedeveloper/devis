@@ -1,35 +1,46 @@
 <script lang="ts">
+	import { Rocket, ChartSine, ListPlus, Compass } from '@boxicons/svelte';
+	import DashboardBtn from './DashboardBtn.svelte';
+	import { signIn } from '$lib/auth/auth-client';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { signIn } from '$lib/auth/auth-client';
-	import { getUser } from '$lib/auth/index.remote';
-	import { onMount } from 'svelte';
-
-	let user: Awaited<ReturnType<typeof getUser>> | null = $state(null);
-	onMount(async () => (user = await getUser()));
+	import QuotePreview from './QuotePreview.svelte';
+	import FeatureSection from './FeatureSection.svelte';
 </script>
 
 <svelte:head>
 	<title>Devis - Generate quotes faster</title>
 </svelte:head>
 
-<h1>Hello!</h1>
-
-<button
-	disabled={user === null}
-	onclick={() => {
-		if (!user) {
-			return signIn(resolve('/dashboard'));
-		}
-
-		goto(resolve('/dashboard'));
-	}}
+<section
+	class="mx-auto grid w-full max-w-6xl gap-12 px-5 pt-14 pb-16 sm:px-8 sm:pt-20 lg:grid-cols-[1fr_420px] lg:pb-24"
 >
-	{#if user === null}
-		Loading...
-	{:else if user === undefined}
-		Sign In
-	{:else}
-		Dashboard
-	{/if}
-</button>
+	<div class="max-w-2xl">
+		<p class="mb-5 text-sm font-medium text-neutral-500 dark:text-neutral-400">
+			Quotes, kept simple
+		</p>
+		<h1
+			class="text-5xl leading-tight font-semibold tracking-normal text-neutral-950 sm:text-6xl dark:text-white"
+		>
+			/də.vi/
+		</h1>
+		<p class="mt-6 max-w-xl text-lg leading-8 text-neutral-600 dark:text-neutral-300">
+			Create clear client quotes with line items, extras, notes, and currency in one focused
+			workspace.
+		</p>
+		<div class="mt-9 flex flex-col gap-3 *:py-2 sm:flex-row">
+			<DashboardBtn
+				yes={{ text: 'Open dashboard', icon: ChartSine, action: () => goto(resolve('/dashboard')) }}
+				no={{ text: 'Start a quote', icon: Rocket, action: () => signIn('/new-quote') }}
+				primary
+			></DashboardBtn>
+			<DashboardBtn
+				yes={{ text: 'New quote', icon: ListPlus, action: () => goto(resolve('/new-quote')) }}
+				no={{ text: 'View sample', icon: Compass, action: () => goto(resolve('/sample')) }}
+			></DashboardBtn>
+		</div>
+	</div>
+	<QuotePreview></QuotePreview>
+</section>
+
+<FeatureSection></FeatureSection>

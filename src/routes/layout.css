@@ -1,5 +1,10 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/roboto/wght.css';
 
 html {
-	@apply scheme-light-dark;
+	@apply font-robot scheme-light-dark;
+}
+
+@theme {
+	--font-robot: 'Roboto Variable', sans-serif;
 }

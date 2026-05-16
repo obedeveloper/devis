@@ -1,0 +1,38 @@
+{
+	"constructionQuote": {
+		"label": "Quote",
+		"title": "Two-bedroom house finishing",
+		"currency": "RWF",
+		"items": [
+			{
+				"title": "Wall plastering",
+				"description": "Labor, cement, and sand for interior walls",
+				"amount": 420000
+			},
+			{
+				"title": "Floor tiling",
+				"description": "Ceramic tiles, adhesive, grout, and installation",
+				"amount": 680000
+			},
+			{
+				"title": "Paint and finishing",
+				"description": "Primer, interior paint, trims, and final touch-ups",
+				"amount": 350000
+			}
+		]
+	},
+	"features": [
+		{
+			"title": "Fast setup",
+			"description": "Start with a title, description, and currency, then build the quote as the work becomes clear."
+		},
+		{
+			"title": "Clean line items",
+			"description": "Keep core work and extra costs separate so clients can scan the offer without confusion."
+		},
+		{
+			"title": "Private workspace",
+			"description": "Sign in to keep every quote tied to your account and ready when you return."
+		}
+	]
+}

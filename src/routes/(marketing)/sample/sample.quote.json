@@ -1,0 +1,30 @@
+{
+	"quote": {
+		"title": "Two-bedroom house finishing",
+		"desc": "Sample construction quote for final interior finishing work.",
+		"currency": "RWF"
+	},
+	"lineItems": [
+		{
+			"id": "sample-line-plastering",
+			"desc": "Wall plastering",
+			"quantity": 145,
+			"unit": "m2",
+			"unitPriceCents": 290000
+		},
+		{
+			"id": "sample-line-tiling",
+			"desc": "Floor tiling",
+			"quantity": 82,
+			"unit": "m2",
+			"unitPriceCents": 830000
+		}
+	],
+	"extraItems": [
+		{
+			"id": "sample-extra-paint",
+			"desc": "Paint and finishing touch-ups",
+			"amountCents": 35000000
+		}
+	]
+}

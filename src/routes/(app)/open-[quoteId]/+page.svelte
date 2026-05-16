@@ -63,5 +63,5 @@
 </form>
 
 {#if lineItems.length}
-	<Table {lineItems} {extraItems} currency={meta.currency}></Table>
+	<Table {lineItems} {extraItems} currency={meta.currency} quoteId={quoteId!}></Table>
 {/if}

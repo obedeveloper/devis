@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { getExtraItems } from '$lib/quote/extra-item/index.remote';
-	import { getLineItems } from '$lib/quote/line-item/index.remote';
+	import { deleteExtraItem, type getExtraItems } from '$lib/quote/extra-item/index.remote';
+	import { deleteLineItem, getLineItems } from '$lib/quote/line-item/index.remote';
 	import { formatPrice } from '$lib/quote/utils';
 	import { fade } from 'svelte/transition';
 
@@ -8,9 +8,10 @@
 		lineItems: Awaited<ReturnType<typeof getLineItems>>;
 		extraItems: Awaited<ReturnType<typeof getExtraItems>>;
 		currency: string;
+		quoteId: string;
 	}
 
-	const { lineItems, currency, extraItems }: Props = $props();
+	const { lineItems, currency, extraItems, quoteId }: Props = $props();
 	// svelte-ignore state_referenced_locally
 	const priceFormatter = formatPrice(currency);
 
@@ -36,6 +37,7 @@
 			<th>Unit</th>
 			<th>Unit Price</th>
 			<th>Amount</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -51,6 +53,11 @@
 				<td>{unit}</td>
 				<td>{priceFormatter.format(unitPrice)}</td>
 				<td>{amount}</td>
+				<td>
+					<button onclick={async () => await deleteLineItem({ itemId: item.id, quoteId })}>
+						Delete
+					</button>
+				</td>
 			</tr>
 		{/each}
 		{#if extraItems.length}
@@ -64,13 +71,18 @@
 			</tr>
 			{#each extraItems as item, i (item.id)}
 				{@const { desc, amountCents } = item}
-				<tr>
+				<tr transition:fade>
 					<td>{i + lineItems.length + 1}</td>
 					<td>{desc}</td>
 					<td></td>
 					<td></td>
 					<td></td>
 					<td>{priceFormatter.format(amountCents / 100)}</td>
+					<td>
+						<button onclick={async () => await deleteExtraItem({ itemId: item.id, quoteId })}>
+							Delete
+						</button>
+					</td>
 				</tr>
 			{/each}
 		{/if}

@@ -1,11 +1,16 @@
 <script lang="ts">
-	import { Rocket, ChartSine, ListPlus, Compass } from '@boxicons/svelte';
+	import { Rocket, ChartSine, ListPlus, Compass, VolumeFull } from '@boxicons/svelte';
 	import DashboardBtn from './DashboardBtn.svelte';
 	import { signIn } from '$lib/auth/auth-client';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import QuotePreview from './QuotePreview.svelte';
 	import FeatureSection from './FeatureSection.svelte';
+	import devisSound from '$lib/assets/devis.mp3';
+	import { onMount } from 'svelte';
+
+	let audio: HTMLAudioElement | undefined = $state();
+	onMount(() => (audio = new Audio(devisSound)));
 </script>
 
 <svelte:head>
@@ -20,9 +25,10 @@
 			Quotes, kept simple
 		</p>
 		<h1
-			class="text-5xl leading-tight font-semibold tracking-normal text-neutral-950 sm:text-6xl dark:text-white"
+			class="flex items-center gap-3 text-5xl leading-tight font-semibold tracking-normal text-neutral-950 sm:text-6xl dark:text-white"
 		>
 			/də.vi/
+			<VolumeFull size="lg" onclick={() => audio?.play()} />
 		</h1>
 		<p class="mt-6 max-w-xl text-lg leading-8 text-neutral-600 dark:text-neutral-300">
 			Create clear client quotes with line items, extras, notes, and currency in one focused

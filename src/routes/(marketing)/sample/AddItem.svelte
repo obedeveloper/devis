@@ -62,11 +62,7 @@
 		bind:value={formData.unitPrice}
 	/>
 
-	<button
-		class="h-10 rounded-md bg-neutral-950 px-4 text-sm font-medium text-white transition hover:bg-neutral-800 dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
-	>
-		Add item
-	</button>
+	<button hidden>Add item</button>
 </form>
 
 <style lang="postcss">

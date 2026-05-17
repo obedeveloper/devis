@@ -5,6 +5,17 @@ html {
 	@apply font-robot scheme-light-dark;
 }
 
+input[type='number'] {
+	appearance: textfield;
+	-moz-appearance: textfield;
+
+	&::-webkit-inner-spin-button,
+	&::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
+
 @theme {
 	--font-robot: 'Roboto Variable', sans-serif;
 }

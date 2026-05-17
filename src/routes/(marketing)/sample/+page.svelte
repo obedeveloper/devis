@@ -59,7 +59,7 @@
 						</tr>
 					{/each}
 				{/if}
-				<tr class="bg-neutral-950 text-white dark:bg-white dark:text-neutral-950">
+				<tr class="bg-neutral-950/10 dark:bg-white/10">
 					<th class="px-4 py-3 font-semibold" colspan="5">Grand Total</th>
 					<th class="px-4 py-3 text-base font-semibold">{quote.grandTotal}</th>
 				</tr>

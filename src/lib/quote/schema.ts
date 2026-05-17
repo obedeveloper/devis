@@ -3,7 +3,10 @@ import * as v from 'valibot';
 export const Quote = v.object({
 	title: v.pipe(v.string(), v.trim(), v.nonEmpty('Title is empty')),
 	desc: v.optional(v.pipe(v.string(), v.trim())),
-	currency: v.fallback(v.pipe(v.string(), v.custom(checkCurrency, 'Invalid currency')), 'RWF')
+	currency: v.fallback(
+		v.pipe(v.string(), v.custom(checkCurrency, 'Invalid currency'), v.toUpperCase()),
+		'RWF'
+	)
 });
 
 function checkCurrency(currency: unknown) {

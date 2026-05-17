@@ -7,9 +7,13 @@ export const formatDate = new Intl.DateTimeFormat(undefined, {
 });
 
 export const formatPrice = (currency: string) => {
-	return new Intl.NumberFormat(undefined, {
+	const formatter = new Intl.NumberFormat(undefined, {
 		style: 'currency',
 		currency,
 		maximumFractionDigits: 2
 	});
+
+	return {
+		formatCents: (cents: number) => formatter.format(cents / 100)
+	};
 };

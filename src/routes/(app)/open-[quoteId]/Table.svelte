@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { deleteExtraItem, type getExtraItems } from '$lib/quote/extra-item/index.remote';
 	import { deleteLineItem, getLineItems } from '$lib/quote/line-item/index.remote';
+	import { getLineItemsTotalCents, getQuoteTotalCents } from '$lib/quote/totals';
 	import { formatPrice } from '$lib/quote/utils';
 	import { fade } from 'svelte/transition';
 
@@ -15,17 +16,8 @@
 	// svelte-ignore state_referenced_locally
 	const priceFormatter = formatPrice(currency);
 
-	const subTotalCents = $derived(
-		lineItems.reduce((total, { quantity, unitPriceCents }) => {
-			return quantity * unitPriceCents + total;
-		}, 0)
-	);
-
-	const grandTotalCents = $derived(
-		extraItems.reduce((total, { amountCents }) => {
-			return total + amountCents;
-		}, 0) + subTotalCents
-	);
+	const subTotalCents = $derived(getLineItemsTotalCents(lineItems));
+	const grandTotalCents = $derived(getQuoteTotalCents(lineItems, extraItems));
 </script>
 
 <table>
@@ -43,16 +35,15 @@
 	<tbody>
 		{#each lineItems as item, i (item.id)}
 			{@const { desc, quantity, unit, unitPriceCents } = item}
-			{@const unitPrice = unitPriceCents / 100}
-			{@const amount = priceFormatter.format(quantity * unitPrice)}
+			{@const amountCents = quantity * unitPriceCents}
 
 			<tr transition:fade>
 				<td>{i + 1}</td>
 				<td>{desc}</td>
 				<td>{quantity.toLocaleString()}</td>
 				<td>{unit}</td>
-				<td>{priceFormatter.format(unitPrice)}</td>
-				<td>{amount}</td>
+				<td>{priceFormatter.formatCents(unitPriceCents)}</td>
+				<td>{priceFormatter.formatCents(amountCents)}</td>
 				<td>
 					<button onclick={async () => await deleteLineItem({ itemId: item.id, quoteId })}>
 						Delete
@@ -67,7 +58,7 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<th align="left">{priceFormatter.format(subTotalCents / 100)}</th>
+				<th align="left">{priceFormatter.formatCents(subTotalCents)}</th>
 			</tr>
 			{#each extraItems as item, i (item.id)}
 				{@const { desc, amountCents } = item}
@@ -77,7 +68,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td>{priceFormatter.format(amountCents / 100)}</td>
+					<td>{priceFormatter.formatCents(amountCents)}</td>
 					<td>
 						<button onclick={async () => await deleteExtraItem({ itemId: item.id, quoteId })}>
 							Delete
@@ -92,7 +83,7 @@
 			<td></td>
 			<td></td>
 			<td></td>
-			<th align="left">{priceFormatter.format(grandTotalCents / 100)}</th>
+			<th align="left">{priceFormatter.formatCents(grandTotalCents)}</th>
 		</tr>
 	</tbody>
 </table>

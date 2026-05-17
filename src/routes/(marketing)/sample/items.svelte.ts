@@ -1,4 +1,5 @@
 import sample from './sample.quote.json';
+import { getLineItemsTotalCents, getQuoteTotalCents } from '$lib/quote/totals';
 import { formatPrice } from '$lib/quote/utils';
 
 const priceFormatter = formatPrice(sample.quote.currency);
@@ -8,27 +9,15 @@ class Quote {
 	lineItems = $state(sample.lineItems);
 	extraItems = $state(sample.extraItems);
 
-	subTotal = $derived(this.formatCents(this.getNonFormattedSubTotal()));
-	grandTotal = $derived(this.calcGrandTotal());
+	subTotal = $derived.by(() => {
+		const subTotalCents = getLineItemsTotalCents(this.lineItems);
+		return priceFormatter.formatCents(subTotalCents);
+	});
 
-	private calcGrandTotal() {
-		const extra = this.extraItems.reduce((total, { amountCents }) => {
-			return amountCents + total;
-		}, 0);
-
-		return this.formatCents(this.getNonFormattedSubTotal() + extra);
-	}
-
-	private getNonFormattedSubTotal() {
-		return this.lineItems.reduce((total, { quantity, unitPriceCents }) => {
-			return quantity * unitPriceCents + total;
-		}, 0);
-	}
-
-	private formatCents(cents: number) {
-		const amount = cents / 100;
-		return priceFormatter.format(amount);
-	}
+	grandTotal = $derived.by(() => {
+		const grandTotalCents = getQuoteTotalCents(this.lineItems, this.extraItems);
+		return priceFormatter.formatCents(grandTotalCents);
+	});
 }
 
 export const quote = new Quote();

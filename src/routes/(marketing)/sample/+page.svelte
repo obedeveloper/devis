@@ -38,9 +38,9 @@
 						<td class="px-4 py-3">{item.desc}</td>
 						<td class="px-4 py-3">{item.quantity.toLocaleString()}</td>
 						<td class="px-4 py-3">{item.unit}</td>
-						<td class="px-4 py-3">{priceFormatter.format(item.unitPriceCents / 100)}</td>
+						<td class="px-4 py-3">{priceFormatter.formatCents(item.unitPriceCents)}</td>
 						<td class="px-4 py-3 font-medium"
-							>{priceFormatter.format((item.quantity * item.unitPriceCents) / 100)}</td
+							>{priceFormatter.formatCents(item.quantity * item.unitPriceCents)}</td
 						>
 					</tr>
 				{/each}
@@ -55,7 +55,7 @@
 								{i + quote.lineItems.length + 1}
 							</td>
 							<td class="px-4 py-3" colspan="4">{item.desc}</td>
-							<td class="px-4 py-3 font-medium">{priceFormatter.format(item.amountCents / 100)}</td>
+							<td class="px-4 py-3 font-medium">{priceFormatter.formatCents(item.amountCents)}</td>
 						</tr>
 					{/each}
 				{/if}

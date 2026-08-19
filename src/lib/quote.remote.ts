@@ -2,12 +2,12 @@ import { command, query } from '$app/server';
 import { and, desc, eq } from 'drizzle-orm';
 import { db } from './server/db';
 import { quote } from './server/db/app.schema';
-import { getUser } from './user.remote';
+import { getAuthUser } from './user.remote';
 import * as v from 'valibot';
 import { error } from '@sveltejs/kit';
 
 export const getQuotes = query(async () => {
-	const user = (await getUser())!; // Handle 'undefined' case later
+	const user = await getAuthUser();
 	return await db
 		.select()
 		.from(quote)
@@ -16,13 +16,13 @@ export const getQuotes = query(async () => {
 });
 
 export const deleteQuote = command(v.string(), async (id) => {
-	const user = (await getUser())!; // Handle 'undefined' case later
+	const user = await getAuthUser();
 	await db.delete(quote).where(and(eq(quote.id, id), eq(quote.userId, user.id)));
 	getQuotes().refresh();
 });
 
 export const getQuoteById = query(v.string(), async (id) => {
-	const user = (await getUser())!; // Handle 'undefined' case later
+	const user = await getAuthUser();
 	const result = (
 		await db
 			.select()

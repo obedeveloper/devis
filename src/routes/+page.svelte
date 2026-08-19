@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { signIn } from '$lib/auth-client';
+	import Quotes from '$lib/components/Quotes.svelte';
 	import { getUser } from '$lib/user.remote';
 	const user = $derived(await getUser());
 </script>
@@ -20,6 +21,6 @@
 			</button>
 		</section>
 	{:else}
-		<!--  -->
+		<Quotes></Quotes>
 	{/if}
 </main>

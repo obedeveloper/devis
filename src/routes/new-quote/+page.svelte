@@ -21,7 +21,7 @@
 <main class="wrapper">
 	<form
 		{...newQuote}
-		class="mx-auto grid max-w-md gap-3 [&_input]:border-2 [&_input]:border-black/60 [&_input]:p-0.5 [&_input]:focus:border-black [&_input]:aria-invalid:border-red-500/65 [&>label]:grid [&>label]:gap-1"
+		class="mx-auto grid max-w-md gap-3 [&>label]:grid [&>label]:gap-1"
 	>
 		<label>
 			<span>Title</span>
@@ -46,9 +46,3 @@
 		</button>
 	</form>
 </main>
-
-<style>
-	input:focus {
-		outline: transparent;
-	}
-</style>

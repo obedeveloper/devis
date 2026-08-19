@@ -3,6 +3,7 @@ import { form } from '$app/server';
 import { db } from '$lib/server/db';
 import { quote } from '$lib/server/db/app.schema';
 import { getUser } from '$lib/user.remote';
+import { transformOptional } from '$lib/utils';
 import { redirect } from '@sveltejs/kit';
 import * as v from 'valibot';
 
@@ -11,11 +12,6 @@ const newQuoteSchema = v.object({
 	description: v.pipe(v.string(), v.transform(transformOptional)),
 	currency: v.pipe(v.string(), v.transform(transformOptional))
 });
-
-function transformOptional(input: string) {
-	if (!input) return undefined;
-	return input;
-}
 
 export const newQuote = form(newQuoteSchema, async (data) => {
 	const userId = (await getUser())?.id;

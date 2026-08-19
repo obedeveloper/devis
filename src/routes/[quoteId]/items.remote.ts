@@ -23,12 +23,16 @@ async function verifyQuoteOwnership(quoteId: string) {
 	return result;
 }
 
-const newLineItemSchema = v.object({
+const lineItemFields = {
 	description: v.pipe(v.string(), v.trim(), v.nonEmpty()),
 	quantity: v.optional(v.number()),
 	unit: v.pipe(v.string(), v.trim(), v.transform(transformOptional)),
 	unitPrice: v.optional(v.number())
-});
+};
+
+const newLineItemSchema = v.object(lineItemFields);
+
+const editLineItemSchema = v.object({ id: v.string(), ...lineItemFields });
 
 export const newLineItem = form(newLineItemSchema, async (data) => {
 	const { params } = getRequestEvent();
@@ -42,9 +46,7 @@ export const getLineItems = query(v.string(), async (id) => {
 });
 
 export const deleteLineItem = command(v.string(), async (id) => {
-	const item = (
-		await db.select().from(lineItem).where(eq(lineItem.id, id))
-	).at(0);
+	const item = (await db.select().from(lineItem).where(eq(lineItem.id, id))).at(0);
 
 	if (!item) {
 		error(404, 'Line item not found');
@@ -52,5 +54,18 @@ export const deleteLineItem = command(v.string(), async (id) => {
 
 	await verifyQuoteOwnership(item.quoteId);
 	await db.delete(lineItem).where(eq(lineItem.id, id));
+	getLineItems(item.quoteId).refresh();
+});
+
+export const editLineItem = command(editLineItemSchema, async (data) => {
+	const { id, ...fields } = data;
+	const item = (await db.select().from(lineItem).where(eq(lineItem.id, id))).at(0);
+
+	if (!item) {
+		error(404, 'Line item not found');
+	}
+
+	await verifyQuoteOwnership(item.quoteId);
+	await db.update(lineItem).set(fields).where(eq(lineItem.id, id));
 	getLineItems(item.quoteId).refresh();
 });

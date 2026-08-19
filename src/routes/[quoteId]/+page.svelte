@@ -2,9 +2,9 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import DeleteQuote from '$lib/components/DeleteQuote.svelte';
+	import LineItem from '$lib/components/LineItem.svelte';
 	import { getQuoteById } from '$lib/quote.remote';
-	import { deleteLineItem, getLineItems, newLineItem } from './items.remote';
-	import { fade } from 'svelte/transition';
+	import { getLineItems, newLineItem } from './items.remote';
 
 	const quote = await getQuoteById(page.params.quoteId!);
 	const { id, title, description, currency } = quote;
@@ -46,31 +46,8 @@
 			<ol class="grid gap-1.5">
 				{const { length } = $derived(lineItems)}
 
-				{#each lineItems as { id, ...data }, i (id)}
-					{const { description, quantity, unit, unitPrice } = data}
-					{const amount = quantity * unitPrice}
-
-					<li
-						transition:fade
-						class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded bg-black/5 px-3 py-2"
-					>
-						<span class="text-black/80">
-							<span class="font-mono text-black/40">{length - i}.</span>
-							{description}
-							<span class="text-black/40">{quantity} {unit}</span>
-						</span>
-						<span class="flex shrink-0 items-center gap-3">
-							<span class="font-mono text-sm text-black/80 uppercase">
-								{unitPrice} × {quantity} = {amount}
-							</span>
-							<button
-								onclick={() => deleteLineItem(id)}
-								class="rounded bg-red-300/50 px-2 py-0.5 text-sm"
-							>
-								Delete
-							</button>
-						</span>
-					</li>
+				{#each lineItems as item, i (item.id)}
+					<LineItem {...item} index={i} {length} />
 				{/each}
 			</ol>
 

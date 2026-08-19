@@ -23,6 +23,11 @@
 			<a href={resolve('/[quoteId]/edit', { quoteId: id })} class="rounded bg-black/10 px-3 py-1"
 				>Edit</a
 			>
+			<a
+				href={resolve('/[quoteId]/pdf', { quoteId: id })}
+				class="rounded bg-black/10 px-3 py-1"
+				download>Print PDF</a
+			>
 			<DeleteQuote {id} {title}></DeleteQuote>
 		</div>
 		<p>{description}</p>

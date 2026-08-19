@@ -26,3 +26,5 @@
 </header>
 
 {@render children()}
+
+<footer class="mbs-8"></footer>

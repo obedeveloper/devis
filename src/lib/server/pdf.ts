@@ -1,5 +1,12 @@
+import { render } from 'svelte/server';
 import puppeteer from 'puppeteer';
 import chromium from '@sparticuz/chromium';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function renderToHTML(component: any, props: any): Promise<string> {
+	const { body, head } = render(component, { props });
+	return head + body;
+}
 
 export async function generatePdf(html: string): Promise<Buffer> {
 	const isVercel = !!process.env.VERCEL_ENV;

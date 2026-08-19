@@ -1,5 +1,5 @@
 import { command, query } from '$app/server';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { db } from './server/db';
 import { quote } from './server/db/app.schema';
 import { getAuthUser } from './user.remote';
@@ -12,7 +12,7 @@ export const getQuotes = query(async () => {
 		.select()
 		.from(quote)
 		.where(eq(quote.userId, user.id))
-		.orderBy(desc(quote.updatedAt), desc(quote.createdAt));
+		.orderBy(desc(sql`COALESCE(${quote.updatedAt}, ${quote.createdAt})`));
 });
 
 export const deleteQuote = command(v.string(), async (id) => {

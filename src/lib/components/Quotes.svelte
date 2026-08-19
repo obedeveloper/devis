@@ -1,18 +1,13 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { deleteQuote, getQuotes } from '$lib/quote.remote';
+	import { getQuotes } from '$lib/quote.remote';
 	import { fade } from 'svelte/transition';
+	import DeleteQuote from './DeleteQuote.svelte';
 	const quotes = $derived(await getQuotes());
-
-	function ondelete({ id, title }: { id: string; title: string }) {
-		if (confirm(`Do you really want to delete "${title}" quote?`)) {
-			deleteQuote(id);
-		}
-	}
 </script>
 
 <section
-	class={[quotes.length && 'grid grid-cols-[repeat(auto-fit,minmax(min(320px,100%),420px))] gap-3']}
+	class={[quotes.length && 'grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-3']}
 >
 	{#each quotes as { id, ...data } (id)}
 		{const { title, description, currency, createdAt } = data}
@@ -20,10 +15,10 @@
 
 		<article class="rounded bg-black/5 p-3 text-black/80" transition:fade>
 			<div class="flex justify-between gap-2">
-				<h3 class="line-clamp-1 text-lg font-semibold text-black">{title}</h3>
-				<button onclick={() => ondelete({ id, title })} class="rounded bg-red-300/50 px-3 py-1">
-					Delete
-				</button>
+				<h3 class="line-clamp-1 text-lg font-semibold text-black">
+					<a href={resolve('/[quoteId]', { quoteId: id })}>{title}</a>
+				</h3>
+				<DeleteQuote {id} {title}></DeleteQuote>
 			</div>
 			<p class="mbs-1 line-clamp-2 empty:hidden">{description}</p>
 

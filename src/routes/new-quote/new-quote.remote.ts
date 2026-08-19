@@ -28,7 +28,13 @@ export const newQuote = form(newQuoteSchema, async (data) => {
 		data.currency = undefined;
 	}
 
-	await db.insert(quote).values({ ...data, userId });
+	const { quoteId } = (
+		await db
+			.insert(quote)
+			.values({ ...data, userId })
+			.returning({ quoteId: quote.id })
+	)[0];
+	redirect(303, resolve('/[quoteId]', { quoteId }));
 });
 
 function isValidCurrency(currency?: string) {

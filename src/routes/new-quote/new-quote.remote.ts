@@ -2,18 +2,11 @@ import { resolve } from '$app/paths';
 import { form } from '$app/server';
 import { db } from '$lib/server/db';
 import { quote } from '$lib/server/db/app.schema';
+import { isValidCurrency, quoteSchema } from '$lib/quoteSchema';
 import { getUser } from '$lib/user.remote';
-import { transformOptional } from '$lib/utils';
 import { redirect } from '@sveltejs/kit';
-import * as v from 'valibot';
 
-const newQuoteSchema = v.object({
-	title: v.pipe(v.string(), v.trim(), v.nonEmpty('Quote title can not be empty!')),
-	description: v.pipe(v.string(), v.transform(transformOptional)),
-	currency: v.pipe(v.string(), v.transform(transformOptional))
-});
-
-export const newQuote = form(newQuoteSchema, async (data) => {
+export const newQuote = form(quoteSchema, async (data) => {
 	const userId = (await getUser())?.id;
 
 	if (!userId) {
@@ -32,18 +25,3 @@ export const newQuote = form(newQuoteSchema, async (data) => {
 	)[0];
 	redirect(303, resolve('/[quoteId]', { quoteId }));
 });
-
-function isValidCurrency(currency?: string) {
-	if (!currency) return true;
-
-	try {
-		Intl.NumberFormat(undefined, {
-			style: 'currency',
-			currency
-		}).format(1);
-
-		return true;
-	} catch {
-		return false;
-	}
-}

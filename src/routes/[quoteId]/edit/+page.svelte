@@ -14,7 +14,11 @@
 <main class="wrapper">
 	<QuoteForm
 		form={editQuote}
-		values={{ title: quote.title, description: quote.description ?? undefined, currency: quote.currency ?? undefined }}
+		values={{
+			title: quote.title,
+			description: quote.description ?? undefined,
+			currency: quote.currency ?? undefined
+		}}
 		buttonLabel="Save"
 	/>
 </main>

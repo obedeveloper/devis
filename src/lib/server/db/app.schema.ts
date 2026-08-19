@@ -33,14 +33,3 @@ export const lineItem = sqliteTable('line_item', {
 		.notNull()
 		.references(() => quote.id, { onDelete: 'cascade' })
 });
-
-export const extraItem = sqliteTable('extra_item', {
-	id: text('id')
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
-	description: text('description').notNull(),
-	amount: integer('amount').notNull().default(0),
-	quoteId: text('quote_id')
-		.notNull()
-		.references(() => quote.id, { onDelete: 'cascade' })
-});

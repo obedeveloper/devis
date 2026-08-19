@@ -3,7 +3,7 @@
 	import { getUser } from '$lib/user.remote';
 	import { newQuote } from './new-quote.remote';
 	const { title, description, currency } = newQuote.fields;
-	const user = await getUser();
+	const user = $derived(await getUser());
 </script>
 
 <svelte:head>
@@ -11,7 +11,7 @@
 </svelte:head>
 
 {#if !user}
-	<div class="mbe-6 bg-red-300 py-3">
+	<div class="-mbs-6 mbe-6 bg-red-300 py-3">
 		<p class="wrapper text-center">
 			You are signed out! <button class="underline" onclick={signIn}>Sign in</button> to create new quote.
 		</p>
@@ -19,10 +19,7 @@
 {/if}
 
 <main class="wrapper">
-	<form
-		{...newQuote}
-		class="mx-auto grid max-w-md gap-3 [&>label]:grid [&>label]:gap-1"
-	>
+	<form {...newQuote} class="mx-auto grid max-w-md gap-3 [&>label]:grid [&>label]:gap-1">
 		<label>
 			<span>Title</span>
 			<input {...title.as('text')} />

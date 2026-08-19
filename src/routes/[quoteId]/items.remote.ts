@@ -1,11 +1,24 @@
 import { form, getRequestEvent, query } from '$app/server';
 import { db } from '$lib/server/db';
-import { lineItem } from '$lib/server/db/app.schema';
+import { lineItem, quote } from '$lib/server/db/app.schema';
+import { getAuthUser } from '$lib/user.remote';
 import { transformOptional } from '$lib/utils';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
+import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 
-// ⚠️ Remember: authentication and authorization
+async function verifyQuoteOwnership(quoteId: string) {
+	const user = await getAuthUser();
+	const result = (
+		await db.select().from(quote).where(and(eq(quote.id, quoteId), eq(quote.userId, user.id)))
+	).at(0);
+
+	if (!result) {
+		error(404, 'Quote not found');
+	}
+
+	return result;
+}
 
 const newLineItemSchema = v.object({
 	description: v.pipe(v.string(), v.trim(), v.nonEmpty()),
@@ -16,9 +29,11 @@ const newLineItemSchema = v.object({
 
 export const newLineItem = form(newLineItemSchema, async (data) => {
 	const { params } = getRequestEvent();
+	await verifyQuoteOwnership(params.quoteId!);
 	await db.insert(lineItem).values({ ...data, quoteId: params.quoteId! });
 });
 
 export const getLineItems = query(v.string(), async (id) => {
+	await verifyQuoteOwnership(id);
 	return await db.select().from(lineItem).where(eq(lineItem.quoteId, id));
 });

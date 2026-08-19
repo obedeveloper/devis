@@ -1,0 +1,1 @@
+ALTER TABLE `quote` DROP COLUMN `notes`;

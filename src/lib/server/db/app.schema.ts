@@ -9,7 +9,6 @@ export const quote = sqliteTable(
 			.$defaultFn(() => crypto.randomUUID()),
 		title: text('title').notNull(),
 		description: text('description'),
-		notes: text('notes'),
 		currency: text('currency').default('RWF'),
 		createdAt: integer('created_at')
 			.notNull()

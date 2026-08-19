@@ -15,6 +15,13 @@
       "when": 1787114808791,
       "tag": "0001_wakeful_leper_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1787136861182,
+      "tag": "0002_busy_norman_osborn",
+      "breakpoints": true
     }
   ]
 }

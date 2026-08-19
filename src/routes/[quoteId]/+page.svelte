@@ -19,7 +19,9 @@
 	<section class="grid gap-2">
 		<div class="flex items-baseline gap-2">
 			<h1 class="text-3xl font-semibold">{title}</h1>
-			<a href={resolve('/[quoteId]/edit', { quoteId: id })} class="rounded bg-black/10 px-3 py-1">Edit</a>
+			<a href={resolve('/[quoteId]/edit', { quoteId: id })} class="rounded bg-black/10 px-3 py-1"
+				>Edit</a
+			>
 			<DeleteQuote {id} {title}></DeleteQuote>
 		</div>
 		<p>{description}</p>
@@ -41,7 +43,7 @@
 
 		{#if lineItems.length}
 			<ol class="grid gap-1.5">
-				{const { length } = lineItems}
+				{const { length } = $derived(lineItems)}
 
 				{#each lineItems as { id, ...data }, i (id)}
 					{const { description, quantity, unit, unitPrice } = data}

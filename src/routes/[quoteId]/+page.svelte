@@ -18,7 +18,7 @@
 
 <main class="wrapper">
 	<section class="grid gap-2">
-		<div class="flex items-baseline gap-2">
+		<div class="flex flex-wrap items-baseline gap-2">
 			<h1 class="text-3xl font-semibold">{title}</h1>
 			<a href={resolve('/[quoteId]/edit', { quoteId: id })} class="rounded bg-black/10 px-3 py-1"
 				>Edit</a

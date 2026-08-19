@@ -6,8 +6,8 @@
 
 	const quote = await getQuoteById(page.params.quoteId!);
 	const { id, title, description, currency } = quote;
-	const lineItems = await getLineItems(page.params.quoteId!);
-	const total = lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
+	const lineItems = $derived(await getLineItems(page.params.quoteId!));
+	const total = $derived(lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0));
 </script>
 
 <svelte:head>
@@ -24,10 +24,7 @@
 		<p class="font-mono uppercase">{currency}</p>
 	</section>
 	<section class="mbs-3">
-		<form
-			{...newLineItem}
-			class="mbe-4 grid gap-2"
-		>
+		<form {...newLineItem} class="mbe-4 grid gap-2">
 			{const { description, quantity, unit, unitPrice } = newLineItem.fields}
 			<input {...description.as('text')} placeholder="Description" />
 			<div class="grid grid-cols-3 gap-2">
@@ -42,13 +39,17 @@
 
 		{#if lineItems.length}
 			<ol class="grid gap-1.5">
+				{const { length } = lineItems}
+
 				{#each lineItems as { id, ...data }, i (id)}
 					{const { description, quantity, unit, unitPrice } = data}
 					{const amount = quantity * unitPrice}
 
-					<li class="grid items-baseline gap-3 rounded bg-black/5 px-3 py-2 sm:grid-cols-[1fr_auto]">
+					<li
+						class="grid items-baseline gap-3 rounded bg-black/5 px-3 py-2 sm:grid-cols-[1fr_auto]"
+					>
 						<span class="text-black/80">
-							<span class="font-mono text-black/40">{i + 1}.</span>
+							<span class="font-mono text-black/40">{length - i}.</span>
 							{description}
 							<span class="text-black/40">{quantity} {unit}</span>
 						</span>

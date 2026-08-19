@@ -10,7 +10,10 @@ import * as v from 'valibot';
 async function verifyQuoteOwnership(quoteId: string) {
 	const user = await getAuthUser();
 	const result = (
-		await db.select().from(quote).where(and(eq(quote.id, quoteId), eq(quote.userId, user.id)))
+		await db
+			.select()
+			.from(quote)
+			.where(and(eq(quote.id, quoteId), eq(quote.userId, user.id)))
 	).at(0);
 
 	if (!result) {
@@ -35,5 +38,5 @@ export const newLineItem = form(newLineItemSchema, async (data) => {
 
 export const getLineItems = query(v.string(), async (id) => {
 	await verifyQuoteOwnership(id);
-	return await db.select().from(lineItem).where(eq(lineItem.quoteId, id));
+	return (await db.select().from(lineItem).where(eq(lineItem.quoteId, id))).toReversed();
 });

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { signIn, signOut } from '$lib/auth-client';
+	import { signIn } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
 	const user = $derived(await getUser());
 </script>
@@ -8,17 +8,18 @@
 	<title>Devis</title>
 </svelte:head>
 
-{#if user}
-	<h1 class="mbe-5 text-4xl font-bold text-blue-700">Hello {user.name}</h1>
-	<button onclick={signOut}>Sign out</button>
-{:else}
-	<button onclick={signIn}>Sign in</button>
-{/if}
-
-<style>
-	button {
-		background: var(--color-gray-500);
-		padding: 0.5rem;
-		cursor: pointer;
-	}
-</style>
+<main class={[!user && 'grid min-h-svh place-content-center', 'wrapper']}>
+	{#if !user}
+		<section>
+			<h3 class="mbe-4">You are signed out! Sign in to continue.</h3>
+			<button
+				onclick={signIn}
+				class="mx-auto block rounded bg-black px-5 py-2 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85"
+			>
+				Sign in
+			</button>
+		</section>
+	{:else}
+		<!--  -->
+	{/if}
+</main>

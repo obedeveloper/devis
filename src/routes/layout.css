@@ -1,1 +1,9 @@
 @import 'tailwindcss';
+
+@utility wrapper {
+	@apply container mx-auto px-5;
+}
+
+button {
+	@apply cursor-pointer;
+}

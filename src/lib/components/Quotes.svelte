@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { getQuotes } from '$lib/quote.remote';
-	const quotes = await getQuotes();
+	import { deleteQuote, getQuotes } from '$lib/quote.remote';
+	import { fade } from 'svelte/transition';
+	const quotes = $derived(await getQuotes());
+
+	function ondelete({ id, title }: { id: string; title: string }) {
+		if (confirm(`Do you really want to delete "${title}" quote?`)) {
+			deleteQuote(id);
+		}
+	}
 </script>
 
 <section
@@ -11,9 +18,14 @@
 		{const { title, description, currency, createdAt } = data}
 		{const date = new Date(createdAt)}
 
-		<article class="rounded bg-black/15 p-3 text-black/80">
-			<h3 class="text-lg font-semibold text-black">{title}</h3>
-			<p>{description}</p>
+		<article class="rounded bg-black/5 p-3 text-black/80" transition:fade>
+			<div class="flex justify-between gap-2">
+				<h3 class="line-clamp-1 text-lg font-semibold text-black">{title}</h3>
+				<button onclick={() => ondelete({ id, title })} class="rounded bg-red-300/50 px-3 py-1">
+					Delete
+				</button>
+			</div>
+			<p class="mbs-1 line-clamp-2 empty:hidden">{description}</p>
 
 			<div class="mbs-4 flex justify-between">
 				<span class="font-mono text-black/90 uppercase">{currency}</span>

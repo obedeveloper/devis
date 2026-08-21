@@ -2,7 +2,7 @@ import { resolve } from '$app/paths';
 import { form, getRequestEvent } from '$app/server';
 import { db } from '$lib/server/db';
 import { quote } from '$lib/server/db/app.schema';
-import { isValidCurrency, quoteSchema } from '$lib/quoteSchema';
+import { quoteSchema } from '$lib/quoteSchema';
 import { getAuthUser } from '$lib/user.remote';
 import { getQuotes, getQuoteById } from '$lib/quote.remote';
 import { and, eq } from 'drizzle-orm';
@@ -22,10 +22,6 @@ export const editQuote = form(quoteSchema, async (data) => {
 
 	if (!result) {
 		redirect(303, resolve('/'));
-	}
-
-	if (!isValidCurrency(data.currency)) {
-		data.currency = undefined;
 	}
 
 	await db

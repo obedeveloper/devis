@@ -26,7 +26,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-{#if navigating}
+{#if navigating.to}
 	<div class="fixed inset-x-0 top-0 z-50 h-0.5 overflow-hidden bg-black/10" aria-hidden="true">
 		<div class="nav-progress h-full w-1/3 rounded-full bg-white"></div>
 	</div>

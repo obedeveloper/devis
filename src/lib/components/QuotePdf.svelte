@@ -40,7 +40,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each lineItems as item, i}
+		{#each lineItems as item, i (i)}
 			<tr>
 				<td>{i + 1}</td>
 				<td>{item.description}</td>

@@ -4,13 +4,41 @@
 	import DeleteQuote from '$lib/components/DeleteQuote.svelte';
 	import LineItem from '$lib/components/LineItem.svelte';
 	import { getQuoteById } from '$lib/quote.remote';
-	import { formatAmount } from '$lib/utils';
+	import { formatAmount, sanitizeFilename } from '$lib/utils';
 	import { getLineItems, newLineItem } from './items.remote';
 
 	const quote = await getQuoteById(page.params.quoteId!);
 	const { id, title, description, currency } = quote;
 	const lineItems = $derived(await getLineItems(page.params.quoteId!));
 	const total = $derived(lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0));
+
+	let downloading = $state(false);
+	let pdfFailed = $state(false);
+
+	async function downloadPdf() {
+		if (downloading) return;
+		downloading = true;
+		pdfFailed = false;
+
+		try {
+			const response = await fetch(resolve('/[quoteId]/pdf', { quoteId: id }));
+			if (!response.ok) throw new Error(`PDF request failed: ${response.status}`);
+
+			const blob = await response.blob();
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = `${sanitizeFilename(title)}.pdf`;
+			document.body.appendChild(link);
+			link.click();
+			link.remove();
+			URL.revokeObjectURL(url);
+		} catch {
+			pdfFailed = true;
+		} finally {
+			downloading = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -24,11 +52,17 @@
 			<a href={resolve('/[quoteId]/edit', { quoteId: id })} class="rounded bg-black/10 px-3 py-1"
 				>Edit</a
 			>
-			<a
-				href={resolve('/[quoteId]/pdf', { quoteId: id })}
-				class="rounded bg-black/10 px-3 py-1"
-				download>Print PDF</a
+			<button
+				disabled={downloading}
+				aria-busy={downloading}
+				onclick={downloadPdf}
+				class="rounded bg-black/10 px-3 py-1 hover:bg-black/15 aria-busy:bg-black/5 aria-busy:text-black/40"
 			>
+				{downloading ? 'Preparing…' : 'Print PDF'}
+			</button>
+			{#if pdfFailed}
+				<span role="alert" class="text-sm text-red-600">PDF failed, try again.</span>
+			{/if}
 			<DeleteQuote {id} {title}></DeleteQuote>
 		</div>
 		<p>{description}</p>

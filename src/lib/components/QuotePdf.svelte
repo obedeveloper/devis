@@ -1,7 +1,7 @@
 <svelte:options css="injected" />
 
 <script lang="ts">
-	import { formatAmount } from '$lib/utils';
+	import { formatAmount, formatQuantity } from '$lib/utils';
 
 	let {
 		title,
@@ -45,7 +45,7 @@
 				<td>{i + 1}</td>
 				<td>{item.description}</td>
 				<td>{item.unit ?? '-'}</td>
-				<td class="num">{item.quantity}</td>
+				<td class="num">{formatQuantity(item.quantity)}</td>
 				<td class="num">{formatAmount(item.unitPrice, currency)}</td>
 				<td class="num">{formatAmount(item.quantity * item.unitPrice, currency)}</td>
 			</tr>

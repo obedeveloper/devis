@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { deleteLineItem, editLineItem } from '../../routes/[quoteId]/items.remote';
-	import { formatAmount } from '$lib/utils';
+	import { formatAmount, formatQuantity } from '$lib/utils';
 	import { getConfirmDialog } from '$lib/components/confirm-dialog.svelte';
 
 	const confirmDialog = getConfirmDialog();
@@ -100,14 +100,14 @@
 	<li
 		class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded bg-black/5 px-3 py-2"
 	>
-		<span class="text-black/80">
+		<span class="wrap-break min-w-0 text-black/80">
 			<span class="font-mono text-black/40">{length - index}.</span>
 			{description}
-			<span class="text-black/40">{quantity} {unit}</span>
+			<span class="text-black/40">{formatQuantity(quantity)} {unit}</span>
 		</span>
-		<span class="flex shrink-0 items-center gap-3">
+		<span class="flex min-w-0 flex-wrap items-center justify-end gap-3">
 			<span class="font-mono text-sm text-black/80 uppercase">
-				{formatAmount(unitPrice, currency)} × {quantity} = {amount}
+				{formatAmount(unitPrice, currency)} × {formatQuantity(quantity)} = {amount}
 			</span>
 			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm hover:bg-black/15">
 				Edit

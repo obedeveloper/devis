@@ -11,6 +11,8 @@
 
 	let { form, values, buttonLabel }: Props = $props();
 
+	const pending = $derived(form.pending > 0);
+
 	$effect(() => {
 		if (values) {
 			form.fields.set(values);
@@ -52,8 +54,10 @@
 	</label>
 
 	<button
-		class="mbs-3 rounded bg-black/95 py-2 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85"
+		disabled={pending}
+		aria-busy={pending}
+		class="mbs-3 rounded bg-black/95 py-2 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85 aria-busy:bg-black/50"
 	>
-		{buttonLabel}
+		{pending ? 'Saving…' : buttonLabel}
 	</button>
 </form>

@@ -8,6 +8,17 @@
 
 	let { children } = $props();
 	const user = $derived(await getUser());
+
+	let signingOut = $state(false);
+
+	async function onsignOut() {
+		signingOut = true;
+		try {
+			await signOut();
+		} finally {
+			signingOut = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -21,7 +32,14 @@
 			<a href={resolve('/new-quote')}>New Quote</a>
 		</div>
 		{#if user}
-			<button onclick={signOut} class="text-red-400 hover:underline">Sign out</button>
+			<button
+				disabled={signingOut}
+				aria-busy={signingOut}
+				onclick={onsignOut}
+				class="text-red-400 hover:underline aria-busy:text-red-400/50"
+			>
+				{signingOut ? 'Signing out…' : 'Sign out'}
+			</button>
 		{/if}
 	</nav>
 </header>

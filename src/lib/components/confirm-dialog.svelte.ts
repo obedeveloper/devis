@@ -1,3 +1,5 @@
+import { createContext } from 'svelte';
+
 export interface ConfirmOptions {
 	title: string;
 	description?: string;
@@ -7,18 +9,20 @@ export interface ConfirmOptions {
 }
 
 /**
- * Shared confirm-dialog state. Call `confirm()` anywhere to show the dialog
- * mounted in the root layout and await the user's answer:
- *
- *   if (await confirm({ title: 'Delete quote?' })) ...
+ * Confirm-dialog state, provided by the root layout via context.
+ * The <dialog> element is bound onto `el`, so show/close calls happen
+ * synchronously here instead of through an effect.
  */
-class ConfirmDialogState {
+export class ConfirmDialogState {
 	open = $state(false);
 	title = $state('');
 	description = $state('');
 	confirmLabel = $state('Confirm');
 	cancelLabel = $state('Cancel');
 	destructive = $state(true);
+
+	el = $state<HTMLDialogElement>();
+	cancelButton = $state<HTMLButtonElement>();
 
 	#resolve: ((value: boolean) => void) | undefined;
 
@@ -28,6 +32,11 @@ class ConfirmDialogState {
 		this.confirmLabel = options.confirmLabel ?? 'Confirm';
 		this.cancelLabel = options.cancelLabel ?? 'Cancel';
 		this.destructive = options.destructive ?? true;
+
+		if (!this.el) return Promise.resolve(false);
+
+		this.el.showModal();
+		this.cancelButton?.focus();
 		this.open = true;
 
 		return new Promise((resolve) => {
@@ -44,15 +53,21 @@ class ConfirmDialogState {
 		this.#settle(false);
 	}
 
-	#settle(value: boolean) {
+	syncClosed() {
 		this.open = false;
+	}
+
+	#settle(value: boolean) {
 		this.#resolve?.(value);
 		this.#resolve = undefined;
+		this.open = false;
+		this.el?.close();
 	}
 }
 
-export const confirmDialog = new ConfirmDialogState();
+export const [getConfirmDialog, setConfirmDialog] = createContext<ConfirmDialogState>();
 
-export function confirm(options: ConfirmOptions): Promise<boolean> {
-	return confirmDialog.confirm(options);
+/** Call once in the root layout before any consumer initializes. */
+export function provideConfirmDialog(): ConfirmDialogState {
+	return setConfirmDialog(new ConfirmDialogState());
 }

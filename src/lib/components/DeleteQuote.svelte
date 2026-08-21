@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { deleteQuote } from '$lib/quote.remote';
-	import { confirm } from '$lib/components/confirm-dialog.svelte';
+	import { getConfirmDialog } from '$lib/components/confirm-dialog.svelte';
 
 	interface Props {
 		id: string;
@@ -11,6 +11,8 @@
 
 	const { id, title }: Props = $props();
 
+	const confirmDialog = getConfirmDialog();
+
 	let failed = $state(false);
 
 	const deleting = $derived(deleteQuote.pending > 0);
@@ -18,7 +20,7 @@
 	async function ondelete() {
 		failed = false;
 
-		const confirmed = await confirm({
+		const confirmed = await confirmDialog.confirm({
 			title: `Delete "${title}"?`,
 			description: 'This action cannot be undone.',
 			confirmLabel: 'Delete'

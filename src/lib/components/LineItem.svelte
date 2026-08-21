@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { deleteLineItem, editLineItem } from '../../routes/[quoteId]/items.remote';
 	import { formatAmount } from '$lib/utils';
-	import { confirm } from '$lib/components/confirm-dialog.svelte';
+	import { getConfirmDialog } from '$lib/components/confirm-dialog.svelte';
+
+	const confirmDialog = getConfirmDialog();
 
 	interface Props {
 		id: string;
@@ -51,7 +53,7 @@
 	}
 
 	async function remove() {
-		const confirmed = await confirm({
+		const confirmed = await confirmDialog.confirm({
 			title: `Delete "${description}"?`,
 			description: 'This line item will be removed from the quote.',
 			confirmLabel: 'Delete'

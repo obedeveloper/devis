@@ -1,17 +1,7 @@
 <script lang="ts">
-	import { confirmDialog } from './confirm-dialog.svelte';
+	import { getConfirmDialog } from './confirm-dialog.svelte';
 
-	let dialog = $state<HTMLDialogElement>();
-	let cancelButton = $state<HTMLButtonElement>();
-
-	$effect(() => {
-		if (confirmDialog.open && dialog && !dialog.open) {
-			dialog.showModal();
-			cancelButton?.focus();
-		} else if (!confirmDialog.open && dialog?.open) {
-			dialog.close();
-		}
-	});
+	const confirmDialog = getConfirmDialog();
 
 	function oncancel(event: Event) {
 		event.preventDefault();
@@ -19,18 +9,28 @@
 	}
 
 	function onclose() {
-		if (confirmDialog.open) confirmDialog.cancel();
+		confirmDialog.syncClosed();
 	}
 
 	function onclick(event: MouseEvent) {
-		if (event.target === dialog) confirmDialog.cancel();
+		if (event.target === confirmDialog.el) confirmDialog.cancel();
 	}
 </script>
 
-{#snippet buttons()}
+<dialog
+	bind:this={confirmDialog.el}
+	{onclick}
+	{oncancel}
+	{onclose}
+	class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-lg p-5 shadow-xl"
+>
+	<h3 class="text-lg font-semibold">{confirmDialog.title}</h3>
+	{#if confirmDialog.description}
+		<p class="mt-1 text-sm text-black/60">{confirmDialog.description}</p>
+	{/if}
 	<div class="mt-5 flex justify-end gap-2">
 		<button
-			bind:this={cancelButton}
+			bind:this={confirmDialog.cancelButton}
 			onclick={() => confirmDialog.cancel()}
 			class="rounded bg-black/10 px-4 py-1.5 font-medium hover:bg-black/15"
 		>
@@ -45,19 +45,6 @@
 			{confirmDialog.confirmLabel}
 		</button>
 	</div>
-{/snippet}
-
-<dialog
-	{onclick}
-	{oncancel}
-	{onclose}
-	class="m-auto w-[min(24rem,calc(100vw-2rem))] rounded-lg p-5 shadow-xl"
->
-	<h3 class="text-lg font-semibold">{confirmDialog.title}</h3>
-	{#if confirmDialog.description}
-		<p class="mt-1 text-sm text-black/60">{confirmDialog.description}</p>
-	{/if}
-	{@render buttons()}
 </dialog>
 
 <style>

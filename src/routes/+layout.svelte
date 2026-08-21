@@ -6,6 +6,9 @@
 	import { signOut } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
+	import { provideConfirmDialog } from '$lib/components/confirm-dialog.svelte';
+
+	provideConfirmDialog();
 
 	let { children } = $props();
 	const user = $derived(await getUser());

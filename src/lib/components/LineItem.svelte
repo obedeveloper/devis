@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { deleteLineItem, editLineItem } from '../../routes/[quoteId]/items.remote';
+	import { formatAmount } from '$lib/utils';
 
 	interface Props {
 		id: string;
@@ -7,13 +8,14 @@
 		quantity: number;
 		unit: string | null;
 		unitPrice: number;
+		currency?: string | null;
 		index: number;
 		length: number;
 	}
 
-	const { id, description, quantity, unit, unitPrice, index, length }: Props = $props();
+	const { id, description, quantity, unit, unitPrice, currency, index, length }: Props = $props();
 
-	const amount = $derived(quantity * unitPrice);
+	const amount = $derived(formatAmount(quantity * unitPrice, currency));
 
 	let editing = $state(false);
 	let editDescription = $state('');
@@ -69,7 +71,7 @@
 		</span>
 		<span class="flex shrink-0 items-center gap-3">
 			<span class="font-mono text-sm text-black/80 uppercase">
-				{unitPrice} × {quantity} = {amount}
+				{formatAmount(unitPrice, currency)} × {quantity} = {amount}
 			</span>
 			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm"> Edit </button>
 			<button onclick={() => deleteLineItem(id)} class="rounded bg-red-300/50 px-2 py-0.5 text-sm">

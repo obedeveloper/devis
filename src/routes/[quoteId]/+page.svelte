@@ -4,6 +4,7 @@
 	import DeleteQuote from '$lib/components/DeleteQuote.svelte';
 	import LineItem from '$lib/components/LineItem.svelte';
 	import { getQuoteById } from '$lib/quote.remote';
+	import { formatAmount } from '$lib/utils';
 	import { getLineItems, newLineItem } from './items.remote';
 
 	const quote = await getQuoteById(page.params.quoteId!);
@@ -52,13 +53,13 @@
 				{const { length } = $derived(lineItems)}
 
 				{#each lineItems as item, i (item.id)}
-					<LineItem {...item} index={i} {length} />
+					<LineItem {...item} index={i} {length} {currency} />
 				{/each}
 			</ol>
 
 			<div class="mbs-2 flex justify-end gap-3 border-t border-black/10 pt-2">
 				<span class="text-black/50">Total</span>
-				<span class="font-mono font-semibold uppercase">{total} {currency}</span>
+				<span class="font-mono font-semibold uppercase">{formatAmount(total, currency)}</span>
 			</div>
 		{/if}
 	</section>

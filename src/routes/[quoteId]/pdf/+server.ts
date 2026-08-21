@@ -1,6 +1,7 @@
 import { generatePdf, renderToHTML } from '$lib/server/pdf';
 import QuotePdf from '$lib/components/QuotePdf.svelte';
 import { getQuoteById } from '$lib/quote.remote';
+import { sanitizeFilename } from '$lib/utils';
 import type { RequestHandler } from './$types';
 import { getLineItems } from '../items.remote';
 
@@ -17,10 +18,11 @@ export const GET: RequestHandler = async ({ params }) => {
 
 	const pdfBuffer = await generatePdf(html);
 
+	const filename = sanitizeFilename(quote.title);
 	return new Response(new Uint8Array(pdfBuffer), {
 		headers: {
 			'Content-Type': 'application/pdf',
-			'Content-Disposition': `attachment; filename="${quote.title}.pdf"`
+			'Content-Disposition': `attachment; filename="${filename}.pdf"; filename*=UTF-8''${encodeURIComponent(filename)}.pdf`
 		}
 	});
 };

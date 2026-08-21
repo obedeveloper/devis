@@ -22,3 +22,12 @@ export function formatAmount(value: number, currency?: string | null) {
 	if (!currency) return value.toFixed(2);
 	return new Intl.NumberFormat('en', { style: 'currency', currency }).format(value);
 }
+
+/**
+ * Format a quantity for display: caps fraction digits at 2 so floating-point
+ * noise (e.g. 2.9999999999999996) never reaches the UI, and drops
+ * insignificant zeros (3.5 stays "3.5", 3 becomes "3").
+ */
+export function formatQuantity(value: number) {
+	return new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value);
+}

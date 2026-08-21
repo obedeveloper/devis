@@ -2,6 +2,7 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { resolve } from '$app/paths';
+	import { navigating } from '$app/state';
 	import { signOut } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
@@ -24,6 +25,12 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
+
+{#if navigating}
+	<div class="fixed inset-x-0 top-0 z-50 h-0.5 overflow-hidden bg-black/10" aria-hidden="true">
+		<div class="nav-progress h-full w-1/3 rounded-full bg-white"></div>
+	</div>
+{/if}
 
 <header class="sticky top-0 mbe-6 bg-black/85 py-3 text-white backdrop-blur-md">
 	<nav class="wrapper flex justify-between gap-4 text-lg">
@@ -49,3 +56,18 @@
 <ConfirmDialog />
 
 <footer class="mbs-8"></footer>
+
+<style>
+	.nav-progress {
+		animation: nav-progress-slide 1.2s ease-in-out infinite;
+	}
+
+	@keyframes nav-progress-slide {
+		from {
+			transform: translateX(-100%);
+		}
+		to {
+			transform: translateX(400%);
+		}
+	}
+</style>

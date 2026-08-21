@@ -9,7 +9,7 @@
 
 	const quote = await getQuoteById(page.params.quoteId!);
 	const { id, title, description, currency } = quote;
-	const lineItems = $derived(await getLineItems(page.params.quoteId!));
+	const lineItems = $derived((await getLineItems(page.params.quoteId!)).toReversed());
 	const total = $derived(lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0));
 
 	let downloading = $state(false);

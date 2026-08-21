@@ -4,6 +4,7 @@
 	import { resolve } from '$app/paths';
 	import { signOut } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
+	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 
 	let { children } = $props();
 	const user = $derived(await getUser());
@@ -26,5 +27,7 @@
 </header>
 
 {@render children()}
+
+<ConfirmDialog />
 
 <footer class="mbs-8"></footer>

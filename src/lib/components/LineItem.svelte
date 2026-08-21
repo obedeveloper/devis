@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { deleteLineItem, editLineItem } from '../../routes/[quoteId]/items.remote';
 	import { formatAmount } from '$lib/utils';
+	import { confirm } from '$lib/components/confirm-dialog.svelte';
 
 	interface Props {
 		id: string;
@@ -42,6 +43,16 @@
 		editing = false;
 	}
 
+	async function remove() {
+		const confirmed = await confirm({
+			title: `Delete "${description}"?`,
+			description: 'This line item will be removed from the quote.',
+			confirmLabel: 'Delete'
+		});
+
+		if (confirmed) await deleteLineItem(id);
+	}
+
 	function cancel() {
 		editing = false;
 	}
@@ -74,7 +85,10 @@
 				{formatAmount(unitPrice, currency)} × {quantity} = {amount}
 			</span>
 			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm"> Edit </button>
-			<button onclick={() => deleteLineItem(id)} class="rounded bg-red-300/50 px-2 py-0.5 text-sm">
+			<button
+				onclick={remove}
+				class="rounded bg-red-300/50 px-2 py-0.5 text-sm hover:bg-red-300/70"
+			>
 				Delete
 			</button>
 		</span>

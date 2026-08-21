@@ -1,10 +1,13 @@
 import { render } from 'svelte/server';
+import type { Component } from 'svelte';
 import puppeteer from 'puppeteer';
 import type { Browser } from 'puppeteer';
 import chromium from '@sparticuz/chromium';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function renderToHTML(component: any, props: any): Promise<string> {
+export async function renderToHTML<Props extends Record<string, unknown>>(
+	component: Component<Props>,
+	props: Props
+): Promise<string> {
 	const { body, head } = render(component, { props });
 	return head + body;
 }

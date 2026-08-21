@@ -100,12 +100,12 @@
 	<li
 		class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded bg-black/5 px-3 py-2"
 	>
-		<span class="text-black/80">
+		<span class="min-w-0 break-words text-black/80">
 			<span class="font-mono text-black/40">{length - index}.</span>
 			{description}
 			<span class="text-black/40">{quantity} {unit}</span>
 		</span>
-		<span class="flex shrink-0 items-center gap-3">
+		<span class="flex min-w-0 flex-wrap items-center justify-end gap-3">
 			<span class="font-mono text-sm text-black/80 uppercase">
 				{formatAmount(unitPrice, currency)} × {quantity} = {amount}
 			</span>

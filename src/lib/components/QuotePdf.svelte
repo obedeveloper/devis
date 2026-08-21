@@ -37,8 +37,8 @@
 		<tr>
 			<th>#</th>
 			<th>Description</th>
-			<th class="num">Qty</th>
 			<th>Unit</th>
+			<th class="num">Qty</th>
 			<th class="num">Unit Price</th>
 			<th class="num">Amount</th>
 		</tr>
@@ -48,8 +48,8 @@
 			<tr>
 				<td>{i + 1}</td>
 				<td>{item.description}</td>
-				<td class="num">{item.quantity}</td>
 				<td>{item.unit ?? '-'}</td>
+				<td class="num">{item.quantity}</td>
 				<td class="num">{fmt(item.unitPrice)}</td>
 				<td class="num">{fmt(item.quantity * item.unitPrice)}</td>
 			</tr>
@@ -57,7 +57,9 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<td colspan="5" class="total-label">Total</td>
+			<td></td>
+			<td class="total-label">Total</td>
+			<td colspan="3"></td>
 			<td class="num total-value">{fmt(total)}</td>
 		</tr>
 	</tfoot>
@@ -101,6 +103,6 @@
 		font-size: 14px;
 	}
 	.total-label {
-		text-align: right;
+		text-align: left;
 	}
 </style>

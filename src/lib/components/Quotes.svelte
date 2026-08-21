@@ -25,7 +25,7 @@
 			<div class="mbs-4 flex justify-between">
 				<span class="font-mono text-black/90 uppercase">{currency}</span>
 				<time datetime={date.toISOString()}>
-					{date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
+					{date.toLocaleDateString('en', { day: '2-digit', month: 'short', year: 'numeric' })}
 				</time>
 			</div>
 		</article>

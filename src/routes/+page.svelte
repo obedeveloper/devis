@@ -14,7 +14,7 @@
 		<section>
 			<h3 class="mbe-4">You are signed out! Sign in to continue.</h3>
 			<button
-				onclick={signIn}
+				onclick={() => signIn()}
 				class="mx-auto block rounded bg-black px-5 py-2 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85"
 			>
 				Sign in

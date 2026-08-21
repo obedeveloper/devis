@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { deleteLineItem, editLineItem } from '../../routes/[quoteId]/items.remote';
+	import { formatAmount } from '$lib/utils';
+	import { getConfirmDialog } from '$lib/components/confirm-dialog.svelte';
+
+	const confirmDialog = getConfirmDialog();
 
 	interface Props {
 		id: string;
@@ -7,15 +11,18 @@
 		quantity: number;
 		unit: string | null;
 		unitPrice: number;
+		currency?: string | null;
 		index: number;
 		length: number;
 	}
 
-	const { id, description, quantity, unit, unitPrice, index, length }: Props = $props();
+	const { id, description, quantity, unit, unitPrice, currency, index, length }: Props = $props();
 
-	const amount = $derived(quantity * unitPrice);
+	const amount = $derived(formatAmount(quantity * unitPrice, currency));
 
 	let editing = $state(false);
+	let saving = $state(false);
+	let deleting = $state(false);
 	let editDescription = $state('');
 	let editQuantity = $state(0);
 	let editUnit = $state('');
@@ -30,14 +37,36 @@
 	}
 
 	async function save() {
-		await editLineItem({
-			id,
-			description: editDescription,
-			quantity: editQuantity,
-			unit: editUnit,
-			unitPrice: editUnitPrice
+		saving = true;
+		try {
+			await editLineItem({
+				id,
+				description: editDescription,
+				quantity: editQuantity,
+				unit: editUnit,
+				unitPrice: editUnitPrice
+			});
+			editing = false;
+		} finally {
+			saving = false;
+		}
+	}
+
+	async function remove() {
+		const confirmed = await confirmDialog.confirm({
+			title: `Delete "${description}"?`,
+			description: 'This line item will be removed from the quote.',
+			confirmLabel: 'Delete'
 		});
-		editing = false;
+
+		if (!confirmed) return;
+
+		deleting = true;
+		try {
+			await deleteLineItem(id);
+		} finally {
+			deleting = false;
+		}
 	}
 
 	function cancel() {
@@ -54,8 +83,17 @@
 			<input bind:value={editUnitPrice} type="number" placeholder="Unit price" step="0.01" />
 		</div>
 		<div class="flex justify-end gap-2">
-			<button onclick={cancel} class="rounded bg-black/10 px-3 py-1 text-sm">Cancel</button>
-			<button onclick={save} class="rounded bg-black/95 px-3 py-1 text-sm text-white">Save</button>
+			<button onclick={cancel} class="rounded bg-black/10 px-3 py-1 text-sm hover:bg-black/15">
+				Cancel
+			</button>
+			<button
+				disabled={saving}
+				aria-busy={saving}
+				onclick={save}
+				class="rounded bg-black/95 px-3 py-1 text-sm text-white hover:bg-black/85 aria-busy:bg-black/50"
+			>
+				{saving ? 'Saving…' : 'Save'}
+			</button>
 		</div>
 	</li>
 {:else}
@@ -69,11 +107,18 @@
 		</span>
 		<span class="flex shrink-0 items-center gap-3">
 			<span class="font-mono text-sm text-black/80 uppercase">
-				{unitPrice} × {quantity} = {amount}
+				{formatAmount(unitPrice, currency)} × {quantity} = {amount}
 			</span>
-			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm"> Edit </button>
-			<button onclick={() => deleteLineItem(id)} class="rounded bg-red-300/50 px-2 py-0.5 text-sm">
-				Delete
+			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm hover:bg-black/15">
+				Edit
+			</button>
+			<button
+				disabled={deleting}
+				aria-busy={deleting}
+				onclick={remove}
+				class="rounded bg-red-300/50 px-2 py-0.5 text-sm hover:bg-red-300/70 aria-busy:bg-black/10 aria-busy:text-black/40"
+			>
+				{deleting ? 'Deleting…' : 'Delete'}
 			</button>
 		</span>
 	</li>

@@ -3,8 +3,16 @@ import * as v from 'valibot';
 
 export const quoteSchema = v.object({
 	title: v.pipe(v.string(), v.trim(), v.nonEmpty('Quote title can not be empty!')),
-	description: v.pipe(v.string(), v.transform(transformOptional)),
-	currency: v.pipe(v.string(), v.transform(transformOptional))
+	description: v.pipe(v.string(), v.trim(), v.transform(transformOptional)),
+	currency: v.pipe(
+		v.string(),
+		v.trim(),
+		v.transform(transformOptional),
+		v.check(
+			(currency) => currency === undefined || isValidCurrency(currency),
+			'Invalid currency code!'
+		)
+	)
 });
 
 export function isValidCurrency(currency?: string) {

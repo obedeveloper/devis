@@ -1,6 +1,8 @@
 <svelte:options css="injected" />
 
 <script lang="ts">
+	import { formatAmount } from '$lib/utils';
+
 	let {
 		title,
 		description,
@@ -19,12 +21,6 @@
 	} = $props();
 
 	const total = $derived(lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0));
-
-	function fmt(value: number) {
-		return currency
-			? new Intl.NumberFormat('en', { style: 'currency', currency }).format(value)
-			: value.toFixed(2);
-	}
 </script>
 
 <h1>{title}</h1>
@@ -44,14 +40,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		{#each lineItems as item, i (item.description)}
+		{#each lineItems as item, i (i)}
 			<tr>
 				<td>{i + 1}</td>
 				<td>{item.description}</td>
 				<td>{item.unit ?? '-'}</td>
 				<td class="num">{item.quantity}</td>
-				<td class="num">{fmt(item.unitPrice)}</td>
-				<td class="num">{fmt(item.quantity * item.unitPrice)}</td>
+				<td class="num">{formatAmount(item.unitPrice, currency)}</td>
+				<td class="num">{formatAmount(item.quantity * item.unitPrice, currency)}</td>
 			</tr>
 		{/each}
 	</tbody>
@@ -60,7 +56,7 @@
 			<td></td>
 			<td class="total-label">Total</td>
 			<td colspan="3"></td>
-			<td class="num total-value">{fmt(total)}</td>
+			<td class="num total-value">{formatAmount(total, currency)}</td>
 		</tr>
 	</tfoot>
 </table>
@@ -70,6 +66,7 @@
 		margin: 0;
 		padding: 0;
 		box-sizing: border-box;
+		font-family: Arial, Helvetica, sans-serif;
 	}
 	h1 {
 		font-size: 20px;

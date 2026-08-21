@@ -1,26 +1,14 @@
 import { command, form, getRequestEvent, query } from '$app/server';
 import { db } from '$lib/server/db';
-import { lineItem, quote } from '$lib/server/db/app.schema';
-import { getAuthUser } from '$lib/user.remote';
+import { lineItem } from '$lib/server/db/app.schema';
+import { getQuoteById } from '$lib/quote.remote';
 import { transformOptional } from '$lib/utils';
-import { and, eq } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { error } from '@sveltejs/kit';
 import * as v from 'valibot';
 
 async function verifyQuoteOwnership(quoteId: string) {
-	const user = await getAuthUser();
-	const result = (
-		await db
-			.select()
-			.from(quote)
-			.where(and(eq(quote.id, quoteId), eq(quote.userId, user.id)))
-	).at(0);
-
-	if (!result) {
-		error(404, 'Quote not found');
-	}
-
-	return result;
+	return getQuoteById(quoteId);
 }
 
 const lineItemFields = {

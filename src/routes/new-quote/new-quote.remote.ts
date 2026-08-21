@@ -2,7 +2,7 @@ import { resolve } from '$app/paths';
 import { form } from '$app/server';
 import { db } from '$lib/server/db';
 import { quote } from '$lib/server/db/app.schema';
-import { isValidCurrency, quoteSchema } from '$lib/quoteSchema';
+import { quoteSchema } from '$lib/quoteSchema';
 import { getUser } from '$lib/user.remote';
 import { redirect } from '@sveltejs/kit';
 
@@ -11,10 +11,6 @@ export const newQuote = form(quoteSchema, async (data) => {
 
 	if (!userId) {
 		redirect(303, resolve('/'));
-	}
-
-	if (!isValidCurrency(data.currency)) {
-		data.currency = undefined;
 	}
 
 	const { quoteId } = (

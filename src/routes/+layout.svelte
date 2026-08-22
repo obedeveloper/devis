@@ -49,6 +49,13 @@
 	</div>
 {/if}
 
+<a
+	href="#main"
+	class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-black focus:px-4 focus:py-2 focus:text-white"
+>
+	Skip to content
+</a>
+
 <header class="sticky top-0 mbe-6 bg-black/85 py-3 text-white backdrop-blur-md">
 	<nav class="wrapper flex justify-between gap-4 text-lg">
 		{#if user}
@@ -76,7 +83,9 @@
 	</nav>
 </header>
 
-{@render children()}
+<div id="main">
+	{@render children()}
+</div>
 
 <ConfirmDialog />
 

@@ -8,6 +8,11 @@ button {
 	@apply cursor-pointer;
 }
 
+:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
 input {
 	@apply border-2 border-black/60 p-0.5 focus:border-black aria-invalid:border-red-500/65;
 

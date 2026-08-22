@@ -2,9 +2,10 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { resolve } from '$app/paths';
-	import { navigating } from '$app/state';
+	import { navigating, page } from '$app/state';
 	import { signOut, signIn } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
+	import { getOrigin } from '$lib/site.remote';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import BusyButton from '$lib/components/BusyButton.svelte';
 	import { provideConfirmDialog } from '$lib/components/confirm-dialog.svelte';
@@ -13,6 +14,7 @@
 
 	let { children } = $props();
 	const user = $derived(await getUser());
+	const canonical = $derived(`${await getOrigin()}${page.url.pathname}`);
 
 	let signingOut = $state(false);
 
@@ -28,6 +30,17 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<link rel="canonical" href={canonical} />
+	<meta property="og:site_name" content="Devis" />
+	<meta property="og:title" content="Devis" />
+	<meta
+		property="og:description"
+		content="Create and manage professional quotes in minutes, and export them as polished PDFs. Free for freelancers and small businesses."
+	/>
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:image" content={`${await getOrigin()}/og.png`} />
+	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 {#if navigating.to}

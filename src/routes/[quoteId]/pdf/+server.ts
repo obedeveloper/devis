@@ -10,10 +10,14 @@ export const GET: RequestHandler = async ({ params }) => {
 	const lineItems = await getLineItems(params.quoteId!);
 
 	const html = await renderToHTML(QuotePdf, {
-		title: quote.title,
-		description: quote.description,
-		currency: quote.currency,
-		lineItems: lineItems
+		quotes: [
+			{
+				title: quote.title,
+				description: quote.description,
+				currency: quote.currency,
+				lineItems: lineItems
+			}
+		]
 	});
 
 	const pdfBuffer = await generatePdf(html);

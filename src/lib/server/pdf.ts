@@ -24,7 +24,7 @@ async function getBrowser(): Promise<Browser> {
 		const isVercel = !!process.env.VERCEL_ENV;
 		browserPromise = puppeteer
 			.launch({
-				args: isVercel ? chromium.args : [],
+				args: isVercel ? chromium.args : ['--no-sandbox'],
 				executablePath: isVercel ? await chromium.executablePath() : undefined,
 				headless: true
 			})

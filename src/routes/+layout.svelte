@@ -6,6 +6,7 @@
 	import { signOut, signIn } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
 	import { getOrigin } from '$lib/site.remote';
+	import { SITE_DESCRIPTION, SITE_NAME } from '$lib/site';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import BusyButton from '$lib/components/BusyButton.svelte';
 	import { provideConfirmDialog } from '$lib/components/confirm-dialog.svelte';
@@ -14,7 +15,8 @@
 
 	let { children } = $props();
 	const user = $derived(await getUser());
-	const canonical = $derived(`${await getOrigin()}${page.url.pathname}`);
+	const origin = $derived(await getOrigin());
+	const canonical = $derived(`${origin}${page.url.pathname}`);
 
 	let signingOut = $state(false);
 
@@ -31,15 +33,12 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<link rel="canonical" href={canonical} />
-	<meta property="og:site_name" content="Devis" />
-	<meta property="og:title" content="Devis" />
-	<meta
-		property="og:description"
-		content="Create and manage professional quotes in minutes, and export them as polished PDFs. Free for freelancers and small businesses."
-	/>
+	<meta property="og:site_name" content={SITE_NAME} />
+	<meta property="og:title" content={SITE_NAME} />
+	<meta property="og:description" content={SITE_DESCRIPTION} />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content={canonical} />
-	<meta property="og:image" content={`${await getOrigin()}/og.png`} />
+	<meta property="og:image" content={`${origin}/og.png`} />
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
@@ -72,7 +71,7 @@
 				Sign out
 			</BusyButton>
 		{:else}
-			<a href={resolve('/')} class="font-bold tracking-tight">Devis</a>
+			<a href={resolve('/')} class="font-bold tracking-tight">{SITE_NAME}</a>
 			<button
 				onclick={() => signIn('/')}
 				class="rounded bg-white px-4 py-1 font-semibold text-black transition-colors duration-300 hover:bg-white/85"
@@ -91,9 +90,9 @@
 
 <footer class="mbs-8 border-t border-black/10 py-6">
 	<div class="wrapper flex flex-wrap items-center justify-between gap-2 text-sm text-black/60">
-		<span class="font-semibold text-black">Devis</span>
+		<span class="font-semibold text-black">{SITE_NAME}</span>
 		<p>Professional quotes in minutes.</p>
-		<span>© {new Date().getFullYear()} Devis</span>
+		<span>© {new Date().getFullYear()} {SITE_NAME}</span>
 	</div>
 </footer>
 

@@ -2,15 +2,13 @@
 	import Landing from '$lib/components/Landing.svelte';
 	import Quotes from '$lib/components/Quotes.svelte';
 	import { getUser } from '$lib/user.remote';
+	import { SITE_DESCRIPTION, SITE_NAME } from '$lib/site';
 	const user = $derived(await getUser());
 </script>
 
 <svelte:head>
-	<title>Devis</title>
-	<meta
-		name="description"
-		content="Create and manage professional quotes in minutes, and export them as polished PDFs. Free for freelancers and small businesses."
-	/>
+	<title>{SITE_NAME}</title>
+	<meta name="description" content={SITE_DESCRIPTION} />
 </svelte:head>
 
 {#if !user}

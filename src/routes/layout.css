@@ -4,8 +4,21 @@
 	@apply container mx-auto px-5;
 }
 
+@utility btn-primary {
+	@apply rounded bg-black px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85;
+}
+
+@utility btn-inverse {
+	@apply rounded bg-white px-6 py-3 text-lg font-semibold text-black transition-colors duration-300 hover:bg-white/85;
+}
+
 button {
 	@apply cursor-pointer;
+}
+
+:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
 }
 
 input {
@@ -14,4 +27,8 @@ input {
 	&:focus {
 		outline: transparent;
 	}
+}
+
+main {
+	min-height: 100svh;
 }

@@ -2,9 +2,11 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { resolve } from '$app/paths';
-	import { navigating } from '$app/state';
-	import { signOut } from '$lib/auth-client';
+	import { navigating, page } from '$app/state';
+	import { signOut, signIn } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
+	import { getOrigin } from '$lib/site.remote';
+	import { SITE_DESCRIPTION, SITE_NAME } from '$lib/site';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import BusyButton from '$lib/components/BusyButton.svelte';
 	import { provideConfirmDialog } from '$lib/components/confirm-dialog.svelte';
@@ -13,6 +15,8 @@
 
 	let { children } = $props();
 	const user = $derived(await getUser());
+	const origin = $derived(await getOrigin());
+	const canonical = $derived(`${origin}${page.url.pathname}`);
 
 	let signingOut = $state(false);
 
@@ -28,6 +32,14 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<link rel="canonical" href={canonical} />
+	<meta property="og:site_name" content={SITE_NAME} />
+	<meta property="og:title" content={SITE_NAME} />
+	<meta property="og:description" content={SITE_DESCRIPTION} />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content={canonical} />
+	<meta property="og:image" content={`${origin}/og.png`} />
+	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 {#if navigating.to}
@@ -36,13 +48,20 @@
 	</div>
 {/if}
 
-<header class="sticky top-0 mbe-6 bg-black/85 py-3 text-white backdrop-blur-md">
+<a
+	href="#main"
+	class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-black focus:px-4 focus:py-2 focus:text-white"
+>
+	Skip to content
+</a>
+
+<header class="sticky top-0 z-20 mbe-6 bg-black/85 py-3 text-white backdrop-blur-md">
 	<nav class="wrapper flex justify-between gap-4 text-lg">
-		<div class="flex gap-4 *:hover:underline">
-			<a href={resolve('/')}>Home</a>
-			<a href={resolve('/new-quote')}>New Quote</a>
-		</div>
 		{#if user}
+			<div class="flex gap-4 *:hover:underline">
+				<a href={resolve('/')}>Home</a>
+				<a href={resolve('/new-quote')}>New Quote</a>
+			</div>
 			<BusyButton
 				busy={signingOut}
 				busyLabel="Signing out…"
@@ -51,15 +70,31 @@
 			>
 				Sign out
 			</BusyButton>
+		{:else}
+			<a href={resolve('/')} class="font-bold tracking-tight">{SITE_NAME}</a>
+			<button
+				onclick={() => signIn('/')}
+				class="rounded bg-white px-4 py-1 font-semibold text-black transition-colors duration-300 hover:bg-white/85"
+			>
+				Sign in
+			</button>
 		{/if}
 	</nav>
 </header>
 
-{@render children()}
+<div id="main">
+	{@render children()}
+</div>
 
 <ConfirmDialog />
 
-<footer class="mbs-8"></footer>
+<footer class="mbs-8 border-t border-black/10 py-6">
+	<div class="wrapper flex flex-wrap items-center justify-between gap-2 text-sm text-black/60">
+		<span class="font-semibold text-black">{SITE_NAME}</span>
+		<p>Professional quotes in minutes.</p>
+		<span>© {new Date().getFullYear()} {SITE_NAME}</span>
+	</div>
+</footer>
 
 <style>
 	.nav-progress {

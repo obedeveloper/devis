@@ -3,6 +3,7 @@
 	import { getQuotes } from '$lib/quote.remote';
 	import { fade } from 'svelte/transition';
 	import DeleteQuote from './DeleteQuote.svelte';
+	import QuoteCardSkeleton from './QuoteCardSkeleton.svelte';
 	const quotes = $derived(await getQuotes());
 </script>
 
@@ -30,9 +31,14 @@
 			</div>
 		</article>
 	{:else}
-		<p class="text-center">
-			You don't have quotes yet!
-			<a class="underline" href={resolve('/new-quote')}>Create new one </a> to get started.
-		</p>
+		<section
+			class="flex flex-col items-center gap-4 py-20 text-center md:py-28"
+			aria-labelledby="empty-title"
+		>
+			<QuoteCardSkeleton class="w-full max-w-xs -rotate-2 shadow-lg" />
+			<h2 id="empty-title" class="text-2xl font-bold">No quotes yet</h2>
+			<p class="max-w-sm text-black/70">Create your first quote and it will show up here.</p>
+			<a href={resolve('/new-quote')} class="btn-primary">Create your first quote</a>
+		</section>
 	{/each}
 </section>

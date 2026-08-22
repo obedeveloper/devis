@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>{page.status} — Devis</title>
+	<title>{page.status} · Devis</title>
 </svelte:head>
 
 <main class="wrapper grid min-h-svh place-content-center gap-2 text-center">

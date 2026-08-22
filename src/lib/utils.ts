@@ -31,3 +31,22 @@ export function formatAmount(value: number, currency?: string | null) {
 export function formatQuantity(value: number) {
 	return new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value);
 }
+
+/**
+ * Download a URL's response as a file in the browser: fetches the resource,
+ * turns it into a blob and triggers a download via a temporary anchor.
+ * Client-side only.
+ */
+export async function downloadUrl(url: string, filename: string) {
+	const response = await fetch(url);
+	if (!response.ok) throw new Error(`Download failed: ${response.status}`);
+
+	const blob = await response.blob();
+	const link = document.createElement('a');
+	link.href = URL.createObjectURL(blob);
+	link.download = filename;
+	document.body.appendChild(link);
+	link.click();
+	link.remove();
+	URL.revokeObjectURL(link.href);
+}

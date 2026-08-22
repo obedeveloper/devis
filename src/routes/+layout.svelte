@@ -6,6 +6,7 @@
 	import { signOut } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
+	import BusyButton from '$lib/components/BusyButton.svelte';
 	import { provideConfirmDialog } from '$lib/components/confirm-dialog.svelte';
 
 	provideConfirmDialog();
@@ -42,14 +43,14 @@
 			<a href={resolve('/new-quote')}>New Quote</a>
 		</div>
 		{#if user}
-			<button
-				disabled={signingOut}
-				aria-busy={signingOut}
+			<BusyButton
+				busy={signingOut}
+				busyLabel="Signing out…"
 				onclick={onsignOut}
 				class="text-red-400 hover:underline aria-busy:text-red-400/50"
 			>
-				{signingOut ? 'Signing out…' : 'Sign out'}
-			</button>
+				Sign out
+			</BusyButton>
 		{/if}
 	</nav>
 </header>

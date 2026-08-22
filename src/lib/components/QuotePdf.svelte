@@ -2,6 +2,9 @@
 
 <script lang="ts">
 	import { formatAmount, formatQuantity } from '$lib/utils';
+	import type { lineItem } from '$lib/server/db/app.schema';
+
+	type LineItemRow = typeof lineItem.$inferSelect;
 
 	let {
 		title,
@@ -12,12 +15,7 @@
 		title: string;
 		description: string | null;
 		currency: string | null;
-		lineItems: {
-			description: string;
-			quantity: number;
-			unit: string | null;
-			unitPrice: number;
-		}[];
+		lineItems: LineItemRow[];
 	} = $props();
 
 	const total = $derived(lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0));

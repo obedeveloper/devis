@@ -13,7 +13,7 @@ export const GET: RequestHandler = async ({ params }) => {
 		title: quote.title,
 		description: quote.description,
 		currency: quote.currency,
-		lineItems: lineItems.toReversed()
+		lineItems: lineItems
 	});
 
 	const pdfBuffer = await generatePdf(html);

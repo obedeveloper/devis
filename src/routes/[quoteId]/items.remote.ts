@@ -30,7 +30,7 @@ export const newLineItem = form(newLineItemSchema, async (data) => {
 
 export const getLineItems = query(v.string(), async (id) => {
 	await verifyQuoteOwnership(id);
-	return (await db.select().from(lineItem).where(eq(lineItem.quoteId, id))).toReversed();
+	return db.select().from(lineItem).where(eq(lineItem.quoteId, id));
 });
 
 export const deleteLineItem = command(v.string(), async (id) => {

@@ -5,7 +5,7 @@
 		{
 			title: 'Build quotes fast',
 			description:
-				'Create quotes with titles, descriptions and line items in any currency — all from one simple form.'
+				'Create quotes with titles, descriptions and line items in any currency, all from one simple form.'
 		},
 		{
 			title: 'Export & share as PDF',
@@ -37,7 +37,7 @@
 		},
 		{
 			question: 'Which currencies are supported?',
-			answer: 'Any currency — you pick the one that fits each quote when you create it.'
+			answer: 'Any currency: you pick the one that fits each quote when you create it.'
 		},
 		{
 			question: 'Can I edit a quote after creating it?',
@@ -53,8 +53,8 @@
 			Create professional quotes in minutes
 		</h1>
 		<p class="mbs-4 max-w-xl text-lg text-black/70">
-			Devis helps you build, export and share polished quotes with your clients — no spreadsheets,
-			no hassle.
+			Devis helps you build, export and share polished quotes with your clients. No spreadsheets, no
+			hassle.
 		</p>
 		<div class="mbs-8 flex flex-wrap justify-center gap-3">
 			<button
@@ -106,7 +106,7 @@
 		<h2 id="faq-title" class="text-center text-3xl font-bold">Frequently asked questions</h2>
 		<div class="mbs-8 grid gap-3">
 			{#each faqs as { question, answer } (question)}
-				<details class="rounded bg-black/5 p-4 open:bg-black/10">
+				<details name="faq" class="rounded bg-black/5 p-4 open:bg-black/10">
 					<summary class="cursor-pointer font-semibold">{question}</summary>
 					<p class="mbs-2 text-black/70">{answer}</p>
 				</details>
@@ -115,7 +115,7 @@
 	</section>
 
 	<section
-		class="mb-12 rounded-lg bg-black px-6 py-14 text-center text-white"
+		class="mb-24 rounded-lg bg-black px-6 py-14 text-center text-white"
 		aria-label="Call to action"
 	>
 		<h2 class="text-3xl font-bold">Ready to make your first quote?</h2>

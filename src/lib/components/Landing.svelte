@@ -47,27 +47,60 @@
 </script>
 
 <main class="wrapper">
-	<section class="grid place-items-center py-20 text-center md:py-28" aria-labelledby="hero-title">
-		<h1 id="hero-title" class="max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
-			Create professional quotes in minutes
-		</h1>
-		<p class="mbs-4 max-w-xl text-lg text-black/70">
-			Devis helps you build and export polished PDF quotes for your clients. No spreadsheets, no
-			hassle.
-		</p>
-		<div class="mbs-8 flex flex-wrap justify-center gap-3">
-			<button
-				onclick={() => signIn('/')}
-				class="rounded bg-black px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85"
-			>
-				Get started free
-			</button>
-			<a
-				href="#features"
-				class="rounded border-2 border-black px-6 py-3 text-lg font-semibold transition-colors duration-300 hover:bg-black/5"
-			>
-				Learn more
-			</a>
+	<section
+		class="grid items-center gap-10 py-20 text-center md:grid-cols-2 md:text-left"
+		aria-labelledby="hero-title"
+	>
+		<div class="flex flex-col items-center md:items-start">
+			<h1 id="hero-title" class="max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
+				Create professional quotes in minutes
+			</h1>
+			<p class="mbs-4 max-w-xl text-lg text-black/70">
+				Devis helps you build and export polished PDF quotes for your clients. No spreadsheets, no
+				hassle.
+			</p>
+			<div class="mbs-8 flex flex-wrap justify-center gap-3 md:justify-start">
+				<button
+					onclick={() => signIn('/')}
+					class="rounded bg-black px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85"
+				>
+					Get started free
+				</button>
+				<a
+					href="#features"
+					class="rounded border-2 border-black px-6 py-3 text-lg font-semibold transition-colors duration-300 hover:bg-black/5"
+				>
+					Learn more
+				</a>
+			</div>
+		</div>
+
+		<div
+			aria-hidden="true"
+			class="mx-auto w-full max-w-sm rotate-2 rounded-xl bg-white p-5 shadow-xl ring-1 ring-black/5 transition-transform duration-300 hover:rotate-0"
+		>
+			<div class="flex justify-between gap-2">
+				<span class="h-4 w-32 rounded bg-black/80"></span>
+				<span class="h-4 w-14 rounded bg-black/10"></span>
+			</div>
+			<div class="mbs-3 grid gap-2">
+				<div class="flex justify-between">
+					<span class="h-3 w-24 rounded bg-black/15"></span>
+					<span class="h-3 w-12 rounded bg-black/25"></span>
+				</div>
+				<div class="flex justify-between">
+					<span class="h-3 w-28 rounded bg-black/15"></span>
+					<span class="h-3 w-16 rounded bg-black/25"></span>
+				</div>
+				<div class="flex justify-between">
+					<span class="h-3 w-20 rounded bg-black/15"></span>
+					<span class="h-3 w-12 rounded bg-black/25"></span>
+				</div>
+			</div>
+			<div class="mbs-4 flex justify-between border-t border-black/10 pt-3">
+				<span class="h-3 w-10 rounded bg-black/30"></span>
+				<span class="h-4 w-16 rounded bg-black"></span>
+			</div>
 		</div>
 	</section>
 

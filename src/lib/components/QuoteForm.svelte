@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { RemoteForm } from '@sveltejs/kit';
+	import BusyButton from '$lib/components/BusyButton.svelte';
+	import { quoteSchema } from '$lib/quoteSchema';
+	import * as v from 'valibot';
 
-	type QuoteFields = { title: string; description: string; currency: string };
+	type QuoteFields = v.InferInput<typeof quoteSchema>;
 
 	interface Props {
 		form: RemoteForm<QuoteFields, unknown>;
@@ -53,11 +56,11 @@
 		<input {...asCurrency(values?.currency)} placeholder="RWF" />
 	</label>
 
-	<button
-		disabled={pending}
-		aria-busy={pending}
+	<BusyButton
+		busy={pending}
+		busyLabel="Saving…"
 		class="mbs-3 rounded bg-black/95 py-2 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85 aria-busy:bg-black/50"
 	>
-		{pending ? 'Saving…' : buttonLabel}
-	</button>
+		{buttonLabel}
+	</BusyButton>
 </form>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { deleteLineItem, editLineItem } from '../../routes/[quoteId]/items.remote';
 	import { formatAmount, formatQuantity } from '$lib/utils';
+	import BusyButton from '$lib/components/BusyButton.svelte';
 	import { getConfirmDialog } from '$lib/components/confirm-dialog.svelte';
 
 	const confirmDialog = getConfirmDialog();
@@ -86,21 +87,21 @@
 			<button onclick={cancel} class="rounded bg-black/10 px-3 py-1 text-sm hover:bg-black/15">
 				Cancel
 			</button>
-			<button
-				disabled={saving}
-				aria-busy={saving}
+			<BusyButton
+				busy={saving}
+				busyLabel="Saving…"
 				onclick={save}
 				class="rounded bg-black/95 px-3 py-1 text-sm text-white hover:bg-black/85 aria-busy:bg-black/50"
 			>
-				{saving ? 'Saving…' : 'Save'}
-			</button>
+				Save
+			</BusyButton>
 		</div>
 	</li>
 {:else}
 	<li
 		class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded bg-black/5 px-3 py-2"
 	>
-		<span class="wrap-break min-w-0 text-black/80">
+		<span class="min-w-0 wrap-break-word text-black/80">
 			<span class="font-mono text-black/40">{length - index}.</span>
 			{description}
 			<span class="text-black/40">{formatQuantity(quantity)} {unit}</span>
@@ -112,14 +113,14 @@
 			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm hover:bg-black/15">
 				Edit
 			</button>
-			<button
-				disabled={deleting}
-				aria-busy={deleting}
+			<BusyButton
+				busy={deleting}
+				busyLabel="Deleting…"
 				onclick={remove}
 				class="rounded bg-red-300/50 px-2 py-0.5 text-sm hover:bg-red-300/70 aria-busy:bg-black/10 aria-busy:text-black/40"
 			>
-				{deleting ? 'Deleting…' : 'Delete'}
-			</button>
+				Delete
+			</BusyButton>
 		</span>
 	</li>
 {/if}

@@ -8,9 +8,8 @@
 				'Create quotes with titles, descriptions and line items in any currency, all from one simple form.'
 		},
 		{
-			title: 'Export & share as PDF',
-			description:
-				'Turn any quote into a polished PDF you can download or share with your clients in one click.'
+			title: 'Export as PDF',
+			description: 'Turn any quote into a polished PDF you can download in one click.'
 		},
 		{
 			title: 'Keep everything organized',
@@ -22,14 +21,14 @@
 	const steps = [
 		{ title: 'Sign in', description: 'Create your account securely with Google.' },
 		{ title: 'Create a quote', description: 'Add line items, set your currency and save.' },
-		{ title: 'Share it', description: 'Download the PDF or send the link to your client.' }
+		{ title: 'Download it', description: 'Export the quote as a PDF whenever you need it.' }
 	];
 
 	const faqs = [
 		{
 			question: 'What is Devis?',
 			answer:
-				'Devis is a simple tool for freelancers and small businesses to create, manage and share professional quotes.'
+				'Devis is a simple tool for freelancers and small businesses to create and manage professional quotes.'
 		},
 		{
 			question: 'Is Devis free?',
@@ -53,7 +52,7 @@
 			Create professional quotes in minutes
 		</h1>
 		<p class="mbs-4 max-w-xl text-lg text-black/70">
-			Devis helps you build, export and share polished quotes with your clients. No spreadsheets, no
+			Devis helps you build and export polished PDF quotes for your clients. No spreadsheets, no
 			hassle.
 		</p>
 		<div class="mbs-8 flex flex-wrap justify-center gap-3">
@@ -102,7 +101,7 @@
 		</ol>
 	</section>
 
-	<section class="mx-auto mbs-16 max-w-2xl" aria-labelledby="faq-title">
+	<section class="mx-auto mbs-16 mb-32 max-w-2xl" aria-labelledby="faq-title">
 		<h2 id="faq-title" class="text-center text-3xl font-bold">Frequently asked questions</h2>
 		<div class="mbs-8 grid gap-3">
 			{#each faqs as { question, answer } (question)}

@@ -56,7 +56,7 @@
 	Skip to content
 </a>
 
-<header class="sticky top-0 mbe-6 bg-black/85 py-3 text-white backdrop-blur-md">
+<header class="sticky top-0 z-20 mbe-6 bg-black/85 py-3 text-white backdrop-blur-md">
 	<nav class="wrapper flex justify-between gap-4 text-lg">
 		{#if user}
 			<div class="flex gap-4 *:hover:underline">

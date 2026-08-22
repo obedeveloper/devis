@@ -3,7 +3,7 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { resolve } from '$app/paths';
 	import { navigating } from '$app/state';
-	import { signOut } from '$lib/auth-client';
+	import { signOut, signIn } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import BusyButton from '$lib/components/BusyButton.svelte';
@@ -38,11 +38,11 @@
 
 <header class="sticky top-0 mbe-6 bg-black/85 py-3 text-white backdrop-blur-md">
 	<nav class="wrapper flex justify-between gap-4 text-lg">
-		<div class="flex gap-4 *:hover:underline">
-			<a href={resolve('/')}>Home</a>
-			<a href={resolve('/new-quote')}>New Quote</a>
-		</div>
 		{#if user}
+			<div class="flex gap-4 *:hover:underline">
+				<a href={resolve('/')}>Home</a>
+				<a href={resolve('/new-quote')}>New Quote</a>
+			</div>
 			<BusyButton
 				busy={signingOut}
 				busyLabel="Signing out…"
@@ -51,6 +51,14 @@
 			>
 				Sign out
 			</BusyButton>
+		{:else}
+			<a href={resolve('/')} class="font-bold tracking-tight">Devis</a>
+			<button
+				onclick={() => signIn('/')}
+				class="rounded bg-white px-4 py-1 font-semibold text-black transition-colors duration-300 hover:bg-white/85"
+			>
+				Sign in
+			</button>
 		{/if}
 	</nav>
 </header>

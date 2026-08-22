@@ -38,12 +38,7 @@
 			<QuoteCardSkeleton class="w-full max-w-xs -rotate-2 shadow-lg" />
 			<h2 id="empty-title" class="text-2xl font-bold">No quotes yet</h2>
 			<p class="max-w-sm text-black/70">Create your first quote and it will show up here.</p>
-			<a
-				href={resolve('/new-quote')}
-				class="rounded bg-black px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-black/85"
-			>
-				Create your first quote
-			</a>
+			<a href={resolve('/new-quote')} class="btn-primary">Create your first quote</a>
 		</section>
 	{/each}
 </section>

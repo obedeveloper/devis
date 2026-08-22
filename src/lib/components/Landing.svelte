@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { signIn } from '$lib/auth-client';
+	import QuoteCardSkeleton from './QuoteCardSkeleton.svelte';
 
 	const features = [
 		{
@@ -75,33 +76,10 @@
 			</div>
 		</div>
 
-		<div
-			aria-hidden="true"
-			class="mx-auto w-full max-w-sm rotate-2 rounded-xl bg-white p-5 shadow-xl ring-1 ring-black/5 transition-transform duration-300 hover:rotate-0"
-		>
-			<div class="flex justify-between gap-2">
-				<span class="h-4 w-32 rounded bg-black/80"></span>
-				<span class="h-4 w-14 rounded bg-black/10"></span>
-			</div>
-			<div class="mbs-3 grid gap-2">
-				<div class="flex justify-between">
-					<span class="h-3 w-24 rounded bg-black/15"></span>
-					<span class="h-3 w-12 rounded bg-black/25"></span>
-				</div>
-				<div class="flex justify-between">
-					<span class="h-3 w-28 rounded bg-black/15"></span>
-					<span class="h-3 w-16 rounded bg-black/25"></span>
-				</div>
-				<div class="flex justify-between">
-					<span class="h-3 w-20 rounded bg-black/15"></span>
-					<span class="h-3 w-12 rounded bg-black/25"></span>
-				</div>
-			</div>
-			<div class="mbs-4 flex justify-between border-t border-black/10 pt-3">
-				<span class="h-3 w-10 rounded bg-black/30"></span>
-				<span class="h-4 w-16 rounded bg-black"></span>
-			</div>
-		</div>
+		<QuoteCardSkeleton
+			rows={3}
+			class="mx-auto w-full max-w-sm rotate-2 shadow-xl transition-transform duration-300 hover:rotate-0"
+		/>
 	</section>
 
 	<section id="features" class="mbs-8 scroll-mt-24" aria-labelledby="features-title">

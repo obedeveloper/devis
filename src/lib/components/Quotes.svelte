@@ -88,18 +88,20 @@
 		{const date = new Date(createdAt)}
 
 		<article class="rounded bg-black/5 p-3 text-black/80" transition:fade>
-			<div class="flex justify-between gap-2">
-				<h3 class="line-clamp-1 min-w-0 text-lg font-semibold text-black">
-					<a href={resolve('/[quoteId]', { quoteId: id })}>{title}</a>
-				</h3>
-				<span class="flex shrink-0 items-center gap-2">
+			<div class="flex items-center justify-between gap-2">
+				<div class="flex min-w-0 items-center gap-2">
 					<input
 						type="checkbox"
-						class="size-4 accent-black"
+						class="size-4 shrink-0 accent-black"
 						checked={selected.has(id)}
 						onchange={() => toggle(id)}
 						aria-label="Select {title}"
 					/>
+					<h3 class="line-clamp-1 min-w-0 text-lg font-semibold text-black">
+						<a href={resolve('/[quoteId]', { quoteId: id })}>{title}</a>
+					</h3>
+				</div>
+				<span class="shrink-0">
 					<DeleteQuote {id} {title}></DeleteQuote>
 				</span>
 			</div>

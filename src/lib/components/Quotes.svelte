@@ -51,7 +51,7 @@
 	}
 </script>
 
-{#if quotes.length}
+{#if quotes.length && selected.size}
 	<div class="mbe-3 flex flex-wrap items-center justify-between gap-2">
 		<label class="flex cursor-pointer items-center gap-2 text-sm">
 			<input
@@ -66,16 +66,14 @@
 			{#if failed}
 				<span role="alert" class="text-sm text-red-600">Download failed, try again.</span>
 			{/if}
-			{#if selected.size}
-				<BusyButton
-					busy={downloading}
-					busyLabel="Preparing…"
-					onclick={downloadSelected}
-					class="rounded bg-black px-4 py-1.5 text-sm font-semibold text-white hover:bg-black/85 aria-busy:bg-black/50"
-				>
-					Download ({selected.size})
-				</BusyButton>
-			{/if}
+			<BusyButton
+				busy={downloading}
+				busyLabel="Preparing…"
+				onclick={downloadSelected}
+				class="rounded bg-black px-4 py-1.5 text-sm font-semibold text-white hover:bg-black/85 aria-busy:bg-black/50"
+			>
+				Download ({selected.size})
+			</BusyButton>
 		</span>
 	</div>
 {/if}

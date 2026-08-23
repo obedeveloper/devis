@@ -1,6 +1,7 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import og from '$lib/assets/og.png';
 	import { resolve } from '$app/paths';
 	import { navigating, page } from '$app/state';
 	import { signOut, signIn } from '$lib/auth-client';
@@ -38,7 +39,7 @@
 	<meta property="og:description" content={SITE_DESCRIPTION} />
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content={canonical} />
-	<meta property="og:image" content={`${origin}/og.png`} />
+	<meta property="og:image" content={origin + og} />
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 

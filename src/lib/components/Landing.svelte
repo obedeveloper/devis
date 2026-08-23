@@ -47,83 +47,81 @@
 	];
 </script>
 
-<main class="wrapper">
-	<section
-		class="grid items-center gap-10 py-20 text-center md:grid-cols-2 md:text-left"
-		aria-labelledby="hero-title"
-	>
-		<div class="flex flex-col items-center md:items-start">
-			<h1 id="hero-title" class="max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
-				Create professional quotes in minutes
-			</h1>
-			<p class="mbs-4 max-w-xl text-lg text-black/70">
-				Devis helps you build and export polished PDF quotes for your clients. No spreadsheets, no
-				hassle.
-			</p>
-			<div class="mbs-8 flex flex-wrap justify-center gap-3 md:justify-start">
-				<button onclick={() => signIn('/')} class="btn-primary">Get started free</button>
-				<a
-					href="#features"
-					class="rounded border-2 border-black px-6 py-3 text-lg font-semibold transition-colors duration-300 hover:bg-black/5"
+<section
+	class="grid items-center gap-10 py-20 text-center md:grid-cols-2 md:text-left"
+	aria-labelledby="hero-title"
+>
+	<div class="flex flex-col items-center md:items-start">
+		<h1 id="hero-title" class="max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
+			Create professional quotes in minutes
+		</h1>
+		<p class="mbs-4 max-w-xl text-lg text-black/70">
+			Devis helps you build and export polished PDF quotes for your clients. No spreadsheets, no
+			hassle.
+		</p>
+		<div class="mbs-8 flex flex-wrap justify-center gap-3 md:justify-start">
+			<button onclick={() => signIn('/')} class="btn-primary">Get started free</button>
+			<a
+				href="#features"
+				class="rounded border-2 border-black px-6 py-3 text-lg font-semibold transition-colors duration-300 hover:bg-black/5"
+			>
+				Learn more
+			</a>
+		</div>
+	</div>
+
+	<QuoteCardSkeleton
+		rows={3}
+		class="mx-auto w-full max-w-sm rotate-2 shadow-xl transition-transform duration-300 hover:rotate-0"
+	/>
+</section>
+
+<section id="features" class="mbs-8 scroll-mt-24" aria-labelledby="features-title">
+	<h2 id="features-title" class="text-center text-3xl font-bold">Everything you need</h2>
+	<div class="mbs-8 grid gap-3 md:grid-cols-3">
+		{#each features as { title, description } (title)}
+			<article class="rounded bg-black/5 p-5">
+				<h3 class="text-xl font-semibold">{title}</h3>
+				<p class="mbs-2 text-black/70">{description}</p>
+			</article>
+		{/each}
+	</div>
+</section>
+
+<section class="mbs-16" aria-labelledby="how-title">
+	<h2 id="how-title" class="text-center text-3xl font-bold">How it works</h2>
+	<ol class="mbs-8 grid gap-3 md:grid-cols-3">
+		{#each steps as { title, description }, i (title)}
+			<li class="rounded bg-black/5 p-5">
+				<span
+					class="grid size-9 place-items-center rounded-full bg-black text-lg font-bold text-white"
+					aria-hidden="true"
 				>
-					Learn more
-				</a>
-			</div>
-		</div>
+					{i + 1}
+				</span>
+				<h3 class="mbs-3 text-xl font-semibold">{title}</h3>
+				<p class="mbs-1 text-black/70">{description}</p>
+			</li>
+		{/each}
+	</ol>
+</section>
 
-		<QuoteCardSkeleton
-			rows={3}
-			class="mx-auto w-full max-w-sm rotate-2 shadow-xl transition-transform duration-300 hover:rotate-0"
-		/>
-	</section>
+<section class="mx-auto mbs-16 mb-32 max-w-2xl" aria-labelledby="faq-title">
+	<h2 id="faq-title" class="text-center text-3xl font-bold">Frequently asked questions</h2>
+	<div class="mbs-8 grid gap-3">
+		{#each faqs as { question, answer } (question)}
+			<details name="faq" class="rounded bg-black/5 p-4 open:bg-black/10">
+				<summary class="cursor-pointer font-semibold">{question}</summary>
+				<p class="mbs-2 text-black/70">{answer}</p>
+			</details>
+		{/each}
+	</div>
+</section>
 
-	<section id="features" class="mbs-8 scroll-mt-24" aria-labelledby="features-title">
-		<h2 id="features-title" class="text-center text-3xl font-bold">Everything you need</h2>
-		<div class="mbs-8 grid gap-3 md:grid-cols-3">
-			{#each features as { title, description } (title)}
-				<article class="rounded bg-black/5 p-5">
-					<h3 class="text-xl font-semibold">{title}</h3>
-					<p class="mbs-2 text-black/70">{description}</p>
-				</article>
-			{/each}
-		</div>
-	</section>
-
-	<section class="mbs-16" aria-labelledby="how-title">
-		<h2 id="how-title" class="text-center text-3xl font-bold">How it works</h2>
-		<ol class="mbs-8 grid gap-3 md:grid-cols-3">
-			{#each steps as { title, description }, i (title)}
-				<li class="rounded bg-black/5 p-5">
-					<span
-						class="grid size-9 place-items-center rounded-full bg-black text-lg font-bold text-white"
-						aria-hidden="true"
-					>
-						{i + 1}
-					</span>
-					<h3 class="mbs-3 text-xl font-semibold">{title}</h3>
-					<p class="mbs-1 text-black/70">{description}</p>
-				</li>
-			{/each}
-		</ol>
-	</section>
-
-	<section class="mx-auto mbs-16 mb-32 max-w-2xl" aria-labelledby="faq-title">
-		<h2 id="faq-title" class="text-center text-3xl font-bold">Frequently asked questions</h2>
-		<div class="mbs-8 grid gap-3">
-			{#each faqs as { question, answer } (question)}
-				<details name="faq" class="rounded bg-black/5 p-4 open:bg-black/10">
-					<summary class="cursor-pointer font-semibold">{question}</summary>
-					<p class="mbs-2 text-black/70">{answer}</p>
-				</details>
-			{/each}
-		</div>
-	</section>
-
-	<section
-		class="mb-24 rounded-lg bg-black px-6 py-14 text-center text-white"
-		aria-label="Call to action"
-	>
-		<h2 class="text-3xl font-bold">Ready to make your first quote?</h2>
-		<button onclick={() => signIn('/')} class="mbs-6 btn-inverse">Get started free</button>
-	</section>
-</main>
+<section
+	class="mb-24 rounded-lg bg-black px-6 py-14 text-center text-white"
+	aria-label="Call to action"
+>
+	<h2 class="text-3xl font-bold">Ready to make your first quote?</h2>
+	<button onclick={() => signIn('/')} class="mbs-6 btn-inverse">Get started free</button>
+</section>

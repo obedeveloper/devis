@@ -6,7 +6,6 @@
 	import { navigating, page } from '$app/state';
 	import { signOut, signIn } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
-	import { getOrigin } from '$lib/site.remote';
 	import { SITE_DESCRIPTION, SITE_NAME } from '$lib/site';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import BusyButton from '$lib/components/BusyButton.svelte';
@@ -16,9 +15,6 @@
 
 	let { children } = $props();
 	const user = $derived(await getUser());
-	const origin = $derived(await getOrigin());
-	const canonical = $derived(`${origin}${page.url.pathname}`);
-
 	let signingOut = $state(false);
 
 	async function onsignOut() {
@@ -33,13 +29,13 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<link rel="canonical" href={canonical} />
+	<link rel="canonical" href={page.url.toString()} />
 	<meta property="og:site_name" content={SITE_NAME} />
 	<meta property="og:title" content={SITE_NAME} />
 	<meta property="og:description" content={SITE_DESCRIPTION} />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content={canonical} />
-	<meta property="og:image" content={origin + og} />
+	<meta property="og:url" content={page.url.toString()} />
+	<meta property="og:image" content={page.url.origin + og} />
 	<meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 

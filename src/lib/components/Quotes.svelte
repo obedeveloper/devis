@@ -7,7 +7,8 @@
 	import BusyButton from './BusyButton.svelte';
 	import QuoteCardSkeleton from './QuoteCardSkeleton.svelte';
 	import { downloadUrl, sanitizeFilename } from '$lib/utils';
-	const quotes = $derived(await getQuotes());
+	const quotesQuery = getQuotes();
+	const quotes = $derived(quotesQuery.current ?? []);
 
 	const selected = new SvelteSet<string>();
 
@@ -78,49 +79,75 @@
 	</div>
 {/if}
 
-<section
-	class={[quotes.length && 'grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-3']}
->
-	{#each quotes as { id, ...data } (id)}
-		{const { title, description, currency, createdAt } = data}
-		{const date = new Date(createdAt)}
-
-		<article class="rounded bg-black/5 p-3 text-black/80" transition:fade>
-			<div class="flex items-center justify-between gap-2">
-				<div class="flex min-w-0 items-center gap-2">
-					<input
-						type="checkbox"
-						class="size-4 shrink-0 accent-black"
-						checked={selected.has(id)}
-						onchange={() => toggle(id)}
-						aria-label="Select {title}"
-					/>
-					<h3 class="line-clamp-1 min-w-0 text-lg font-semibold text-black">
-						<a href={resolve('/[quoteId]', { quoteId: id })}>{title}</a>
-					</h3>
-				</div>
-				<span class="shrink-0">
-					<DeleteQuote {id} {title}></DeleteQuote>
-				</span>
-			</div>
-			<p class="mbs-1 line-clamp-2 empty:hidden">{description}</p>
-
-			<div class="mbs-4 flex justify-between">
-				<span class="font-mono text-black/90 uppercase">{currency}</span>
-				<time datetime={date.toISOString()}>
-					{date.toLocaleDateString('en', { day: '2-digit', month: 'short', year: 'numeric' })}
-				</time>
-			</div>
-		</article>
-	{:else}
-		<section
-			class="flex flex-col items-center gap-4 py-20 text-center md:py-28"
-			aria-labelledby="empty-title"
+{#if quotesQuery.error}
+	<section class="flex flex-col items-center gap-4 py-20 text-center" role="alert">
+		<h2 class="text-2xl font-bold">Something went wrong</h2>
+		<p class="max-w-sm text-black/70">We couldn't load your quotes. Please try again.</p>
+		<BusyButton
+			busy={quotesQuery.loading}
+			busyLabel="Retrying…"
+			onclick={() => quotesQuery.refresh()}
+			class="btn-primary"
 		>
-			<QuoteCardSkeleton class="w-full max-w-xs -rotate-2 shadow-lg" />
-			<h2 id="empty-title" class="text-2xl font-bold">No quotes yet</h2>
-			<p class="max-w-sm text-black/70">Create your first quote and it will show up here.</p>
-			<a href={resolve('/new-quote')} class="btn-primary">Create your first quote</a>
-		</section>
-	{/each}
-</section>
+			Try again
+		</BusyButton>
+	</section>
+{:else if quotesQuery.loading && !quotes.length}
+	<section
+		class="grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-3"
+		aria-busy="true"
+	>
+		{#each { length: 6 }, i (i)}
+			<QuoteCardSkeleton />
+		{/each}
+	</section>
+{:else}
+	<section
+		class={[
+			quotes.length && 'grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-3'
+		]}
+	>
+		{#each quotes as { id, ...data } (id)}
+			{const { title, description, currency, createdAt } = data}
+			{const date = new Date(createdAt)}
+
+			<article class="rounded bg-black/5 p-3 text-black/80" transition:fade>
+				<div class="flex items-center justify-between gap-2">
+					<div class="flex min-w-0 items-center gap-2">
+						<input
+							type="checkbox"
+							class="size-4 shrink-0 accent-black"
+							checked={selected.has(id)}
+							onchange={() => toggle(id)}
+							aria-label="Select {title}"
+						/>
+						<h3 class="line-clamp-1 min-w-0 text-lg font-semibold text-black">
+							<a href={resolve('/[quoteId]', { quoteId: id })}>{title}</a>
+						</h3>
+					</div>
+					<span class="shrink-0">
+						<DeleteQuote {id} {title}></DeleteQuote>
+					</span>
+				</div>
+				<p class="mbs-1 line-clamp-2 empty:hidden">{description}</p>
+
+				<div class="mbs-4 flex justify-between">
+					<span class="font-mono text-black/90 uppercase">{currency}</span>
+					<time datetime={date.toISOString()}>
+						{date.toLocaleDateString('en', { day: '2-digit', month: 'short', year: 'numeric' })}
+					</time>
+				</div>
+			</article>
+		{:else}
+			<section
+				class="flex flex-col items-center gap-4 py-20 text-center md:py-28"
+				aria-labelledby="empty-title"
+			>
+				<QuoteCardSkeleton class="w-full max-w-xs -rotate-2 shadow-lg" />
+				<h2 id="empty-title" class="text-2xl font-bold">No quotes yet</h2>
+				<p class="max-w-sm text-black/70">Create your first quote and it will show up here.</p>
+				<a href={resolve('/new-quote')} class="btn-primary">Create your first quote</a>
+			</section>
+		{/each}
+	</section>
+{/if}

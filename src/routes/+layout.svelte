@@ -1,15 +1,14 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
-	import og from '$lib/assets/og.png';
 	import { resolve } from '$app/paths';
-	import { navigating, page } from '$app/state';
+	import { navigating } from '$app/state';
 	import { signOut, signIn } from '$lib/auth-client';
 	import { getUser } from '$lib/user.remote';
-	import { SITE_DESCRIPTION, SITE_NAME } from '$lib/site';
+	import { SITE_NAME } from '$lib/site';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import BusyButton from '$lib/components/BusyButton.svelte';
 	import { provideConfirmDialog } from '$lib/components/confirm-dialog.svelte';
+	import OpenGraph from './open-graph.svelte';
 
 	provideConfirmDialog();
 
@@ -27,17 +26,7 @@
 	}
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-	<link rel="canonical" href={page.url.toString()} />
-	<meta property="og:site_name" content={SITE_NAME} />
-	<meta property="og:title" content={SITE_NAME} />
-	<meta property="og:description" content={SITE_DESCRIPTION} />
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content={page.url.toString()} />
-	<meta property="og:image" content={page.url.origin + og} />
-	<meta name="twitter:card" content="summary_large_image" />
-</svelte:head>
+<OpenGraph></OpenGraph>
 
 {#if navigating.to}
 	<div class="fixed inset-x-0 top-0 z-50 h-0.5 overflow-hidden bg-black/10" aria-hidden="true">

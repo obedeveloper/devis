@@ -79,8 +79,8 @@
 	<li class="grid gap-2 rounded bg-black/5 px-3 py-2">
 		<input bind:value={editDescription} placeholder="Description" />
 		<div class="grid grid-cols-3 gap-2">
-			<input bind:value={editQuantity} type="number" placeholder="Qty" step="0.01" />
 			<input bind:value={editUnit} placeholder="Unit" />
+			<input bind:value={editQuantity} type="number" placeholder="Qty" step="0.01" />
 			<input bind:value={editUnitPrice} type="number" placeholder="Unit price" step="0.01" />
 		</div>
 		<div class="flex justify-end gap-2">

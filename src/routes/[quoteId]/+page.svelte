@@ -66,8 +66,8 @@
 			{const { description, quantity, unit, unitPrice } = newLineItem.fields}
 			<input {...description.as('text')} placeholder="Description" aria-label="Description" />
 			<div class="grid grid-cols-3 gap-2">
-				<input {...quantity.as('number')} placeholder="Qty" step="0.01" aria-label="Quantity" />
 				<input {...unit.as('text')} placeholder="Unit" aria-label="Unit" />
+				<input {...quantity.as('number')} placeholder="Qty" step="0.01" aria-label="Quantity" />
 				<input
 					{...unitPrice.as('number')}
 					placeholder="Unit price"

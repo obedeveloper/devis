@@ -86,7 +86,7 @@
 			<span>{description}</span>
 			<span class="text-black/40">{unit}</span>
 			<span class="font-mono text-black/40">{formatQuantity(quantity)}</span>
-			<span class="font-mono text-black/40">{formatAmount(unitPrice)}</span>
+			<span class="font-mono text-black/40">{formatAmount(unitPrice, currency)}</span>
 			<span class="font-mono">{amount}</span>
 		</span>
 		<span class="flex w-full min-w-0 items-center justify-end gap-3 sm:w-fit">

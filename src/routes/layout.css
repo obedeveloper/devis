@@ -36,7 +36,3 @@ input {
 		outline: transparent;
 	}
 }
-
-main {
-	min-height: 100svh;
-}

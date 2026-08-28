@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { deleteQuote } from '$lib/quote.remote';
+	import ConfirmDialog from './confirm-dialog.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { deleteQuote } from '$lib/quote.remote';
-	import { getConfirmDialog } from '$lib/components/confirm-dialog.svelte';
-	import BusyButton from '$lib/components/BusyButton.svelte';
+	import DeleteBtn from './delete-btn.svelte';
 
 	interface Props {
 		id: string;
@@ -11,43 +11,23 @@
 	}
 
 	const { id, title }: Props = $props();
-
-	const confirmDialog = getConfirmDialog();
-
-	let failed = $state(false);
-
-	const deleting = $derived(deleteQuote.pending > 0);
-
-	async function ondelete() {
-		failed = false;
-
-		const confirmed = await confirmDialog.confirm({
-			title: `Delete "${title}"?`,
-			description: 'This action cannot be undone.',
-			confirmLabel: 'Delete'
-		});
-
-		if (!confirmed) return;
-
-		try {
-			await deleteQuote(id);
-			goto(resolve('/'));
-		} catch {
-			failed = true;
-		}
-	}
 </script>
 
-<span class="flex items-center gap-2">
-	<BusyButton
-		busy={deleting}
-		busyLabel="Deleting…"
-		onclick={ondelete}
-		class="rounded bg-red-300/50 px-3 py-1 hover:bg-red-300/70 aria-busy:bg-black/10 aria-busy:text-black/40"
-	>
-		Delete
-	</BusyButton>
-	{#if failed}
-		<span role="alert" class="text-sm text-red-600">Delete failed, try again.</span>
-	{/if}
-</span>
+<ConfirmDialog title={`Delete "${title}"?`} description="This action cannot be undone.">
+	{#snippet triggerBtn(show)}
+		<button onclick={show} class="rounded bg-red-300/50 px-3 py-1 hover:bg-red-300/70">
+			Delete
+		</button>
+	{/snippet}
+
+	{#snippet confirmBtn(hide)}
+		<DeleteBtn
+			busy={!!deleteQuote.pending}
+			onclick={async () => {
+				await deleteQuote(id);
+				hide();
+				goto(resolve('/'));
+			}}
+		></DeleteBtn>
+	{/snippet}
+</ConfirmDialog>

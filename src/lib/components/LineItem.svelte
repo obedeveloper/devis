@@ -2,9 +2,8 @@
 	import { deleteLineItem, editLineItem } from '../../routes/[quoteId]/items.remote';
 	import { formatAmount, formatQuantity } from '$lib/utils';
 	import BusyButton from '$lib/components/BusyButton.svelte';
-	import { getConfirmDialog } from '$lib/components/confirm-dialog.svelte';
-
-	const confirmDialog = getConfirmDialog();
+	import ConfirmDialog from './confirm-dialog.svelte';
+	import DeleteBtn from './delete-btn.svelte';
 
 	interface Props {
 		id: string;
@@ -18,12 +17,10 @@
 	}
 
 	const { id, description, quantity, unit, unitPrice, currency, index, length }: Props = $props();
-
 	const amount = $derived(formatAmount(quantity * unitPrice, currency));
 
 	let editing = $state(false);
 	let saving = $state(false);
-	let deleting = $state(false);
 	let editDescription = $state('');
 	let editQuantity = $state(0);
 	let editUnit = $state('');
@@ -50,23 +47,6 @@
 			editing = false;
 		} finally {
 			saving = false;
-		}
-	}
-
-	async function remove() {
-		const confirmed = await confirmDialog.confirm({
-			title: `Delete "${description}"?`,
-			description: 'This line item will be removed from the quote.',
-			confirmLabel: 'Delete'
-		});
-
-		if (!confirmed) return;
-
-		deleting = true;
-		try {
-			await deleteLineItem(id);
-		} finally {
-			deleting = false;
 		}
 	}
 
@@ -101,26 +81,49 @@
 	<li
 		class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded bg-black/5 px-3 py-2"
 	>
-		<span class="min-w-0 wrap-break-word text-black/80">
+		<span class="details min-w-0 wrap-break-word text-black/80">
 			<span class="font-mono text-black/40">{length - index}.</span>
-			{description}
-			<span class="text-black/40">{formatQuantity(quantity)} {unit}</span>
+			<span>{description}</span>
+			<span class="text-black/40">{unit}</span>
+			<span class="font-mono text-black/40">{formatQuantity(quantity)}</span>
+			<span class="font-mono text-black/40">{formatAmount(unitPrice)}</span>
+			<span class="font-mono">{amount}</span>
 		</span>
-		<span class="flex min-w-0 flex-wrap items-center justify-end gap-3">
-			<span class="font-mono text-sm text-black/80 uppercase">
-				{formatAmount(unitPrice, currency)} × {formatQuantity(quantity)} = {amount}
-			</span>
+		<span class="flex w-full min-w-0 items-center justify-end gap-3 sm:w-fit">
 			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm hover:bg-black/15">
 				Edit
 			</button>
-			<BusyButton
-				busy={deleting}
-				busyLabel="Deleting…"
-				onclick={remove}
-				class="rounded bg-red-300/50 px-2 py-0.5 text-sm hover:bg-red-300/70 aria-busy:bg-black/10 aria-busy:text-black/40"
+			<ConfirmDialog
+				title={`Delete "${description}"?`}
+				description="This line item will be removed from the quote."
 			>
-				Delete
-			</BusyButton>
+				{#snippet triggerBtn(show)}
+					<button
+						onclick={show}
+						class="rounded bg-red-300/50 px-2 py-0.5 text-sm hover:bg-red-300/70">Delete</button
+					>
+				{/snippet}
+
+				{#snippet confirmBtn(hide)}
+					<DeleteBtn
+						busy={!!deleteLineItem.pending}
+						onclick={async () => {
+							await deleteLineItem(id);
+							hide();
+						}}
+					></DeleteBtn>
+				{/snippet}
+			</ConfirmDialog>
 		</span>
 	</li>
 {/if}
+
+<style>
+	.details span:empty {
+		display: none;
+	}
+
+	.details *:not(:first-child, :nth-child(2))::before {
+		content: ' - ';
+	}
+</style>

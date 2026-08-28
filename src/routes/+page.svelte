@@ -11,10 +11,10 @@
 	<meta name="description" content={SITE_DESCRIPTION} />
 </svelte:head>
 
-{#if !user}
-	<Landing />
-{:else}
-	<main class="wrapper">
+<main class="wrapper">
+	{#if !user}
+		<Landing></Landing>
+	{:else}
 		<Quotes></Quotes>
-	</main>
-{/if}
+	{/if}
+</main>

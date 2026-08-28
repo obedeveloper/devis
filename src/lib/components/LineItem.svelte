@@ -81,15 +81,15 @@
 	<li
 		class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 rounded bg-black/5 px-3 py-2"
 	>
-		<span class="min-w-0 wrap-break-word text-black/80">
+		<span class="details min-w-0 wrap-break-word text-black/80">
 			<span class="font-mono text-black/40">{length - index}.</span>
-			{description}
-			<span class="text-black/40">{formatQuantity(quantity)} {unit}</span>
+			<span>{description}</span>
+			<span class="text-black/40">{unit}</span>
+			<span class="font-mono text-black/40">{formatQuantity(quantity)}</span>
+			<span class="font-mono text-black/40">{formatAmount(unitPrice)}</span>
+			<span class="font-mono">{amount}</span>
 		</span>
-		<span class="flex min-w-0 flex-wrap items-center justify-end gap-3">
-			<span class="font-mono text-sm text-black/80 uppercase">
-				{formatAmount(unitPrice, currency)} × {formatQuantity(quantity)} = {amount}
-			</span>
+		<span class="flex w-full min-w-0 items-center justify-end gap-3 sm:w-fit">
 			<button onclick={startEdit} class="rounded bg-black/10 px-2 py-0.5 text-sm hover:bg-black/15">
 				Edit
 			</button>
@@ -117,3 +117,13 @@
 		</span>
 	</li>
 {/if}
+
+<style>
+	.details span:empty {
+		display: none;
+	}
+
+	.details *:not(:first-child, :nth-child(2))::before {
+		content: ' - ';
+	}
+</style>

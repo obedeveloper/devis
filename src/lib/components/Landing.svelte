@@ -60,7 +60,7 @@
 			hassle.
 		</p>
 		<div class="mbs-8 flex flex-wrap justify-center gap-3 md:justify-start">
-			<button onclick={() => signIn('/')} class="btn-primary">Get started free</button>
+			<button onclick={() => signIn('/')} class="btn btn-primary">Get started free</button>
 			<a
 				href="#features"
 				class="rounded border-2 border-black px-6 py-3 text-lg font-semibold transition-colors duration-300 hover:bg-black/5"
@@ -123,5 +123,5 @@
 	aria-label="Call to action"
 >
 	<h2 class="text-3xl font-bold">Ready to make your first quote?</h2>
-	<button onclick={() => signIn('/')} class="mbs-6 btn-inverse">Get started free</button>
+	<button onclick={() => signIn('/')} class="mbs-6 btn btn-inverse">Get started free</button>
 </section>

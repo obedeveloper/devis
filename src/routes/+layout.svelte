@@ -1,13 +1,10 @@
 <script lang="ts">
 	import './layout.css';
 	import { SITE_NAME } from '$lib/site';
-	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
-	import { provideConfirmDialog } from '$lib/components/confirm-dialog.svelte';
 	import OpenGraph from './open-graph.svelte';
 	import Header from './header.svelte';
 	import NavProgress from './nav-progress.svelte';
 
-	provideConfirmDialog();
 	let { children } = $props();
 </script>
 
@@ -15,7 +12,6 @@
 <NavProgress></NavProgress>
 <Header></Header>
 {@render children()}
-<ConfirmDialog></ConfirmDialog>
 
 <footer class="mbs-8 border-t border-black/10 py-6">
 	<div class="wrapper flex flex-wrap items-center justify-between gap-2 text-sm text-black/60">

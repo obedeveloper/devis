@@ -1,5 +1,13 @@
 @import 'tailwindcss';
 
+html {
+	scrollbar-gutter: stable;
+
+	&:has(dialog[open]) {
+		overflow: hidden;
+	}
+}
+
 @utility wrapper {
 	@apply container mx-auto px-5;
 }
